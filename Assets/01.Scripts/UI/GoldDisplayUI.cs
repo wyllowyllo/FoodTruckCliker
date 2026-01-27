@@ -11,9 +11,7 @@ namespace FoodTruckClicker.UI
     {
         [SerializeField]
         private TextMeshProUGUI _goldText;
-
-        [SerializeField]
-        private string _format = "{0:N0}";
+        private string _format = "{0:N0} $";
 
         private void OnEnable()
         {
