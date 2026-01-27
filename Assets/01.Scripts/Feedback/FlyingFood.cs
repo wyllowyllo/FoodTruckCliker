@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace FoodTruckClicker.Feedback
 {
     /// <summary>
-    /// 날아가는 음식 개별 오브젝트
+    /// 날아가는 음식 - 트럭에서 손님으로 포물선 이동
     /// </summary>
     public class FlyingFood : MonoBehaviour
     {
@@ -16,15 +16,33 @@ namespace FoodTruckClicker.Feedback
         [SerializeField]
         private RectTransform _rectTransform;
 
-        [Header("애니메이션 설정")]
+        [Header("타이밍")]
         [SerializeField]
-        private float _duration = 0.4f;
+        private float _popDuration = 0.1f;
 
         [SerializeField]
-        private float _arcHeight = 150f;
+        private float _flyDuration = 0.35f;
+
+        [Header("포물선")]
+        [SerializeField]
+        private float _arcHeight = 180f;
+
+        [Header("스케일")]
+        [SerializeField]
+        private float _popScale = 1.3f;
 
         [SerializeField]
-        private Ease _moveEase = Ease.OutQuad;
+        private float _flyScale = 0.8f;
+
+        [SerializeField]
+        private float _endScale = 0.4f;
+
+        [Header("회전")]
+        [SerializeField]
+        private float _minRotation = 360f;
+
+        [SerializeField]
+        private float _maxRotation = 720f;
 
         private Sequence _flySequence;
 
@@ -47,41 +65,54 @@ namespace FoodTruckClicker.Feedback
                 _foodImage.sprite = foodSprite;
             }
 
-            // 시작 위치 설정
+            // 초기화
             _rectTransform.anchoredPosition = startPos;
             transform.localScale = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+
+            // 랜덤 회전량
+            float rotation = Random.Range(_minRotation, _maxRotation);
+            if (Random.value > 0.5f) rotation *= -1f;
 
             // 기존 애니메이션 정리
             _flySequence?.Kill();
             _flySequence = DOTween.Sequence();
 
-            // 팝업 효과 (스케일)
+            // === 팝업 (트럭에서 튀어나옴) ===
             _flySequence.Append(
-                transform.DOScale(1.2f, 0.1f).SetEase(Ease.OutBack)
-            );
-            _flySequence.Append(
-                transform.DOScale(1f, 0.05f)
+                transform.DOScale(_popScale, _popDuration).SetEase(Ease.OutBack)
             );
 
-            // 포물선 이동
+            // === 포물선 비행 ===
             Vector2 midPoint = (startPos + endPos) / 2f + Vector2.up * _arcHeight;
 
+            // 상승 구간
             _flySequence.Append(
-                _rectTransform.DOAnchorPos(midPoint, _duration * 0.5f).SetEase(Ease.OutQuad)
+                _rectTransform.DOAnchorPos(midPoint, _flyDuration * 0.45f).SetEase(Ease.OutQuad)
             );
-            _flySequence.Append(
-                _rectTransform.DOAnchorPos(endPos, _duration * 0.5f).SetEase(Ease.InQuad)
+            _flySequence.Join(
+                transform.DOScale(_flyScale, _flyDuration * 0.45f).SetEase(Ease.OutQuad)
             );
 
-            // 도착 시 축소
+            // 하강 구간
+            _flySequence.Append(
+                _rectTransform.DOAnchorPos(endPos, _flyDuration * 0.55f).SetEase(Ease.InQuad)
+            );
             _flySequence.Join(
-                transform.DOScale(0.5f, _duration * 0.3f).SetEase(Ease.InQuad).SetDelay(_duration * 0.7f)
+                transform.DOScale(_endScale, _flyDuration * 0.55f).SetEase(Ease.InQuad)
+            );
+
+            // 회전 (비행 전체 구간)
+            _flySequence.Join(
+                transform.DORotate(new Vector3(0, 0, rotation), _flyDuration, RotateMode.FastBeyond360)
+                    .SetEase(Ease.Linear)
             );
 
             // 완료 시 비활성화
             _flySequence.OnComplete(() =>
             {
                 gameObject.SetActive(false);
+                transform.localRotation = Quaternion.identity;
             });
         }
 

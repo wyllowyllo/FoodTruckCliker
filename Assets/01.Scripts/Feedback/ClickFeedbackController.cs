@@ -26,9 +26,9 @@ namespace FoodTruckClicker.Feedback
         [SerializeField]
         private SparkEffect _sparkEffect;
 
-        [Header("음식 팝")]
+        [Header("음식 날아가기")]
         [SerializeField]
-        private FoodPopController _foodPopController;
+        private FlyingFoodController _flyingFoodController;
 
         private FloatingText[] _floatingTextPool;
         private int _currentPoolIndex;
@@ -71,15 +71,15 @@ namespace FoodTruckClicker.Feedback
             SpawnFloatingText(revenue, isCritical);
             TriggerTruckPunch();
             TriggerSpark(isCritical);
-            TriggerFoodPop();
+            SpawnFlyingFood();
             TriggerHaptic(isCritical);
         }
 
-        private void TriggerFoodPop()
+        private void SpawnFlyingFood()
         {
-            if (_foodPopController != null)
+            if (_flyingFoodController != null)
             {
-                _foodPopController.Pop();
+                _flyingFoodController.SpawnFood();
             }
         }
 

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8233391940570391893
+--- !u!1 &7134645305001649889
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1562196279078334691}
-  - component: {fileID: 5680103344314067687}
-  - component: {fileID: 5213824285694818768}
-  - component: {fileID: 439364979107494952}
-  - component: {fileID: 8319501250407125896}
+  - component: {fileID: 7968502546561324567}
+  - component: {fileID: 2791972790970483053}
+  - component: {fileID: 4357781503169085254}
+  - component: {fileID: 1723636942435171411}
   m_Layer: 5
-  m_Name: FoodPop
+  m_Name: FlyingFood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1562196279078334691
+--- !u!224 &7968502546561324567
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8233391940570391893}
+  m_GameObject: {fileID: 7134645305001649889}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -37,23 +36,23 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &5680103344314067687
+--- !u!222 &2791972790970483053
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8233391940570391893}
+  m_GameObject: {fileID: 7134645305001649889}
   m_CullTransparentMesh: 1
---- !u!114 &5213824285694818768
+--- !u!114 &4357781503169085254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8233391940570391893}
+  m_GameObject: {fileID: 7134645305001649889}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -77,35 +76,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!225 &439364979107494952
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8233391940570391893}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
---- !u!114 &8319501250407125896
+--- !u!114 &1723636942435171411
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8233391940570391893}
+  m_GameObject: {fileID: 7134645305001649889}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6989b440e6a4e5e4d87b71049372570d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b097e1eaf8a6024e8f2898cbef05e81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _foodImage: {fileID: 5213824285694818768}
+  _foodImage: {fileID: 4357781503169085254}
   _rectTransform: {fileID: 0}
+  _popDuration: 0.1
+  _flyDuration: 0.35
+  _arcHeight: 180
   _popScale: 1.3
-  _popDuration: 0.15
-  _burstScale: 1.8
-  _burstDuration: 0.2
-  _randomOffsetX: 60
-  _randomOffsetY: 40
+  _flyScale: 0.8
+  _endScale: 0.4
+  _minRotation: 360
+  _maxRotation: 720
