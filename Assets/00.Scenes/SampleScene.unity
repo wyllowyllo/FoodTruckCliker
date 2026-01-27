@@ -1702,14 +1702,8 @@ Transform:
   - {fileID: 414909399}
   - {fileID: 883979891}
   - {fileID: 1563926003}
-  - {fileID: 1002515117}
   - {fileID: 193262711}
-  - {fileID: 924569257}
-  - {fileID: 1712328711}
   - {fileID: 489007617}
-  - {fileID: 1222545315}
-  - {fileID: 471447669}
-  - {fileID: 2100355030}
   - {fileID: 259738284}
   - {fileID: 296269683}
   - {fileID: 696850472}
@@ -4246,7 +4240,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 196875390}
+    m_TransformParent: {fileID: 1641874543}
     m_Modifications:
     - target: {fileID: 2651907014594915392, guid: d9ceb6af5209ebd47bb1d3afd34f638e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6164,6 +6158,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5838578139770934566, guid: f27669adfca882c4497c74052a31b297, type: 3}
       insertIndex: 0
       addedObject: {fileID: 2105869410}
+    - targetCorrespondingSourceObject: {fileID: 5838578139770934566, guid: f27669adfca882c4497c74052a31b297, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1641874543}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6946960637114478374, guid: f27669adfca882c4497c74052a31b297, type: 3}
       insertIndex: -1
@@ -9320,7 +9317,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 196875390}
+    m_TransformParent: {fileID: 1641874543}
     m_Modifications:
     - target: {fileID: 3316737780421384293, guid: 3ac574ec40f226240a76d311845a0b5b, type: 3}
       propertyPath: m_Name
@@ -9675,7 +9672,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 196875390}
+    m_TransformParent: {fileID: 1641874543}
     m_Modifications:
     - target: {fileID: 456299244815552644, guid: 8fb4f332c1a87a24790db9071c42d49e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11444,7 +11441,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 196875390}
+    m_TransformParent: {fileID: 1641874543}
     m_Modifications:
     - target: {fileID: 2861021199527669685, guid: 079e557178ba3d84b94a4551bdb2a83a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -16348,6 +16345,43 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3110987509968247168, guid: 2c03f593545f9a942afe469bd0db8293, type: 3}
   m_PrefabInstance: {fileID: 1625281102}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1641874542
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1641874543}
+  m_Layer: 0
+  m_Name: furniture
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1641874543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641874542}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.09463967, z: -0, w: 0.99551165}
+  m_LocalPosition: {x: -0.9060459, y: -0.07999992, z: -1.8286635}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1002515117}
+  - {fileID: 924569257}
+  - {fileID: 1712328711}
+  - {fileID: 1222545315}
+  - {fileID: 471447669}
+  - {fileID: 2100355030}
+  m_Father: {fileID: 1887579352}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1641949403
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17230,7 +17264,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 196875390}
+    m_TransformParent: {fileID: 1641874543}
     m_Modifications:
     - target: {fileID: 41171298229192017, guid: ef9bb6c0644f72244a67f934c3c4fefb, type: 3}
       propertyPath: m_Name
@@ -20987,7 +21021,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 196875390}
+    m_TransformParent: {fileID: 1641874543}
     m_Modifications:
     - target: {fileID: 511654041674275822, guid: 462f878fd1a13ac47ac4bf83e8d2009c, type: 3}
       propertyPath: m_Name
