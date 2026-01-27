@@ -34,10 +34,12 @@ namespace FoodTruckClicker.Currency
         {
             if (amount <= 0)
             {
+                Debug.LogWarning($"[GoldManager] AddGold 호출됨 - 잘못된 금액: {amount}");
                 return;
             }
 
             _currentGold += amount;
+            Debug.Log($"[GoldManager] 골드 추가: +{amount}, 현재 골드: {_currentGold}");
             GameEvents.RaiseGoldChanged(_currentGold);
         }
 

@@ -21,6 +21,7 @@ namespace FoodTruckClicker.Click
 
         public void OnPointerClick(PointerEventData eventData)
         {
+            Debug.Log("[ClickController] OnPointerClick 호출됨");
             ProcessClick();
         }
 
@@ -28,12 +29,17 @@ namespace FoodTruckClicker.Click
         {
             if (_revenueCalculator == null || _currencyModifier == null)
             {
-                Debug.LogWarning("ClickController not initialized");
+                Debug.LogWarning("[ClickController] 초기화 안됨 - RevenueCalculator: " +
+                    (_revenueCalculator == null ? "NULL" : "OK") +
+                    ", CurrencyModifier: " +
+                    (_currencyModifier == null ? "NULL" : "OK"));
                 return;
             }
 
             ClickResult result = _revenueCalculator.Calculate();
             int goldToAdd = Mathf.FloorToInt(result.Revenue);
+
+            Debug.Log($"[ClickController] 클릭! 수익: {result.Revenue:F2}, 크리티컬: {result.IsCritical}, 골드 추가: {goldToAdd}");
 
             if (goldToAdd > 0)
             {
