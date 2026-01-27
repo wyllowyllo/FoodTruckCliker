@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b0fa73fb78185748a97395215fbc6d5, type: 3}
+  m_Name: Hire
+  m_EditorClassIdentifier: 
+  _upgradeId: hire
+  _displayName: "\uC9C1\uC6D0 \uACE0\uC6A9"
+  _description: 
+  _icon: {fileID: 0}
+  _maxLevel: 3
+  _costsPerLevel: 64000000f4010000d0070000
+  _valuesPerLevel:
+  - 1
+  - 3
+  - 10
+  _modifierType: 0
+  _targetType: 3
