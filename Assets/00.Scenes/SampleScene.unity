@@ -5004,8 +5004,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28148b93493207e4592114de42f2e759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _floatingTextPrefab: {fileID: 0}
-  _floatingTextParent: {fileID: 0}
+  _floatingTextPrefab: {fileID: 7282023355212730220, guid: d1dc23b331c2c2b4284ac84c46f236c5, type: 3}
+  _floatingTextParent: {fileID: 1782889230}
   _poolSize: 10
   _truckPunchEffect: {fileID: 1887579353}
   _smokeParticle: {fileID: 0}
@@ -9808,7 +9808,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -9828,6 +9828,7 @@ RectTransform:
   - {fileID: 726625958}
   - {fileID: 2098046592}
   - {fileID: 2022773982}
+  - {fileID: 1782889230}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -17847,6 +17848,41 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8568195886450883691, guid: d5602e8b1919b9a48b4fd03a98bd1c45, type: 3}
   m_PrefabInstance: {fileID: 1776345412}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1782889229
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1782889230}
+  m_Layer: 5
+  m_Name: FloatingTextZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1782889230
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782889229}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1007368321}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1784176863
 PrefabInstance:
   m_ObjectHideFlags: 0
