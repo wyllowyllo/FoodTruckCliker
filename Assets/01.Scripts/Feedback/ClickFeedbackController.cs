@@ -22,6 +22,10 @@ namespace FoodTruckClicker.Feedback
         [SerializeField]
         private TruckPunchEffect _truckPunchEffect;
 
+        [Header("스파크 효과")]
+        [SerializeField]
+        private SparkEffect _sparkEffect;
+
         private FloatingText[] _floatingTextPool;
         private int _currentPoolIndex;
 
@@ -62,7 +66,16 @@ namespace FoodTruckClicker.Feedback
         {
             SpawnFloatingText(revenue, isCritical);
             TriggerTruckPunch();
+            TriggerSpark(isCritical);
             TriggerHaptic(isCritical);
+        }
+
+        private void TriggerSpark(bool isCritical)
+        {
+            if (_sparkEffect != null)
+            {
+                _sparkEffect.Play(isCritical);
+            }
         }
 
         private void TriggerHaptic(bool isCritical)
