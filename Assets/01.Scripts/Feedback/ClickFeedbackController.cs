@@ -62,6 +62,19 @@ namespace FoodTruckClicker.Feedback
         {
             SpawnFloatingText(revenue, isCritical);
             TriggerTruckPunch();
+            TriggerHaptic(isCritical);
+        }
+
+        private void TriggerHaptic(bool isCritical)
+        {
+            if (isCritical)
+            {
+                HapticFeedback.HeavyImpact();
+            }
+            else
+            {
+                HapticFeedback.LightImpact();
+            }
         }
 
         private void SpawnFloatingText(float revenue, bool isCritical)
