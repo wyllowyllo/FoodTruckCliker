@@ -22,10 +22,6 @@ namespace FoodTruckClicker.Feedback
         [SerializeField]
         private TruckPunchEffect _truckPunchEffect;
 
-        [Header("파티클")]
-        [SerializeField]
-        private ParticleSystem _smokeParticle;
-
         private FloatingText[] _floatingTextPool;
         private int _currentPoolIndex;
 
@@ -66,7 +62,6 @@ namespace FoodTruckClicker.Feedback
         {
             SpawnFloatingText(revenue, isCritical);
             TriggerTruckPunch();
-            PlaySmokeEffect();
         }
 
         private void SpawnFloatingText(float revenue, bool isCritical)
@@ -88,14 +83,6 @@ namespace FoodTruckClicker.Feedback
             if (_truckPunchEffect != null)
             {
                 _truckPunchEffect.Punch();
-            }
-        }
-
-        private void PlaySmokeEffect()
-        {
-            if (_smokeParticle != null)
-            {
-                _smokeParticle.Play();
             }
         }
     }

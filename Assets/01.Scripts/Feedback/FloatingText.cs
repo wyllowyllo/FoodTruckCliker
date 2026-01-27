@@ -29,6 +29,10 @@ namespace FoodTruckClicker.Feedback
         [SerializeField]
         private Ease _fadeEase = Ease.InQuad;
 
+        [Header("랜덤 위치 설정")]
+        [SerializeField]
+        private float _randomOffsetX = 80f;
+
         [Header("크리티컬 설정")]
         [SerializeField]
         private Color _normalColor = Color.white;
@@ -72,7 +76,10 @@ namespace FoodTruckClicker.Feedback
 
             // 초기화
             _canvasGroup.alpha = 1f;
-            Vector3 startPosition = _rectTransform.anchoredPosition;
+            Vector2 basePosition = _rectTransform.anchoredPosition;
+            float randomX = Random.Range(-_randomOffsetX, _randomOffsetX);
+            Vector2 startPosition = new Vector2(basePosition.x + randomX, basePosition.y);
+            _rectTransform.anchoredPosition = startPosition;
 
             // 기존 애니메이션 정리
             _animationSequence?.Kill();
@@ -93,11 +100,11 @@ namespace FoodTruckClicker.Feedback
                     .SetDelay(_duration * 0.5f)
             );
 
-            // 완료 시 비활성화
+            // 완료 시 비활성화 및 원래 위치로 복귀
             _animationSequence.OnComplete(() =>
             {
                 gameObject.SetActive(false);
-                _rectTransform.anchoredPosition = startPosition;
+                _rectTransform.anchoredPosition = basePosition;
             });
         }
 

@@ -5002,7 +5002,10 @@ MonoBehaviour:
   _floatingTextParent: {fileID: 1782889230}
   _poolSize: 10
   _truckPunchEffect: {fileID: 1887579353}
-  _smokeParticle: {fileID: 0}
+  _smokeParticlePrefab: {fileID: 265766274217486953, guid: d3015b7eea383f64d8b81f965cc466e7, type: 3}
+  _smokeParent: {fileID: 1941177466}
+  _smokePoolSize: 5
+  _smokeRandomOffset: {x: 0.3, y: 0.2}
 --- !u!4 &530970621
 Transform:
   m_ObjectHideFlags: 0
@@ -19295,6 +19298,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4754254769054480000, guid: 81bf9b1a31b1b6145907191a980826a8, type: 3}
   m_PrefabInstance: {fileID: 1940126121}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1941177465
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1941177466}
+  m_Layer: 0
+  m_Name: SmokePosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1941177466
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941177465}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.22426422, z: -0, w: 0.97452843}
+  m_LocalPosition: {x: -5.39, y: 7.29, z: -2.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 25.919, z: 0}
 --- !u!1001 &1941264540
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21320,3 +21354,4 @@ SceneRoots:
   - {fileID: 1143927435}
   - {fileID: 1007368321}
   - {fileID: 1116847128}
+  - {fileID: 1941177466}
