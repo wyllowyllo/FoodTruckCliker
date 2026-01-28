@@ -5107,18 +5107,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 362397d8c00edde43b43a4eb3891b5ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _foodPopPrefab: {fileID: 3276232978928445181, guid: 8c67722caf9f5a648919d81bf054c8ae, type: 3}
+  _foodPrefabs:
+  - {fileID: -7367467822832611570, guid: 95c48fd3b2cad2343a681ec847011507, type: 3}
   _poolParent: {fileID: 1460142790}
-  _poolSize: 15
+  _poolSizePerPrefab: 5
   _spawnPoint: {fileID: 1460142790}
-  _foodSprites:
-  - {fileID: 21300000, guid: ec497bd28af4a8f4883234c10774ed55, type: 3}
-  - {fileID: 21300000, guid: f501446950e9d534dbe7b18908cf141b, type: 3}
-  - {fileID: 21300000, guid: b78248bc766f13d4b95c0a431f86d54d, type: 3}
+  _spawnVfx: {fileID: 0}
   _minSpawnCount: 3
   _maxSpawnCount: 5
-  _spawnRandomOffsetX: 0.2
-  _spawnRandomOffsetY: 0.1
+  _spawnRandomOffsetX: 10
+  _spawnRandomOffsetY: 2
 --- !u!1001 &531116731
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14638,7 +14636,7 @@ Transform:
   m_GameObject: {fileID: 1460142789}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.65, y: 12.84, z: 0}
+  m_LocalPosition: {x: -0.09, y: 16.77, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16761,6 +16759,10 @@ PrefabInstance:
     - target: {fileID: 4258998459985370294, guid: 845c6ddd599013d49a5a83858fadb532, type: 3}
       propertyPath: m_Name
       value: Smoke_Small (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097647792867715805, guid: 845c6ddd599013d49a5a83858fadb532, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18997,6 +18999,10 @@ PrefabInstance:
     - target: {fileID: 4258998459985370294, guid: 845c6ddd599013d49a5a83858fadb532, type: 3}
       propertyPath: m_Name
       value: Smoke_Small
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097647792867715805, guid: 845c6ddd599013d49a5a83858fadb532, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

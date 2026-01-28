@@ -1,172 +1,149 @@
-using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 namespace FoodTruckClicker.Feedback
 {
-    /// <summary>
-    /// 음식 팝 이펙트 - 팝콘처럼 튀어오르고 사라짐 (3D 오브젝트)
-    /// </summary>
+    [RequireComponent(typeof(Rigidbody))]
     public class FoodPopEffect : MonoBehaviour
     {
-        [Header("타이밍")]
+        [Header("팝 설정")]
         [SerializeField]
-        private float _popDuration = 0.1f;
+        private float _upwardForce = 8f;
 
         [SerializeField]
-        private float _floatDuration = 0.35f;
-
-        [Header("이동")]
-        [SerializeField]
-        private float _minHeight = 0.5f;
+        private float _horizontalForce = 3f;
 
         [SerializeField]
-        private float _maxHeight = 1.2f;
+        private float _torqueForce = 10f;
+
+        [Header("생명주기")]
+        [SerializeField]
+        private float _lifeTime = 2f;
 
         [SerializeField]
-        private float _spreadX = 0.4f;
+        private float _fadeOutDuration = 0.5f;
 
-        [SerializeField]
-        private float _spreadZ = 0.3f;
+        private Rigidbody _rigidbody;
+        private Renderer[] _renderers;
+        private Material[][] _materials;
+        private Coroutine _deactivateCoroutine;
 
-        [Header("스케일")]
-        [SerializeField]
-        private float _popScale = 1.2f;
-
-        [SerializeField]
-        private float _endScale = 0.3f;
-
-        [Header("회전")]
-        [SerializeField]
-        private float _minRotation = 180f;
-
-        [SerializeField]
-        private float _maxRotation = 540f;
-
-        private Sequence _popSequence;
-        private Renderer _renderer;
-        private MaterialPropertyBlock _propertyBlock;
-        private Color _originalColor;
-        private static readonly int ColorProperty = Shader.PropertyToID("_Color");
+        private static readonly int SurfaceProperty = Shader.PropertyToID("_Surface");
+        private static readonly int BlendProperty = Shader.PropertyToID("_Blend");
+        private static readonly int SrcBlendProperty = Shader.PropertyToID("_SrcBlend");
+        private static readonly int DstBlendProperty = Shader.PropertyToID("_DstBlend");
+        private static readonly int ZWriteProperty = Shader.PropertyToID("_ZWrite");
         private static readonly int BaseColorProperty = Shader.PropertyToID("_BaseColor");
 
         private void Awake()
         {
-            _renderer = GetComponentInChildren<Renderer>();
-            _propertyBlock = new MaterialPropertyBlock();
+            _rigidbody = GetComponent<Rigidbody>();
+            _renderers = GetComponentsInChildren<Renderer>();
+            InitializeMaterials();
+        }
 
-            if (_renderer != null)
+        private void InitializeMaterials()
+        {
+            _materials = new Material[_renderers.Length][];
+
+            for (int i = 0; i < _renderers.Length; i++)
             {
-                _renderer.GetPropertyBlock(_propertyBlock);
-                if (_renderer.sharedMaterial.HasProperty(BaseColorProperty))
+                Material[] originalMaterials = _renderers[i].materials;
+                _materials[i] = new Material[originalMaterials.Length];
+
+                for (int j = 0; j < originalMaterials.Length; j++)
                 {
-                    _originalColor = _renderer.sharedMaterial.GetColor(BaseColorProperty);
+                    _materials[i][j] = originalMaterials[j];
+                    SetMaterialTransparent(_materials[i][j]);
                 }
-                else if (_renderer.sharedMaterial.HasProperty(ColorProperty))
-                {
-                    _originalColor = _renderer.sharedMaterial.GetColor(ColorProperty);
-                }
-                else
-                {
-                    _originalColor = Color.white;
-                }
+
+                _renderers[i].materials = _materials[i];
             }
         }
 
-        /// <summary>
-        /// 팝 이펙트 재생
-        /// </summary>
-        public void Pop(Vector3 startPos)
+        private void SetMaterialTransparent(Material material)
         {
-            // 초기화
-            transform.position = startPos;
-            transform.localScale = Vector3.zero;
-            transform.localRotation = Quaternion.Euler(
-                Random.Range(0f, 360f),
-                Random.Range(0f, 360f),
-                Random.Range(0f, 360f)
-            );
+            material.SetFloat(SurfaceProperty, 1f);
+            material.SetFloat(BlendProperty, 0f);
+            material.SetFloat(SrcBlendProperty, (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            material.SetFloat(DstBlendProperty, (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            material.SetFloat(ZWriteProperty, 0f);
+            material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            material.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+        }
 
+        public void Play(Vector3 startPosition)
+        {
+            transform.position = startPosition;
+            transform.rotation = Random.rotation;
+
+            ResetVelocity();
+            ApplyPopForce();
             SetAlpha(1f);
 
-            // 랜덤 방향 계산
-            float randomX = Random.Range(-_spreadX, _spreadX);
-            float randomZ = Random.Range(-_spreadZ, _spreadZ);
-            float randomHeight = Random.Range(_minHeight, _maxHeight);
-            Vector3 endPos = startPos + new Vector3(randomX, randomHeight, randomZ);
-
-            // 랜덤 회전
-            Vector3 randomRotation = new Vector3(
-                Random.Range(_minRotation, _maxRotation) * (Random.value > 0.5f ? 1f : -1f),
-                Random.Range(_minRotation, _maxRotation) * (Random.value > 0.5f ? 1f : -1f),
-                Random.Range(_minRotation, _maxRotation) * (Random.value > 0.5f ? 1f : -1f)
-            );
-
-            // 기존 애니메이션 정리
-            _popSequence?.Kill();
-            _popSequence = DOTween.Sequence();
-
-            float totalDuration = _popDuration + _floatDuration;
-
-            // === 회전 (처음부터 끝까지) ===
-            _popSequence.Insert(
-                0f,
-                transform.DORotate(randomRotation, totalDuration, RotateMode.FastBeyond360)
-                    .SetEase(Ease.OutQuad)
-            );
-
-            // === 팝업 (튀어나옴) ===
-            _popSequence.Append(
-                transform.DOScale(_popScale, _popDuration).SetEase(Ease.OutBack)
-            );
-
-            // === 위로 떠오르며 작아짐 ===
-            _popSequence.Append(
-                transform.DOMove(endPos, _floatDuration).SetEase(Ease.OutQuad)
-            );
-            _popSequence.Join(
-                transform.DOScale(_endScale, _floatDuration).SetEase(Ease.InQuad)
-            );
-
-            // 페이드 아웃
-            _popSequence.Insert(
-                _popDuration + _floatDuration * 0.4f,
-                DOTween.To(() => 1f, SetAlpha, 0f, _floatDuration * 0.6f)
-            );
-
-            // 완료 시 비활성화
-            _popSequence.OnComplete(() =>
+            if (_deactivateCoroutine != null)
             {
-                gameObject.SetActive(false);
-            });
+                StopCoroutine(_deactivateCoroutine);
+            }
+            _deactivateCoroutine = StartCoroutine(DeactivateAfterDelay());
+        }
+
+        private void ResetVelocity()
+        {
+            _rigidbody.linearVelocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
+        }
+
+        private void ApplyPopForce()
+        {
+            float randomX = Random.Range(-_horizontalForce, _horizontalForce);
+            float randomZ = Random.Range(-_horizontalForce, _horizontalForce);
+            Vector3 force = new Vector3(randomX, _upwardForce, randomZ);
+
+            _rigidbody.AddForce(force, ForceMode.VelocityChange);
+
+            Vector3 torque = Random.insideUnitSphere * _torqueForce;
+            _rigidbody.AddTorque(torque, ForceMode.VelocityChange);
+        }
+
+        private IEnumerator DeactivateAfterDelay()
+        {
+            float waitTime = _lifeTime - _fadeOutDuration;
+            if (waitTime > 0f)
+            {
+                yield return new WaitForSeconds(waitTime);
+            }
+
+            yield return FadeOut();
+            gameObject.SetActive(false);
+        }
+
+        private IEnumerator FadeOut()
+        {
+            float elapsed = 0f;
+
+            while (elapsed < _fadeOutDuration)
+            {
+                elapsed += Time.deltaTime;
+                float alpha = Mathf.Lerp(1f, 0f, elapsed / _fadeOutDuration);
+                SetAlpha(alpha);
+                yield return null;
+            }
+
+            SetAlpha(0f);
         }
 
         private void SetAlpha(float alpha)
         {
-            if (_renderer == null)
+            for (int i = 0; i < _renderers.Length; i++)
             {
-                return;
+                for (int j = 0; j < _materials[i].Length; j++)
+                {
+                    Color color = _materials[i][j].GetColor(BaseColorProperty);
+                    color.a = alpha;
+                    _materials[i][j].SetColor(BaseColorProperty, color);
+                }
             }
-
-            Color color = _originalColor;
-            color.a = alpha;
-
-            _renderer.GetPropertyBlock(_propertyBlock);
-
-            if (_renderer.sharedMaterial.HasProperty(BaseColorProperty))
-            {
-                _propertyBlock.SetColor(BaseColorProperty, color);
-            }
-            else if (_renderer.sharedMaterial.HasProperty(ColorProperty))
-            {
-                _propertyBlock.SetColor(ColorProperty, color);
-            }
-
-            _renderer.SetPropertyBlock(_propertyBlock);
-        }
-
-        private void OnDestroy()
-        {
-            _popSequence?.Kill();
         }
     }
 }

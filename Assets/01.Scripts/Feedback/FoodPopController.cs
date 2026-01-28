@@ -3,7 +3,7 @@ using UnityEngine;
 namespace FoodTruckClicker.Feedback
 {
     /// <summary>
-    /// 음식 팝 이펙트 관리 (오브젝트 풀링) - 3D 프리팹 버전
+    /// 음식 팝 이펙트 관리 (오브젝트 풀링)
     /// </summary>
     public class FoodPopController : MonoBehaviour
     {
@@ -20,6 +20,10 @@ namespace FoodTruckClicker.Feedback
         [Header("위치 설정")]
         [SerializeField]
         private Transform _spawnPoint;
+
+        [Header("VFX")]
+        [SerializeField]
+        private ParticleSystem _spawnVfx;
 
         [Header("스폰 설정")]
         [SerializeField]
@@ -92,12 +96,25 @@ namespace FoodTruckClicker.Feedback
                 return;
             }
 
+            PlaySpawnVfx();
+
             int spawnCount = Random.Range(_minSpawnCount, _maxSpawnCount + 1);
 
             for (int i = 0; i < spawnCount; i++)
             {
                 SpawnSingleFood();
             }
+        }
+
+        private void PlaySpawnVfx()
+        {
+            if (_spawnVfx == null)
+            {
+                return;
+            }
+
+            _spawnVfx.transform.position = _spawnPoint.position;
+            _spawnVfx.Play();
         }
 
         private void SpawnSingleFood()
@@ -110,7 +127,7 @@ namespace FoodTruckClicker.Feedback
             startPos.y += Random.Range(-_spawnRandomOffsetY, _spawnRandomOffsetY);
 
             food.gameObject.SetActive(true);
-            food.Pop(startPos);
+            food.Play(startPos);
         }
     }
 }
