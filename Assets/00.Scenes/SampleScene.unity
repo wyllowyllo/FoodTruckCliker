@@ -5190,6 +5190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _foodPrefabs:
   - {fileID: -7367467822832611570, guid: 95c48fd3b2cad2343a681ec847011507, type: 3}
+  - {fileID: -7367467822832611570, guid: 11e68636a2462644cad5dc53d6ad2654, type: 3}
   _poolParent: {fileID: 1460142790}
   _poolSizePerPrefab: 5
   _spawnPoint: {fileID: 1460142790}

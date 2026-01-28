@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 1877605416232570091}
   - component: {fileID: 8900756115455178243}
   - component: {fileID: 3510065649831498741}
-  - component: {fileID: 5865124930607636301}
-  - component: {fileID: -7201089211670619356}
   m_Layer: 0
   m_Name: Food_French Fries
   m_TagString: Untagged
@@ -88,52 +86,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5865124930607636301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 300936555968882812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b097e1eaf8a6024e8f2898cbef05e81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _renderer: {fileID: 0}
-  _rigidbody: {fileID: 0}
-  _launchForceY: 8
-  _launchForceX: 3
-  _launchForceZ: 2
-  _angularVelocityMax: 540
-  _scaleMin: 0.08
-  _scaleMax: 0.15
-  _fadeDurationMin: 0.3
-  _fadeDurationMax: 0.5
---- !u!54 &-7201089211670619356
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 300936555968882812}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
