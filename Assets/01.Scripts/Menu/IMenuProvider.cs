@@ -6,17 +6,27 @@ namespace FoodTruckClicker.Menu
     public interface IMenuProvider
     {
         /// <summary>
-        /// 현재 해금된 최고 메뉴 반환
+        /// 랜덤 메뉴 선택 및 반환
         /// </summary>
-        MenuData CurrentMenu { get; }
+        MenuData GetRandomMenu();
 
         /// <summary>
-        /// 현재 메뉴 가격 반환
+        /// 메뉴의 최종 가격 계산 (기본가격 × 가격배율)
         /// </summary>
-        int CurrentMenuPrice { get; }
+        int GetFinalPrice(MenuData menu);
 
         /// <summary>
-        /// 현재 메뉴 해금 레벨 반환
+        /// 현재 메뉴 가격 배율
+        /// </summary>
+        float PriceMultiplier { get; }
+
+        /// <summary>
+        /// 평균 메뉴 가격 (자동 수익 계산용)
+        /// </summary>
+        float AveragePrice { get; }
+
+        /// <summary>
+        /// 현재 메뉴 해금 레벨
         /// </summary>
         int CurrentUnlockLevel { get; }
     }

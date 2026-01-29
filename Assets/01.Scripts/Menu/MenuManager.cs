@@ -6,7 +6,7 @@ namespace FoodTruckClicker.Menu
 {
     /// <summary>
     /// 메뉴 관리자
-    /// 해금된 메뉴 관리 및 현재 최고 메뉴 조회
+    /// 해금된 메뉴 중 랜덤 선택 및 가격 배율 적용
     /// </summary>
     public class MenuManager : MonoBehaviour, IMenuProvider
     {
@@ -14,16 +14,28 @@ namespace FoodTruckClicker.Menu
         [SerializeField] private List<MenuData> _allMenus = new List<MenuData>();
 
         private int _currentUnlockLevel = 0;
-        private MenuData _currentMenu;
+        private float _priceMultiplier = 1f;
+        private List<MenuData> _unlockedMenus = new List<MenuData>();
 
-        public MenuData CurrentMenu => _currentMenu;
-        public int CurrentMenuPrice => _currentMenu != null ? _currentMenu.Price : 10;
+        public float PriceMultiplier => _priceMultiplier;
         public int CurrentUnlockLevel => _currentUnlockLevel;
+
+        public float AveragePrice
+        {
+            get
+            {
+                if (_unlockedMenus == null || _unlockedMenus.Count == 0)
+                {
+                    return 10f * _priceMultiplier;
+                }
+                return (float)_unlockedMenus.Average(m => m.BasePrice) * _priceMultiplier;
+            }
+        }
 
         public void Initialize()
         {
             SortMenusByUnlockLevel();
-            UpdateCurrentMenu();
+            UpdateUnlockedMenus();
         }
 
         /// <summary>
@@ -37,15 +49,42 @@ namespace FoodTruckClicker.Menu
             }
 
             _currentUnlockLevel = level;
-            UpdateCurrentMenu();
+            UpdateUnlockedMenus();
         }
 
         /// <summary>
-        /// 특정 해금 레벨에 해당하는 메뉴 반환
+        /// 메뉴 가격 배율 설정 (트럭 업그레이드 시 호출)
         /// </summary>
-        public MenuData GetMenuByUnlockLevel(int unlockLevel)
+        public void SetPriceMultiplier(float multiplier)
         {
-            return _allMenus.FirstOrDefault(m => m.UnlockLevel == unlockLevel);
+            _priceMultiplier = Mathf.Max(1f, multiplier);
+        }
+
+        /// <summary>
+        /// 해금된 메뉴 중 랜덤 선택
+        /// </summary>
+        public MenuData GetRandomMenu()
+        {
+            if (_unlockedMenus == null || _unlockedMenus.Count == 0)
+            {
+                return _allMenus.FirstOrDefault();
+            }
+
+            int randomIndex = Random.Range(0, _unlockedMenus.Count);
+            return _unlockedMenus[randomIndex];
+        }
+
+        /// <summary>
+        /// 메뉴의 최종 가격 계산 (기본가격 × 가격배율)
+        /// </summary>
+        public int GetFinalPrice(MenuData menu)
+        {
+            if (menu == null)
+            {
+                return Mathf.RoundToInt(10 * _priceMultiplier);
+            }
+
+            return Mathf.RoundToInt(menu.BasePrice * _priceMultiplier);
         }
 
         /// <summary>
@@ -57,11 +96,11 @@ namespace FoodTruckClicker.Menu
         }
 
         /// <summary>
-        /// 현재 해금된 메뉴 목록 반환
+        /// 해금된 메뉴 목록 반환
         /// </summary>
-        public IEnumerable<MenuData> GetUnlockedMenus()
+        public IReadOnlyList<MenuData> GetUnlockedMenus()
         {
-            return _allMenus.Where(m => m.UnlockLevel <= _currentUnlockLevel);
+            return _unlockedMenus;
         }
 
         private void SortMenusByUnlockLevel()
@@ -69,16 +108,16 @@ namespace FoodTruckClicker.Menu
             _allMenus = _allMenus.OrderBy(m => m.UnlockLevel).ToList();
         }
 
-        private void UpdateCurrentMenu()
+        private void UpdateUnlockedMenus()
         {
-            _currentMenu = _allMenus
+            _unlockedMenus = _allMenus
                 .Where(m => m.UnlockLevel <= _currentUnlockLevel)
-                .OrderByDescending(m => m.UnlockLevel)
-                .FirstOrDefault();
+                .ToList();
 
-            if (_currentMenu == null && _allMenus.Count > 0)
+            // 최소 1개는 있어야 함
+            if (_unlockedMenus.Count == 0 && _allMenus.Count > 0)
             {
-                _currentMenu = _allMenus[0];
+                _unlockedMenus.Add(_allMenus[0]);
             }
         }
     }

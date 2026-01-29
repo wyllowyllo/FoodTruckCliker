@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b0fa73fb78185748a97395215fbc6d5, type: 3}
-  m_Name: IngredientUpgrade
+  m_Name: CookingSpeed
   m_EditorClassIdentifier: 
-  _upgradeId: premium_ingredient
-  _displayName: "\uACE0\uAE09 \uC7AC\uB8CC"
+  _upgradeId: cooking_speed
+  _displayName: "\uC694\uB9AC \uC18D\uB3C4"
   _description: 
   _icon: {fileID: 0}
   _maxLevel: 3
-  _costsPerLevel: 9600000058020000c4090000
+  _costsPerLevel: c800000020030000b80b0000
   _valuesPerLevel:
   - 1.5
   - 2
   - 3
-  _modifierType: 1
-  _targetType: 1
+  _eModifierType: 1
+  _targetType: 4

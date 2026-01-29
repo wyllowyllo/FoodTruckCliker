@@ -194,22 +194,22 @@ namespace FoodTruckClicker.UI
 
             switch (_upgradeData.TargetType)
             {
-                case UpgradeTargetType.ClickRevenue:
+                case EUpgradeTargetType.ClickRevenue:
                     return $"x{value:F1}";
 
-                case UpgradeTargetType.CriticalChance:
+                case EUpgradeTargetType.CriticalChance:
                     return $"{value * 100:F0}%";
 
-                case UpgradeTargetType.CriticalDamage:
+                case EUpgradeTargetType.CriticalProfit:
                     return $"{value:F0}개";
 
-                case UpgradeTargetType.ChefCount:
+                case EUpgradeTargetType.ChefCount:
                     return $"{value:F0}명";
 
-                case UpgradeTargetType.CookingSpeed:
+                case EUpgradeTargetType.CookingSpeed:
                     return $"x{value:F1}";
 
-                case UpgradeTargetType.MenuUnlock:
+                case EUpgradeTargetType.FoodTruck:
                     return $"Lv.{value:F0}";
 
                 default:

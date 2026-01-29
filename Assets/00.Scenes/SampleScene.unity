@@ -6535,6 +6535,7 @@ GameObject:
   m_Component:
   - component: {fileID: 579953482}
   - component: {fileID: 579953483}
+  - component: {fileID: 579953484}
   m_Layer: 5
   m_Name: List (1)
   m_TagString: Untagged
@@ -6609,6 +6610,28 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &579953484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579953481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upgradeData: {fileID: 0}
+  _button: {fileID: 0}
+  _iconImage: {fileID: 0}
+  _nameText: {fileID: 0}
+  _levelText: {fileID: 0}
+  _costText: {fileID: 0}
+  _effectText: {fileID: 0}
+  _maxLevelIndicator: {fileID: 0}
+  _affordableColor: {r: 1, g: 1, b: 1, a: 1}
+  _unaffordableColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1001 &596991726
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11119,11 +11142,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _upgrades:
+  - {fileID: 11400000, guid: f5e4086ac36a6e2428dac8dacb3e7e39, type: 2}
   - {fileID: 11400000, guid: 003f0d09eef99634485a69b16daa7da4, type: 2}
+  - {fileID: 11400000, guid: 42a63f80b2d39824a8a3106fe22b6144, type: 2}
   - {fileID: 11400000, guid: b38b1e02c10d7e9468d1f18812df0036, type: 2}
-  - {fileID: 11400000, guid: 8acc097b23a34204d8efea258e3e282c, type: 2}
-  - {fileID: 11400000, guid: 9dab5b7dc57f9e84882dbaf400c4ef34, type: 2}
-  - {fileID: 11400000, guid: b7f229fb0ef906c4aa8e10accc2259cc, type: 2}
+  - {fileID: 11400000, guid: 740bf9d9ad3318d47b685f4f53d21bef, type: 2}
   - {fileID: 11400000, guid: 77c1f9575e8837946a999ff36d489a79, type: 2}
 --- !u!1 &949403076
 GameObject:
@@ -11726,6 +11749,7 @@ MonoBehaviour:
   _upgradeManager: {fileID: 925201114}
   _autoIncomeManager: {fileID: 518906795}
   _clickController: {fileID: 726625961}
+  _menuManager: {fileID: 1621348987}
   _upgradeButtons: []
 --- !u!1 &1013340123
 GameObject:
@@ -11737,6 +11761,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1013340124}
   - component: {fileID: 1013340125}
+  - component: {fileID: 1013340126}
   m_Layer: 5
   m_Name: List (1)
   m_TagString: Untagged
@@ -11811,6 +11836,28 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1013340126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013340123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upgradeData: {fileID: 0}
+  _button: {fileID: 0}
+  _iconImage: {fileID: 0}
+  _nameText: {fileID: 0}
+  _levelText: {fileID: 0}
+  _costText: {fileID: 0}
+  _effectText: {fileID: 0}
+  _maxLevelIndicator: {fileID: 0}
+  _affordableColor: {r: 1, g: 1, b: 1, a: 1}
+  _unaffordableColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1001 &1015104221
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13262,6 +13309,7 @@ Transform:
   - {fileID: 255769342}
   - {fileID: 925201113}
   - {fileID: 518906794}
+  - {fileID: 1621348986}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1151940798
@@ -14292,6 +14340,18 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2110824242165810741, guid: e362099534ec6044eb7c27631afcf89f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2110824242165810741, guid: e362099534ec6044eb7c27631afcf89f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2110824242165810741, guid: e362099534ec6044eb7c27631afcf89f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2110824242165810741, guid: e362099534ec6044eb7c27631afcf89f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -14330,6 +14390,10 @@ PrefabInstance:
     - target: {fileID: 2110824242165810741, guid: e362099534ec6044eb7c27631afcf89f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2110824242165810741, guid: e362099534ec6044eb7c27631afcf89f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16767,8 +16831,8 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 16.8
-  orthographic: 1
+  field of view: 30
+  orthographic: 0
   orthographic size: 40
   m_Depth: -1
   m_CullingMask:
@@ -17420,6 +17484,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1463651790}
   - component: {fileID: 1463651791}
+  - component: {fileID: 1463651792}
   m_Layer: 5
   m_Name: List (2)
   m_TagString: Untagged
@@ -17494,6 +17559,28 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1463651792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463651789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upgradeData: {fileID: 0}
+  _button: {fileID: 0}
+  _iconImage: {fileID: 0}
+  _nameText: {fileID: 0}
+  _levelText: {fileID: 0}
+  _costText: {fileID: 0}
+  _effectText: {fileID: 0}
+  _maxLevelIndicator: {fileID: 0}
+  _affordableColor: {r: 1, g: 1, b: 1, a: 1}
+  _unaffordableColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1001 &1466776095
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19049,6 +19136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1585888655}
   - component: {fileID: 1585888656}
+  - component: {fileID: 1585888657}
   m_Layer: 5
   m_Name: List (2)
   m_TagString: Untagged
@@ -19123,6 +19211,28 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1585888657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585888654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upgradeData: {fileID: 0}
+  _button: {fileID: 0}
+  _iconImage: {fileID: 0}
+  _nameText: {fileID: 0}
+  _levelText: {fileID: 0}
+  _costText: {fileID: 0}
+  _effectText: {fileID: 0}
+  _maxLevelIndicator: {fileID: 0}
+  _affordableColor: {r: 1, g: 1, b: 1, a: 1}
+  _unaffordableColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1001 &1594541748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19383,6 +19493,55 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8286057688784686676, guid: a92c1194cd5e81b41bed976f13bbb8fc, type: 3}
   m_PrefabInstance: {fileID: 1608183440}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1621348985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1621348986}
+  - component: {fileID: 1621348987}
+  m_Layer: 0
+  m_Name: MenuManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1621348986
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621348985}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1143927435}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1621348987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621348985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262db25e2b5261b49b8e8ff2a1a146ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _allMenus:
+  - {fileID: 11400000, guid: 1feb15a2b2c9b3a42a224a9be6bc68dc, type: 2}
+  - {fileID: 11400000, guid: 517f3df4e5a4c3b4bae00784f45ea2f0, type: 2}
+  - {fileID: 11400000, guid: 6f2d90564b187c84e8532d40d87d3920, type: 2}
+  - {fileID: 11400000, guid: efb43d2063a066e4c8bc5faffd39b6f7, type: 2}
 --- !u!1001 &1625281102
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20767,6 +20926,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1720758558}
   - component: {fileID: 1720758559}
+  - component: {fileID: 1720758560}
   m_Layer: 5
   m_Name: List
   m_TagString: Untagged
@@ -20841,6 +21001,28 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1720758560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720758557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upgradeData: {fileID: 0}
+  _button: {fileID: 0}
+  _iconImage: {fileID: 0}
+  _nameText: {fileID: 0}
+  _levelText: {fileID: 0}
+  _costText: {fileID: 0}
+  _effectText: {fileID: 0}
+  _maxLevelIndicator: {fileID: 0}
+  _affordableColor: {r: 1, g: 1, b: 1, a: 1}
+  _unaffordableColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1001 &1729189581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25727,6 +25909,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2106547996}
   - component: {fileID: 2106547997}
+  - component: {fileID: 2106547998}
   m_Layer: 5
   m_Name: List
   m_TagString: Untagged
@@ -25801,6 +25984,28 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2106547998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106547995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upgradeData: {fileID: 0}
+  _button: {fileID: 0}
+  _iconImage: {fileID: 0}
+  _nameText: {fileID: 0}
+  _levelText: {fileID: 0}
+  _costText: {fileID: 0}
+  _effectText: {fileID: 0}
+  _maxLevelIndicator: {fileID: 0}
+  _affordableColor: {r: 1, g: 1, b: 1, a: 1}
+  _unaffordableColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1 &2129350590
 GameObject:
   m_ObjectHideFlags: 0

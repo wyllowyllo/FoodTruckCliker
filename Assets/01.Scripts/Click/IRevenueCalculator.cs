@@ -1,3 +1,5 @@
+using FoodTruckClicker.Menu;
+
 namespace FoodTruckClicker.Click
 {
     /// <summary>
@@ -8,12 +10,14 @@ namespace FoodTruckClicker.Click
         public float Revenue;
         public bool IsCritical;
         public int MenuCount;
+        public MenuData SelectedMenu;
 
-        public ClickResult(float revenue, bool isCritical, int menuCount = 1)
+        public ClickResult(float revenue, bool isCritical, int menuCount, MenuData selectedMenu)
         {
             Revenue = revenue;
             IsCritical = isCritical;
             MenuCount = menuCount;
+            SelectedMenu = selectedMenu;
         }
     }
 

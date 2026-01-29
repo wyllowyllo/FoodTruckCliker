@@ -18,7 +18,7 @@ namespace FoodTruckClicker.Upgrade
         private ICurrencyProvider _currencyProvider;
         private ICurrencyModifier _currencyModifier;
         private IMenuProvider _menuProvider;
-        private Action<int> _onMenuUnlockChanged;
+        private Action<int, float> _onFoodTruckUpgraded;
 
         private Dictionary<string, UpgradeData> _upgradeDataMap;
         private Dictionary<string, int> _upgradeLevels;
@@ -27,12 +27,12 @@ namespace FoodTruckClicker.Upgrade
             ICurrencyProvider currencyProvider,
             ICurrencyModifier currencyModifier,
             IMenuProvider menuProvider = null,
-            Action<int> onMenuUnlockChanged = null)
+            Action<int, float> onFoodTruckUpgraded = null)
         {
             _currencyProvider = currencyProvider;
             _currencyModifier = currencyModifier;
             _menuProvider = menuProvider;
-            _onMenuUnlockChanged = onMenuUnlockChanged;
+            _onFoodTruckUpgraded = onFoodTruckUpgraded;
 
             _upgradeDataMap = new Dictionary<string, UpgradeData>();
             _upgradeLevels = new Dictionary<string, int>();
@@ -47,7 +47,7 @@ namespace FoodTruckClicker.Upgrade
             }
         }
 
-        public float GetValue(UpgradeTargetType targetType)
+        public float GetValue(EUpgradeTargetType targetType)
         {
             float additiveSum = 0f;
             float multiplicativeProduct = 1f;
@@ -67,7 +67,7 @@ namespace FoodTruckClicker.Upgrade
 
                 float value = upgrade.GetValue(level);
 
-                if (upgrade.ModifierType == ModifierType.Additive)
+                if (upgrade.EModifierType == EModifierType.Additive)
                 {
                     additiveSum += value;
                 }
@@ -97,7 +97,7 @@ namespace FoodTruckClicker.Upgrade
         /// <summary>
         /// 정수 값 반환 (요리사 수, 크리티컬 개수, 메뉴 레벨 등)
         /// </summary>
-        public int GetIntValue(UpgradeTargetType targetType)
+        public int GetIntValue(EUpgradeTargetType targetType)
         {
             return Mathf.FloorToInt(GetValue(targetType));
         }
@@ -193,14 +193,15 @@ namespace FoodTruckClicker.Upgrade
         {
             switch (data.TargetType)
             {
-                case UpgradeTargetType.ChefCount:
-                case UpgradeTargetType.CookingSpeed:
+                case EUpgradeTargetType.ChefCount:
+                case EUpgradeTargetType.CookingSpeed:
                     NotifyAutoIncomeChanged();
                     break;
 
-                case UpgradeTargetType.MenuUnlock:
-                    int menuLevel = GetIntValue(UpgradeTargetType.MenuUnlock);
-                    _onMenuUnlockChanged?.Invoke(menuLevel);
+                case EUpgradeTargetType.FoodTruck:
+                    int unlockLevel = GetLevel(data.UpgradeId);
+                    float priceMultiplier = GetValue(EUpgradeTargetType.FoodTruck);
+                    _onFoodTruckUpgraded?.Invoke(unlockLevel, priceMultiplier);
                     NotifyAutoIncomeChanged();
                     break;
             }
@@ -212,18 +213,19 @@ namespace FoodTruckClicker.Upgrade
             GameEvents.RaiseAutoIncomeChanged(autoIncome);
         }
 
-        private float GetDefaultValueForType(UpgradeTargetType targetType)
+        private float GetDefaultValueForType(EUpgradeTargetType targetType)
         {
             switch (targetType)
             {
-                case UpgradeTargetType.CriticalChance:
-                case UpgradeTargetType.ChefCount:
-                case UpgradeTargetType.MenuUnlock:
+                case EUpgradeTargetType.CriticalChance:
+                case EUpgradeTargetType.ChefCount:
                     return 0f;
-                case UpgradeTargetType.ClickRevenue:
-                case UpgradeTargetType.CookingSpeed:
+                case EUpgradeTargetType.FoodTruck:
                     return 1f;
-                case UpgradeTargetType.CriticalDamage:
+                case EUpgradeTargetType.ClickRevenue:
+                case EUpgradeTargetType.CookingSpeed:
+                    return 1f;
+                case EUpgradeTargetType.CriticalProfit:
                     return 1f;
                 default:
                     return 1f;
@@ -235,16 +237,16 @@ namespace FoodTruckClicker.Upgrade
         /// </summary>
         public float CalculateAutoIncome()
         {
-            int chefCount = GetIntValue(UpgradeTargetType.ChefCount);
-            float cookingSpeed = GetValue(UpgradeTargetType.CookingSpeed);
+            int chefCount = GetIntValue(EUpgradeTargetType.ChefCount);
+            float cookingSpeed = GetValue(EUpgradeTargetType.CookingSpeed);
 
             if (chefCount <= 0)
             {
                 return 0f;
             }
 
-            int menuPrice = _menuProvider?.CurrentMenuPrice ?? 10;
-            float clickRevenue = GetValue(UpgradeTargetType.ClickRevenue);
+            float menuPrice = _menuProvider?.AveragePrice ?? 10f;
+            float clickRevenue = GetValue(EUpgradeTargetType.ClickRevenue);
             float baseClickIncome = menuPrice * clickRevenue;
 
             return chefCount * baseClickIncome * cookingSpeed;

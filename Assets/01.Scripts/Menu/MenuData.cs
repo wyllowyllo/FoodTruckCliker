@@ -15,13 +15,13 @@ namespace FoodTruckClicker.Menu
         [SerializeField] private Sprite _icon;
 
         [Header("게임 데이터")]
-        [SerializeField] private int _price = 10;
+        [SerializeField] private int _basePrice = 10;
         [SerializeField] private int _unlockLevel = 0;
 
         public string MenuId => _menuId;
         public string DisplayName => _displayName;
         public Sprite Icon => _icon;
-        public int Price => _price;
+        public int BasePrice => _basePrice;
         public int UnlockLevel => _unlockLevel;
     }
 }

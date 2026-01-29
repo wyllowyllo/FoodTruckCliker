@@ -9,18 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b0fa73fb78185748a97395215fbc6d5, type: 3}
-  m_Name: CriticalUpgrade
+  m_Script: {fileID: 11500000, guid: 75f21d5f7a445c343826b34354d371bb, type: 3}
+  m_Name: Burger
   m_EditorClassIdentifier: 
-  _upgradeId: bighand
-  _displayName: "\uD070\uC190"
-  _description: 
+  _menuId: burger
+  _displayName: "\uD584\uBC84\uAC70"
   _icon: {fileID: 0}
-  _maxLevel: 3
-  _costsPerLevel: c800000020030000b80b0000
-  _valuesPerLevel:
-  - 0.1
-  - 0.2
-  - 0.3
-  _modifierType: 0
-  _targetType: 2
+  _basePrice: 10
+  _unlockLevel: 0

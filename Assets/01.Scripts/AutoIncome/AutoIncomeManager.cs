@@ -91,7 +91,7 @@ namespace FoodTruckClicker.AutoIncome
             }
 
             // 요리사 수
-            int chefCount = _upgradeProvider.GetIntValue(UpgradeTargetType.ChefCount);
+            int chefCount = _upgradeProvider.GetIntValue(EUpgradeTargetType.ChefCount);
 
             if (chefCount <= 0)
             {
@@ -100,14 +100,14 @@ namespace FoodTruckClicker.AutoIncome
                 return;
             }
 
-            // 메뉴 가격
-            int menuPrice = _menuProvider?.CurrentMenuPrice ?? 10;
+            // 평균 메뉴 가격
+            float menuPrice = _menuProvider?.AveragePrice ?? 10f;
 
             // 클릭 수익 배율
-            float clickRevenue = _upgradeProvider.GetValue(UpgradeTargetType.ClickRevenue);
+            float clickRevenue = _upgradeProvider.GetValue(EUpgradeTargetType.ClickRevenue);
 
             // 요리 속도 배율
-            float cookingSpeed = _upgradeProvider.GetValue(UpgradeTargetType.CookingSpeed);
+            float cookingSpeed = _upgradeProvider.GetValue(EUpgradeTargetType.CookingSpeed);
 
             // 기본 클릭 수익 = 메뉴 가격 × 클릭 수익 배율
             float baseClickIncome = menuPrice * clickRevenue;

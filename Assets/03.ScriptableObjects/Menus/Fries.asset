@@ -9,18 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b0fa73fb78185748a97395215fbc6d5, type: 3}
-  m_Name: MenuUpgrade
+  m_Script: {fileID: 11500000, guid: 75f21d5f7a445c343826b34354d371bb, type: 3}
+  m_Name: Fries
   m_EditorClassIdentifier: 
-  _upgradeId: menu_add
-  _displayName: "\uBA54\uB274 \uCD94\uAC00"
-  _description: 
+  _menuId: fries
+  _displayName: "\uAC10\uC790\uD280\uAE40"
   _icon: {fileID: 0}
-  _maxLevel: 3
-  _costsPerLevel: 64000000f4010000d0070000
-  _valuesPerLevel:
-  - 2
-  - 5
-  - 15
-  _modifierType: 0
-  _targetType: 0
+  _basePrice: 10
+  _unlockLevel: 0

@@ -96,7 +96,7 @@ namespace FoodTruckClicker.Core
                     _goldManager,
                     _goldManager,
                     _menuManager,
-                    OnMenuUnlockChanged
+                    OnFoodTruckUpgraded
                 );
                 Debug.Log("[GameManager] UpgradeManager 초기화 완료");
             }
@@ -135,12 +135,13 @@ namespace FoodTruckClicker.Core
             Debug.Log("[GameManager] 시스템 초기화 완료");
         }
 
-        private void OnMenuUnlockChanged(int newUnlockLevel)
+        private void OnFoodTruckUpgraded(int unlockLevel, float priceMultiplier)
         {
             if (_menuManager != null)
             {
-                _menuManager.SetUnlockLevel(newUnlockLevel);
-                Debug.Log($"[GameManager] 메뉴 해금 레벨 변경: {newUnlockLevel}");
+                _menuManager.SetUnlockLevel(unlockLevel);
+                _menuManager.SetPriceMultiplier(priceMultiplier);
+                Debug.Log($"[GameManager] 트럭 업그레이드 - 해금 레벨: {unlockLevel}, 가격 배율: {priceMultiplier}");
             }
         }
 

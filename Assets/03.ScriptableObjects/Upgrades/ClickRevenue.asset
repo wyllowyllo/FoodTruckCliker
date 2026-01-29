@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b0fa73fb78185748a97395215fbc6d5, type: 3}
-  m_Name: Marketing
+  m_Name: ClickRevenue
   m_EditorClassIdentifier: 
-  _upgradeId: marketing
-  _displayName: "\uB9C8\uCF00\uD305"
+  _upgradeId: click_revenue
+  _displayName: "\uD074\uB9AD \uC218\uC775"
   _description: 
   _icon: {fileID: 0}
   _maxLevel: 3
-  _costsPerLevel: c800000020030000b80b0000
+  _costsPerLevel: 64000000f4010000d0070000
   _valuesPerLevel:
-  - 1.2
   - 1.5
   - 2
-  _modifierType: 1
-  _targetType: 4
+  - 2.5
+  _eModifierType: 1
+  _targetType: 0

@@ -36,10 +36,10 @@ namespace FoodTruckClicker.Upgrade
 
         [Header("수정자 설정")]
         [SerializeField]
-        private ModifierType _modifierType;
+        private EModifierType _eModifierType;
 
         [SerializeField]
-        private UpgradeTargetType _targetType;
+        private EUpgradeTargetType _targetType;
 
         // Properties
         public string UpgradeId => _upgradeId;
@@ -47,8 +47,8 @@ namespace FoodTruckClicker.Upgrade
         public string Description => _description;
         public Sprite Icon => _icon;
         public int MaxLevel => _maxLevel;
-        public ModifierType ModifierType => _modifierType;
-        public UpgradeTargetType TargetType => _targetType;
+        public EModifierType EModifierType => _eModifierType;
+        public EUpgradeTargetType TargetType => _targetType;
 
         /// <summary>
         /// 특정 레벨의 비용 반환 (1-based)
@@ -94,7 +94,7 @@ namespace FoodTruckClicker.Upgrade
         public float GetDefaultValue()
         {
             // 승산 타입은 1, 가산 타입은 0이 기본값
-            return _modifierType == ModifierType.Multiplicative ? 1f : 0f;
+            return _eModifierType == EModifierType.Multiplicative ? 1f : 0f;
         }
 
         private void OnValidate()
