@@ -6622,12 +6622,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 0}
-  _button: {fileID: 0}
+  _upgradeData: {fileID: 11400000, guid: 003f0d09eef99634485a69b16daa7da4, type: 2}
+  _button: {fileID: 579953483}
   _iconImage: {fileID: 0}
   _nameText: {fileID: 0}
   _levelText: {fileID: 0}
-  _costText: {fileID: 0}
+  _costText: {fileID: 1754600485}
   _effectText: {fileID: 0}
   _maxLevelIndicator: {fileID: 0}
   _affordableColor: {r: 1, g: 1, b: 1, a: 1}
@@ -11750,7 +11750,13 @@ MonoBehaviour:
   _autoIncomeManager: {fileID: 518906795}
   _clickController: {fileID: 726625961}
   _menuManager: {fileID: 1621348987}
-  _upgradeButtons: []
+  _upgradeButtons:
+  - {fileID: 1720758560}
+  - {fileID: 579953484}
+  - {fileID: 1585888657}
+  - {fileID: 2106547998}
+  - {fileID: 1013340126}
+  - {fileID: 1463651792}
 --- !u!1 &1013340123
 GameObject:
   m_ObjectHideFlags: 0
@@ -11848,12 +11854,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 0}
-  _button: {fileID: 0}
+  _upgradeData: {fileID: 11400000, guid: 740bf9d9ad3318d47b685f4f53d21bef, type: 2}
+  _button: {fileID: 1013340125}
   _iconImage: {fileID: 0}
   _nameText: {fileID: 0}
   _levelText: {fileID: 0}
-  _costText: {fileID: 0}
+  _costText: {fileID: 642229501}
   _effectText: {fileID: 0}
   _maxLevelIndicator: {fileID: 0}
   _affordableColor: {r: 1, g: 1, b: 1, a: 1}
@@ -17571,12 +17577,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 0}
-  _button: {fileID: 0}
+  _upgradeData: {fileID: 11400000, guid: 77c1f9575e8837946a999ff36d489a79, type: 2}
+  _button: {fileID: 1463651791}
   _iconImage: {fileID: 0}
   _nameText: {fileID: 0}
   _levelText: {fileID: 0}
-  _costText: {fileID: 0}
+  _costText: {fileID: 311193835}
   _effectText: {fileID: 0}
   _maxLevelIndicator: {fileID: 0}
   _affordableColor: {r: 1, g: 1, b: 1, a: 1}
@@ -19223,12 +19229,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 0}
-  _button: {fileID: 0}
+  _upgradeData: {fileID: 11400000, guid: 42a63f80b2d39824a8a3106fe22b6144, type: 2}
+  _button: {fileID: 1585888656}
   _iconImage: {fileID: 0}
   _nameText: {fileID: 0}
   _levelText: {fileID: 0}
-  _costText: {fileID: 0}
+  _costText: {fileID: 1075763068}
   _effectText: {fileID: 0}
   _maxLevelIndicator: {fileID: 0}
   _affordableColor: {r: 1, g: 1, b: 1, a: 1}
@@ -21013,12 +21019,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 0}
-  _button: {fileID: 0}
+  _upgradeData: {fileID: 11400000, guid: f5e4086ac36a6e2428dac8dacb3e7e39, type: 2}
+  _button: {fileID: 1720758559}
   _iconImage: {fileID: 0}
   _nameText: {fileID: 0}
   _levelText: {fileID: 0}
-  _costText: {fileID: 0}
+  _costText: {fileID: 1659199286}
   _effectText: {fileID: 0}
   _maxLevelIndicator: {fileID: 0}
   _affordableColor: {r: 1, g: 1, b: 1, a: 1}
@@ -25996,12 +26002,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 0}
-  _button: {fileID: 0}
+  _upgradeData: {fileID: 11400000, guid: b38b1e02c10d7e9468d1f18812df0036, type: 2}
+  _button: {fileID: 2106547997}
   _iconImage: {fileID: 0}
   _nameText: {fileID: 0}
   _levelText: {fileID: 0}
-  _costText: {fileID: 0}
+  _costText: {fileID: 664620242}
   _effectText: {fileID: 0}
   _maxLevelIndicator: {fileID: 0}
   _affordableColor: {r: 1, g: 1, b: 1, a: 1}
