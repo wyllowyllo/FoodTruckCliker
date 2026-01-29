@@ -74,6 +74,7 @@ namespace FoodTruckClicker.AutoIncome
             if (goldToAdd > 0)
             {
                 _currencyModifier.AddGold(goldToAdd);
+                GameEvents.RaiseRevenueEarned(goldToAdd, false, 1, true);
             }
         }
 

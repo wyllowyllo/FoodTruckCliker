@@ -18,13 +18,13 @@ namespace FoodTruckClicker.Events
         }
 
         /// <summary>
-        /// 클릭이 발생했을 때 (수익, 크리티컬 여부, 메뉴 개수)
+        /// 수익이 발생했을 때 (수익, 크리티컬 여부, 메뉴 개수, 자동 여부)
         /// </summary>
-        public static event Action<float, bool, int> OnClicked;
+        public static event Action<float, bool, int, bool> OnRevenueEarned;
 
-        public static void RaiseClicked(float revenue, bool isCritical, int menuCount = 1)
+        public static void RaiseRevenueEarned(float revenue, bool isCritical, int menuCount, bool isAuto)
         {
-            OnClicked?.Invoke(revenue, isCritical, menuCount);
+            OnRevenueEarned?.Invoke(revenue, isCritical, menuCount, isAuto);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace FoodTruckClicker.Events
         public static void ClearAllSubscriptions()
         {
             OnGoldChanged = null;
-            OnClicked = null;
+            OnRevenueEarned = null;
             OnUpgradePurchased = null;
             OnAutoIncomeChanged = null;
         }

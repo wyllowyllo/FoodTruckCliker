@@ -46,7 +46,7 @@ namespace FoodTruckClicker.Click
                 _currencyModifier.AddGold(goldToAdd);
             }
 
-            GameEvents.RaiseClicked(result.Revenue, result.IsCritical, result.MenuCount);
+            GameEvents.RaiseRevenueEarned(result.Revenue, result.IsCritical, result.MenuCount, false);
         }
     }
 }

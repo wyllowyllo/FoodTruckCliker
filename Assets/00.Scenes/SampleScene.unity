@@ -5756,7 +5756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ea511c38e21be14892a10215678e90c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _incomeInterval: 1
+  _incomeInterval: 5
 --- !u!1001 &525650374
 PrefabInstance:
   m_ObjectHideFlags: 0

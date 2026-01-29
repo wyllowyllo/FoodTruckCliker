@@ -40,12 +40,12 @@ namespace FoodTruckClicker.Feedback
 
         private void OnEnable()
         {
-            GameEvents.OnClicked += HandleClicked;
+            GameEvents.OnRevenueEarned += HandleRevenueEarned;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnClicked -= HandleClicked;
+            GameEvents.OnRevenueEarned -= HandleRevenueEarned;
         }
 
         private void InitializePool()
@@ -66,13 +66,19 @@ namespace FoodTruckClicker.Feedback
             }
         }
 
-        private void HandleClicked(float revenue, bool isCritical, int menuCount)
+        private void HandleRevenueEarned(float revenue, bool isCritical, int menuCount, bool isAuto)
         {
+            // 공통 피드백
             SpawnFloatingText(revenue, isCritical, menuCount);
-            TriggerTruckPunch();
-            TriggerSpark(isCritical);
             SpawnFoodPop(menuCount);
-            TriggerHaptic(isCritical);
+
+            // 클릭 전용 피드백
+            if (!isAuto)
+            {
+                TriggerTruckPunch();
+                TriggerSpark(isCritical);
+                TriggerHaptic(isCritical);
+            }
         }
 
         private void SpawnFoodPop(int menuCount)
