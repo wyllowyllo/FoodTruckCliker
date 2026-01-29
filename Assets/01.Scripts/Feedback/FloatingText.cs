@@ -60,14 +60,28 @@ namespace FoodTruckClicker.Feedback
         }
 
         /// <summary>
-        /// 플로팅 텍스트 재생
+        /// 플로팅 텍스트 재생 (menuCount 지원)
         /// </summary>
-        public void Play(float revenue, bool isCritical)
+        public void Play(float revenue, bool isCritical, int menuCount = 1)
         {
             // 텍스트 설정
             int goldAmount = Mathf.FloorToInt(revenue);
-            string prefix = isCritical ? "CRITICAL!\n" : "";
-            _text.text = $"{prefix}+{goldAmount}G";
+
+            string displayText;
+            if (isCritical && menuCount > 1)
+            {
+                displayText = $"x{menuCount} CRITICAL!\n+{goldAmount}G";
+            }
+            else if (isCritical)
+            {
+                displayText = $"CRITICAL!\n+{goldAmount}G";
+            }
+            else
+            {
+                displayText = $"+{goldAmount}G";
+            }
+
+            _text.text = displayText;
 
             // 색상/크기 설정
             _text.color = isCritical ? _criticalColor : _normalColor;

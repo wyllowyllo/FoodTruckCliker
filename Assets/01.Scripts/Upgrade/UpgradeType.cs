@@ -5,12 +5,12 @@ namespace FoodTruckClicker.Upgrade
     /// </summary>
     public enum UpgradeTargetType
     {
-        ClickBase,          // 메뉴 추가: 기본 클릭 수익 가산
-        ClickMultiplier,    // 고급 재료: 클릭 수익 배율
-        Critical,           // 황금 손: 크리티컬 확률
-        AutoBase,           // 요리사: 초당 자동 수익
-        GlobalMultiplier,   // 마케팅: 전체 수익 배율
-        TruckBonus          // 트럭 업그레이드: 추가 보너스 배율
+        ClickRevenue,       // 클릭 수익 배율
+        CriticalChance,     // 크리티컬 확률
+        CriticalDamage,     // 크리티컬 메뉴 개수
+        ChefCount,          // 요리사 수 (자동 클릭 수)
+        CookingSpeed,       // 요리 속도 배율
+        MenuUnlock          // 메뉴 해금 레벨
     }
 
     /// <summary>

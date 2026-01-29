@@ -6,9 +6,15 @@ namespace FoodTruckClicker.Upgrade
     public interface IUpgradeProvider
     {
         /// <summary>
-        /// 특정 타입의 업그레이드 효과 값 반환
+        /// 특정 타입의 업그레이드 효과 값 반환 (float)
         /// </summary>
         float GetValue(UpgradeTargetType targetType);
+
+        /// <summary>
+        /// 특정 타입의 업그레이드 효과 값 반환 (정수)
+        /// 요리사 수, 크리티컬 개수, 메뉴 레벨 등에 사용
+        /// </summary>
+        int GetIntValue(UpgradeTargetType targetType);
 
         /// <summary>
         /// 특정 업그레이드의 현재 레벨 반환

@@ -25,7 +25,7 @@ namespace FoodTruckClicker.Feedback
         [SerializeField]
         private ParticleSystem _spawnVfx;
 
-        [Header("스폰 설정")]
+        [Header("스폰 설정 (일반)")]
         [SerializeField]
         private int _minSpawnCount = 3;
 
@@ -82,9 +82,17 @@ namespace FoodTruckClicker.Feedback
         }
 
         /// <summary>
-        /// 음식 팝 이펙트 스폰 (여러 개 동시에)
+        /// 음식 팝 이펙트 스폰 (일반 - 기본 개수)
         /// </summary>
         public void SpawnFoodPop()
+        {
+            SpawnFoodPop(1);
+        }
+
+        /// <summary>
+        /// 음식 팝 이펙트 스폰 (menuCount만큼 그룹 생성)
+        /// </summary>
+        public void SpawnFoodPop(int menuCount)
         {
             if (_pool == null || _pool.Length == 0)
             {
@@ -98,9 +106,11 @@ namespace FoodTruckClicker.Feedback
 
             PlaySpawnVfx();
 
-            int spawnCount = Random.Range(_minSpawnCount, _maxSpawnCount + 1);
+            // menuCount 만큼 그룹 스폰 (크리티컬 시 더 많은 음식)
+            int baseCount = Random.Range(_minSpawnCount, _maxSpawnCount + 1);
+            int totalSpawnCount = baseCount * Mathf.Max(1, menuCount);
 
-            for (int i = 0; i < spawnCount; i++)
+            for (int i = 0; i < totalSpawnCount; i++)
             {
                 SpawnSingleFood();
             }

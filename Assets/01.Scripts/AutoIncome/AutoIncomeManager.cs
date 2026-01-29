@@ -1,5 +1,6 @@
 using FoodTruckClicker.Currency;
 using FoodTruckClicker.Events;
+using FoodTruckClicker.Menu;
 using FoodTruckClicker.Upgrade;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace FoodTruckClicker.AutoIncome
 {
     /// <summary>
     /// 자동 수익 관리자
-    /// 공식: 요리사 × 마케팅 × 트럭
+    /// 공식: 요리사 수 × 클릭 수익 × 요리 속도 배율
     /// </summary>
     public class AutoIncomeManager : MonoBehaviour, IAutoIncomeProvider
     {
@@ -16,16 +17,21 @@ namespace FoodTruckClicker.AutoIncome
 
         private IUpgradeProvider _upgradeProvider;
         private ICurrencyModifier _currencyModifier;
+        private IMenuProvider _menuProvider;
 
         private float _timer;
         private float _cachedIncomePerSecond;
 
         public float IncomePerSecond => _cachedIncomePerSecond;
 
-        public void Initialize(IUpgradeProvider upgradeProvider, ICurrencyModifier currencyModifier)
+        public void Initialize(
+            IUpgradeProvider upgradeProvider,
+            ICurrencyModifier currencyModifier,
+            IMenuProvider menuProvider)
         {
             _upgradeProvider = upgradeProvider;
             _currencyModifier = currencyModifier;
+            _menuProvider = menuProvider;
 
             RecalculateIncome();
         }
@@ -84,17 +90,30 @@ namespace FoodTruckClicker.AutoIncome
                 return;
             }
 
-            // 요리사 기본 수익
-            float chefBase = _upgradeProvider.GetValue(UpgradeTargetType.AutoBase);
+            // 요리사 수
+            int chefCount = _upgradeProvider.GetIntValue(UpgradeTargetType.ChefCount);
 
-            // 마케팅 배율
-            float marketingMultiplier = _upgradeProvider.GetValue(UpgradeTargetType.GlobalMultiplier);
+            if (chefCount <= 0)
+            {
+                _cachedIncomePerSecond = 0f;
+                GameEvents.RaiseAutoIncomeChanged(_cachedIncomePerSecond);
+                return;
+            }
 
-            // 트럭 보너스
-            float truckMultiplier = _upgradeProvider.GetValue(UpgradeTargetType.TruckBonus);
+            // 메뉴 가격
+            int menuPrice = _menuProvider?.CurrentMenuPrice ?? 10;
 
-            // 공식: 요리사 × 마케팅 × 트럭
-            _cachedIncomePerSecond = chefBase * marketingMultiplier * truckMultiplier;
+            // 클릭 수익 배율
+            float clickRevenue = _upgradeProvider.GetValue(UpgradeTargetType.ClickRevenue);
+
+            // 요리 속도 배율
+            float cookingSpeed = _upgradeProvider.GetValue(UpgradeTargetType.CookingSpeed);
+
+            // 기본 클릭 수익 = 메뉴 가격 × 클릭 수익 배율
+            float baseClickIncome = menuPrice * clickRevenue;
+
+            // 공식: 요리사 수 × 클릭 수익 × 요리 속도
+            _cachedIncomePerSecond = chefCount * baseClickIncome * cookingSpeed;
 
             GameEvents.RaiseAutoIncomeChanged(_cachedIncomePerSecond);
         }

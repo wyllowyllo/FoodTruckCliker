@@ -2,6 +2,7 @@ using FoodTruckClicker.AutoIncome;
 using FoodTruckClicker.Click;
 using FoodTruckClicker.Currency;
 using FoodTruckClicker.Events;
+using FoodTruckClicker.Menu;
 using FoodTruckClicker.UI;
 using FoodTruckClicker.Upgrade;
 using UnityEngine;
@@ -29,6 +30,9 @@ namespace FoodTruckClicker.Core
 
         [SerializeField]
         private ClickController _clickController;
+
+        [SerializeField]
+        private MenuManager _menuManager;
 
         [Header("UI 참조")]
         [SerializeField]
@@ -63,16 +67,37 @@ namespace FoodTruckClicker.Core
             {
                 Debug.LogError("UpgradeManager is not assigned!");
             }
+
+            if (_menuManager == null)
+            {
+                Debug.LogError("MenuManager is not assigned!");
+            }
         }
 
         private void InitializeSystems()
         {
             Debug.Log("[GameManager] 시스템 초기화 시작");
 
-            // 1. UpgradeManager 초기화
+            // 1. MenuManager 초기화
+            if (_menuManager != null)
+            {
+                _menuManager.Initialize();
+                Debug.Log("[GameManager] MenuManager 초기화 완료");
+            }
+            else
+            {
+                Debug.LogError("[GameManager] MenuManager가 NULL!");
+            }
+
+            // 2. UpgradeManager 초기화 (MenuManager 연동)
             if (_upgradeManager != null && _goldManager != null)
             {
-                _upgradeManager.Initialize(_goldManager, _goldManager);
+                _upgradeManager.Initialize(
+                    _goldManager,
+                    _goldManager,
+                    _menuManager,
+                    OnMenuUnlockChanged
+                );
                 Debug.Log("[GameManager] UpgradeManager 초기화 완료");
             }
             else
@@ -80,18 +105,14 @@ namespace FoodTruckClicker.Core
                 Debug.LogError("[GameManager] UpgradeManager 또는 GoldManager가 NULL!");
             }
 
-            // 2. ClickRevenueCalculator 생성
-            float baseRevenue = _gameConfig != null ? _gameConfig.BaseClickRevenue : 1f;
-            float criticalMultiplier = _gameConfig != null ? _gameConfig.CriticalMultiplier : 2f;
-
+            // 3. ClickRevenueCalculator 생성 (MenuManager 연동)
             _clickRevenueCalculator = new ClickRevenueCalculator(
                 _upgradeManager,
-                baseRevenue,
-                criticalMultiplier
+                _menuManager
             );
-            Debug.Log($"[GameManager] ClickRevenueCalculator 생성 - 기본수익: {baseRevenue}, 크리티컬배율: {criticalMultiplier}");
+            Debug.Log("[GameManager] ClickRevenueCalculator 생성 완료");
 
-            // 3. ClickController 초기화
+            // 4. ClickController 초기화
             if (_clickController != null)
             {
                 _clickController.Initialize(_clickRevenueCalculator, _goldManager);
@@ -102,16 +123,25 @@ namespace FoodTruckClicker.Core
                 Debug.LogError("[GameManager] ClickController가 NULL!");
             }
 
-            // 4. AutoIncomeManager 초기화
+            // 5. AutoIncomeManager 초기화 (MenuManager 연동)
             if (_autoIncomeManager != null)
             {
-                _autoIncomeManager.Initialize(_upgradeManager, _goldManager);
+                _autoIncomeManager.Initialize(_upgradeManager, _goldManager, _menuManager);
                 Debug.Log("[GameManager] AutoIncomeManager 초기화 완료");
             }
 
-            // 5. UI 초기화
+            // 6. UI 초기화
             InitializeUI();
             Debug.Log("[GameManager] 시스템 초기화 완료");
+        }
+
+        private void OnMenuUnlockChanged(int newUnlockLevel)
+        {
+            if (_menuManager != null)
+            {
+                _menuManager.SetUnlockLevel(newUnlockLevel);
+                Debug.Log($"[GameManager] 메뉴 해금 레벨 변경: {newUnlockLevel}");
+            }
         }
 
         private void InitializeUI()

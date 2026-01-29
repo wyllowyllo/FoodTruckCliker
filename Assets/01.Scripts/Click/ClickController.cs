@@ -39,14 +39,14 @@ namespace FoodTruckClicker.Click
             ClickResult result = _revenueCalculator.Calculate();
             int goldToAdd = Mathf.FloorToInt(result.Revenue);
 
-            Debug.Log($"[ClickController] 클릭! 수익: {result.Revenue:F2}, 크리티컬: {result.IsCritical}, 골드 추가: {goldToAdd}");
+            Debug.Log($"[ClickController] 클릭! 수익: {result.Revenue:F2}, 크리티컬: {result.IsCritical}, 메뉴개수: {result.MenuCount}, 골드 추가: {goldToAdd}");
 
             if (goldToAdd > 0)
             {
                 _currencyModifier.AddGold(goldToAdd);
             }
 
-            GameEvents.RaiseClicked(result.Revenue, result.IsCritical);
+            GameEvents.RaiseClicked(result.Revenue, result.IsCritical, result.MenuCount);
         }
     }
 }

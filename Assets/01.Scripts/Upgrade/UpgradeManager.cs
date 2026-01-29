@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using FoodTruckClicker.Currency;
 using FoodTruckClicker.Events;
+using FoodTruckClicker.Menu;
 using UnityEngine;
 
 namespace FoodTruckClicker.Upgrade
@@ -15,14 +17,22 @@ namespace FoodTruckClicker.Upgrade
 
         private ICurrencyProvider _currencyProvider;
         private ICurrencyModifier _currencyModifier;
+        private IMenuProvider _menuProvider;
+        private Action<int> _onMenuUnlockChanged;
 
         private Dictionary<string, UpgradeData> _upgradeDataMap;
         private Dictionary<string, int> _upgradeLevels;
 
-        public void Initialize(ICurrencyProvider currencyProvider, ICurrencyModifier currencyModifier)
+        public void Initialize(
+            ICurrencyProvider currencyProvider,
+            ICurrencyModifier currencyModifier,
+            IMenuProvider menuProvider = null,
+            Action<int> onMenuUnlockChanged = null)
         {
             _currencyProvider = currencyProvider;
             _currencyModifier = currencyModifier;
+            _menuProvider = menuProvider;
+            _onMenuUnlockChanged = onMenuUnlockChanged;
 
             _upgradeDataMap = new Dictionary<string, UpgradeData>();
             _upgradeLevels = new Dictionary<string, int>();
@@ -68,9 +78,6 @@ namespace FoodTruckClicker.Upgrade
             }
 
             // 가산 + 승산 결합
-            // 승산 타입만 있으면 product 반환
-            // 가산 타입만 있으면 sum 반환
-            // 둘 다 있으면 (sum) * product 반환
             if (additiveSum > 0 && multiplicativeProduct > 1f)
             {
                 return additiveSum * multiplicativeProduct;
@@ -84,8 +91,15 @@ namespace FoodTruckClicker.Upgrade
                 return multiplicativeProduct;
             }
 
-            // 기본값 반환 (승산은 1, 가산은 0)
             return GetDefaultValueForType(targetType);
+        }
+
+        /// <summary>
+        /// 정수 값 반환 (요리사 수, 크리티컬 개수, 메뉴 레벨 등)
+        /// </summary>
+        public int GetIntValue(UpgradeTargetType targetType)
+        {
+            return Mathf.FloorToInt(GetValue(targetType));
         }
 
         public int GetLevel(string upgradeId)
@@ -147,16 +161,9 @@ namespace FoodTruckClicker.Upgrade
 
             GameEvents.RaiseUpgradePurchased(upgradeId, newLevel);
 
-            // 자동 수익 변경 알림 (요리사/마케팅/트럭 업그레이드 시)
             if (_upgradeDataMap.TryGetValue(upgradeId, out UpgradeData data))
             {
-                if (data.TargetType == UpgradeTargetType.AutoBase ||
-                    data.TargetType == UpgradeTargetType.GlobalMultiplier ||
-                    data.TargetType == UpgradeTargetType.TruckBonus)
-                {
-                    float autoIncome = CalculateAutoIncome();
-                    GameEvents.RaiseAutoIncomeChanged(autoIncome);
-                }
+                HandleUpgradeEffects(data);
             }
 
             return true;
@@ -182,28 +189,65 @@ namespace FoodTruckClicker.Upgrade
             return _upgrades;
         }
 
+        private void HandleUpgradeEffects(UpgradeData data)
+        {
+            switch (data.TargetType)
+            {
+                case UpgradeTargetType.ChefCount:
+                case UpgradeTargetType.CookingSpeed:
+                    NotifyAutoIncomeChanged();
+                    break;
+
+                case UpgradeTargetType.MenuUnlock:
+                    int menuLevel = GetIntValue(UpgradeTargetType.MenuUnlock);
+                    _onMenuUnlockChanged?.Invoke(menuLevel);
+                    NotifyAutoIncomeChanged();
+                    break;
+            }
+        }
+
+        private void NotifyAutoIncomeChanged()
+        {
+            float autoIncome = CalculateAutoIncome();
+            GameEvents.RaiseAutoIncomeChanged(autoIncome);
+        }
+
         private float GetDefaultValueForType(UpgradeTargetType targetType)
         {
-            // Critical과 AutoBase는 기본값 0
-            // 나머지 승산 타입은 기본값 1
             switch (targetType)
             {
-                case UpgradeTargetType.Critical:
-                case UpgradeTargetType.AutoBase:
-                case UpgradeTargetType.ClickBase:
+                case UpgradeTargetType.CriticalChance:
+                case UpgradeTargetType.ChefCount:
+                case UpgradeTargetType.MenuUnlock:
                     return 0f;
+                case UpgradeTargetType.ClickRevenue:
+                case UpgradeTargetType.CookingSpeed:
+                    return 1f;
+                case UpgradeTargetType.CriticalDamage:
+                    return 1f;
                 default:
                     return 1f;
             }
         }
 
-        private float CalculateAutoIncome()
+        /// <summary>
+        /// 자동 수익 계산: 요리사 수 × 클릭 수익 × 요리 속도
+        /// </summary>
+        public float CalculateAutoIncome()
         {
-            float chefBase = GetValue(UpgradeTargetType.AutoBase);
-            float marketing = GetValue(UpgradeTargetType.GlobalMultiplier);
-            float truck = GetValue(UpgradeTargetType.TruckBonus);
+            int chefCount = GetIntValue(UpgradeTargetType.ChefCount);
+            float cookingSpeed = GetValue(UpgradeTargetType.CookingSpeed);
 
-            return chefBase * marketing * truck;
+            if (chefCount <= 0)
+            {
+                return 0f;
+            }
+
+            int menuPrice = _menuProvider?.CurrentMenuPrice ?? 10;
+            float clickRevenue = GetValue(UpgradeTargetType.ClickRevenue);
+            float baseClickIncome = menuPrice * clickRevenue;
+
+            return chefCount * baseClickIncome * cookingSpeed;
         }
     }
 }

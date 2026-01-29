@@ -1,3 +1,4 @@
+using FoodTruckClicker.Menu;
 using FoodTruckClicker.Upgrade;
 using UnityEngine;
 
@@ -5,51 +6,43 @@ namespace FoodTruckClicker.Click
 {
     /// <summary>
     /// 클릭 수익 계산기
-    /// 공식: (1 + 메뉴추가) × 고급재료 × 크리티컬 × 마케팅 × 트럭
+    /// 공식:
+    /// - 일반: 메뉴가격 × 클릭수익배율
+    /// - 크리티컬: 메뉴가격 × 클릭수익배율 × 크리티컬데미지(메뉴개수)
     /// </summary>
     public class ClickRevenueCalculator : IRevenueCalculator
     {
         private readonly IUpgradeProvider _upgradeProvider;
-        private readonly float _baseRevenue;
-        private readonly float _criticalMultiplier;
+        private readonly IMenuProvider _menuProvider;
 
         public ClickRevenueCalculator(
             IUpgradeProvider upgradeProvider,
-            float baseRevenue = 1f,
-            float criticalMultiplier = 2f)
+            IMenuProvider menuProvider)
         {
             _upgradeProvider = upgradeProvider;
-            _baseRevenue = baseRevenue;
-            _criticalMultiplier = criticalMultiplier;
+            _menuProvider = menuProvider;
         }
 
         public ClickResult Calculate()
         {
-            // 메뉴 추가 (가산)
-            float menuAddBonus = _upgradeProvider.GetValue(UpgradeTargetType.ClickBase);
+            // 메뉴 가격
+            int menuPrice = _menuProvider?.CurrentMenuPrice ?? 10;
 
-            // 고급 재료 (승산)
-            float ingredientMultiplier = _upgradeProvider.GetValue(UpgradeTargetType.ClickMultiplier);
-
-            // 마케팅 (승산)
-            float marketingMultiplier = _upgradeProvider.GetValue(UpgradeTargetType.GlobalMultiplier);
-
-            // 트럭 보너스 (승산)
-            float truckMultiplier = _upgradeProvider.GetValue(UpgradeTargetType.TruckBonus);
+            // 클릭 수익 배율
+            float clickRevenueMultiplier = _upgradeProvider.GetValue(UpgradeTargetType.ClickRevenue);
 
             // 크리티컬 확률
-            float criticalChance = _upgradeProvider.GetValue(UpgradeTargetType.Critical);
+            float criticalChance = _upgradeProvider.GetValue(UpgradeTargetType.CriticalChance);
             bool isCritical = Random.Range(0f, 1f) < criticalChance;
-            float criticalMult = isCritical ? _criticalMultiplier : 1f;
 
-            // 공식: (1 + 메뉴추가) × 고급재료 × 크리티컬 × 마케팅 × 트럭
-            float revenue = (_baseRevenue + menuAddBonus)
-                            * ingredientMultiplier
-                            * criticalMult
-                            * marketingMultiplier
-                            * truckMultiplier;
+            // 크리티컬 데미지 (메뉴 개수)
+            int criticalDamage = _upgradeProvider.GetIntValue(UpgradeTargetType.CriticalDamage);
+            int menuCount = isCritical ? Mathf.Max(1, criticalDamage) : 1;
 
-            return new ClickResult(revenue, isCritical);
+            // 공식: 메뉴가격 × 클릭수익배율 × 메뉴개수
+            float revenue = menuPrice * clickRevenueMultiplier * menuCount;
+
+            return new ClickResult(revenue, isCritical, menuCount);
         }
     }
 }

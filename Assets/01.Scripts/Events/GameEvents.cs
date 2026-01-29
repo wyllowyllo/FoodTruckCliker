@@ -18,13 +18,13 @@ namespace FoodTruckClicker.Events
         }
 
         /// <summary>
-        /// 클릭이 발생했을 때 (수익, 크리티컬 여부)
+        /// 클릭이 발생했을 때 (수익, 크리티컬 여부, 메뉴 개수)
         /// </summary>
-        public static event Action<float, bool> OnClicked;
+        public static event Action<float, bool, int> OnClicked;
 
-        public static void RaiseClicked(float revenue, bool isCritical)
+        public static void RaiseClicked(float revenue, bool isCritical, int menuCount = 1)
         {
-            OnClicked?.Invoke(revenue, isCritical);
+            OnClicked?.Invoke(revenue, isCritical, menuCount);
         }
 
         /// <summary>

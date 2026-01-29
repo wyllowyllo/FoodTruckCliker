@@ -66,20 +66,20 @@ namespace FoodTruckClicker.Feedback
             }
         }
 
-        private void HandleClicked(float revenue, bool isCritical)
+        private void HandleClicked(float revenue, bool isCritical, int menuCount)
         {
-            SpawnFloatingText(revenue, isCritical);
+            SpawnFloatingText(revenue, isCritical, menuCount);
             TriggerTruckPunch();
             TriggerSpark(isCritical);
-            SpawnFoodPop();
+            SpawnFoodPop(menuCount);
             TriggerHaptic(isCritical);
         }
 
-        private void SpawnFoodPop()
+        private void SpawnFoodPop(int menuCount)
         {
             if (_foodPopController != null)
             {
-                _foodPopController.SpawnFoodPop();
+                _foodPopController.SpawnFoodPop(menuCount);
             }
         }
 
@@ -103,7 +103,7 @@ namespace FoodTruckClicker.Feedback
             }
         }
 
-        private void SpawnFloatingText(float revenue, bool isCritical)
+        private void SpawnFloatingText(float revenue, bool isCritical, int menuCount)
         {
             if (_floatingTextPool == null || _floatingTextPool.Length == 0)
             {
@@ -114,7 +114,7 @@ namespace FoodTruckClicker.Feedback
             _currentPoolIndex = (_currentPoolIndex + 1) % _poolSize;
 
             text.gameObject.SetActive(true);
-            text.Play(revenue, isCritical);
+            text.Play(revenue, isCritical, menuCount);
         }
 
         private void TriggerTruckPunch()

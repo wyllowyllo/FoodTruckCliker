@@ -7,11 +7,13 @@ namespace FoodTruckClicker.Click
     {
         public float Revenue;
         public bool IsCritical;
+        public int MenuCount;
 
-        public ClickResult(float revenue, bool isCritical)
+        public ClickResult(float revenue, bool isCritical, int menuCount = 1)
         {
             Revenue = revenue;
             IsCritical = isCritical;
+            MenuCount = menuCount;
         }
     }
 
