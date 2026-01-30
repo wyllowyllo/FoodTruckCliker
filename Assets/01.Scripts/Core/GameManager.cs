@@ -5,7 +5,9 @@ using Goods.Manager;
 using Goods.Repository;
 using Menu;
 using UI;
-using Upgrade;
+using Upgrade.Domain;
+using Upgrade.Manager;
+using Upgrade.Repository;
 using UnityEngine;
 
 namespace Core
@@ -20,28 +22,18 @@ namespace Core
         private GameConfig _gameConfig;
 
         [Header("시스템 참조")]
-        [SerializeField]
-        private GoldManager _goldManager;
-
-        [SerializeField]
-        private UpgradeManager _upgradeManager;
-
-        [SerializeField]
-        private AutoIncomeManager _autoIncomeManager;
-
-        [SerializeField]
-        private ClickController _clickController;
-
-        [SerializeField]
-        private MenuManager _menuManager;
+        [SerializeField] private GoldManager _goldManager;
+        [SerializeField] private UpgradeManager _upgradeManager;
+        [SerializeField] private AutoIncomeManager _autoIncomeManager;
+        [SerializeField] private ClickController _clickController;
+        [SerializeField] private MenuManager _menuManager;
 
         [Header("UI 참조")]
-        [SerializeField]
-        private UpgradeButtonUI[] _upgradeButtons;
+        [SerializeField] private UpgradeButtonUI[] _upgradeButtons;
 
         private ClickRevenueCalculator _clickRevenueCalculator;
-
         private ICurrencyRepository _currencyRepository;
+        private IUpgradeRepository _upgradeRepository;
 
         private void Awake()
         {
@@ -79,21 +71,19 @@ namespace Core
 
         private void InitializeSystems()
         {
-            Debug.Log("[GameManager] 시스템 초기화 시작");
-
             // 0. CurrencyRepository 생성 및 GoldManager 초기화
             _currencyRepository = new LocalCurrencyRepository();
             if (_goldManager != null)
             {
                 _goldManager.Initialize(_currencyRepository);
-                Debug.Log("[GameManager] GoldManager 초기화 완료 (Repository 주입)");
+                
             }
 
             // 1. MenuManager 초기화
             if (_menuManager != null)
             {
                 _menuManager.Initialize();
-                Debug.Log("[GameManager] MenuManager 초기화 완료");
+                
             }
             else
             {
@@ -101,14 +91,16 @@ namespace Core
             }
 
             // 2. UpgradeManager 초기화 (MenuManager 연동)
+            _upgradeRepository = new LocalUpgradeRepository();
             if (_upgradeManager != null && _goldManager != null)
             {
                 _upgradeManager.Initialize(
                     _goldManager,
+                    _upgradeRepository,
                     _menuManager,
                     OnFoodTruckUpgraded
                 );
-                Debug.Log("[GameManager] UpgradeManager 초기화 완료");
+               
             }
             else
             {
@@ -120,13 +112,13 @@ namespace Core
                 _upgradeManager,
                 _menuManager
             );
-            Debug.Log("[GameManager] ClickRevenueCalculator 생성 완료");
+            
 
             // 4. ClickController 초기화
             if (_clickController != null)
             {
                 _clickController.Initialize(_clickRevenueCalculator, _goldManager);
-                Debug.Log("[GameManager] ClickController 초기화 완료");
+               
             }
             else
             {
@@ -137,12 +129,12 @@ namespace Core
             if (_autoIncomeManager != null)
             {
                 _autoIncomeManager.Initialize(_upgradeManager, _goldManager, _menuManager);
-                Debug.Log("[GameManager] AutoIncomeManager 초기화 완료");
+                
             }
 
             // 6. UI 초기화
             InitializeUI();
-            Debug.Log("[GameManager] 시스템 초기화 완료");
+            
         }
 
         private void OnFoodTruckUpgraded(int unlockLevel, float priceMultiplier)

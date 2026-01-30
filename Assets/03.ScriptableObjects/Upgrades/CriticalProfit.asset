@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b0fa73fb78185748a97395215fbc6d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 954d7052a144d2e4d919c6cd8d334d4f, type: 3}
   m_Name: CriticalProfit
   m_EditorClassIdentifier: 
-  _upgradeId: critical_profit
+  _upgradeId: criticalprofit
   _displayName: "\uD06C\uB9AC\uD2F0\uCEEC \uC218\uC775"
-  _description: 
+  _description: "\uD06C\uB9AC\uD2F0\uCEEC \uC2DC \uD310\uB9E4\uB418\uB294 \uBA54\uB274
+    \uAC1C\uC218"
   _icon: {fileID: 0}
   _maxLevel: 3
   _costsPerLevel: c800000020030000b80b0000

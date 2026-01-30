@@ -2,7 +2,8 @@ using Events;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Upgrade;
+using Upgrade.Domain;
+using Upgrade.Manager;
 
 namespace UI
 {

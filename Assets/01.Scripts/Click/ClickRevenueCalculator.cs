@@ -1,5 +1,6 @@
 using Menu;
-using Upgrade;
+using Upgrade.Domain;
+using Upgrade.Manager;
 using UnityEngine;
 
 namespace Click

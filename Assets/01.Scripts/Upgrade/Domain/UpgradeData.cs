@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Upgrade
+namespace Upgrade.Domain
 {
     /// <summary>
     /// 업그레이드 데이터 ScriptableObject

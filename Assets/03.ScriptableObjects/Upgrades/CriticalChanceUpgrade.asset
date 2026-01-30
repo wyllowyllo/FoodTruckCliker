@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b0fa73fb78185748a97395215fbc6d5, type: 3}
-  m_Name: CriticalChance
+  m_Script: {fileID: 11500000, guid: 954d7052a144d2e4d919c6cd8d334d4f, type: 3}
+  m_Name: CriticalChanceUpgrade
   m_EditorClassIdentifier: 
-  _upgradeId: CriticalChance
+  _upgradeId: criticalchance
   _displayName: "\uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960"
-  _description: 
+  _description: "\uD074\uB9AD \uC2DC \uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960"
   _icon: {fileID: 0}
   _maxLevel: 3
   _costsPerLevel: 9600000058020000c4090000
   _valuesPerLevel:
-  - 0.1
-  - 0.2
-  - 0.3
+  - 10
+  - 20
+  - 30
   _eModifierType: 0
   _targetType: 1

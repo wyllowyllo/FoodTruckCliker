@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using Events;
 using Goods.Manager;
 using Menu;
+using Upgrade.Domain;
+using Upgrade.Repository;
 using UnityEngine;
 
-namespace Upgrade
+namespace Upgrade.Manager
 {
     /// <summary>
     /// 업그레이드 관리자
@@ -18,30 +20,35 @@ namespace Upgrade
         private GoldManager _goldManager;
         private MenuManager _menuProvider;
         private Action<int, float> _onFoodTruckUpgraded;
+        private IUpgradeRepository _repository;
 
         private Dictionary<string, UpgradeData> _upgradeDataMap;
         private Dictionary<string, int> _upgradeLevels;
 
         public void Initialize(
             GoldManager goldManager,
+            IUpgradeRepository repository,
             MenuManager menuProvider = null,
             Action<int, float> onFoodTruckUpgraded = null)
         {
             _goldManager = goldManager;
+            _repository = repository;
             _menuProvider = menuProvider;
             _onFoodTruckUpgraded = onFoodTruckUpgraded;
 
             _upgradeDataMap = new Dictionary<string, UpgradeData>();
-            _upgradeLevels = new Dictionary<string, int>();
 
+            var upgradeIds = new List<string>();
             foreach (var upgrade in _upgrades)
             {
                 if (upgrade != null && !string.IsNullOrEmpty(upgrade.UpgradeId))
                 {
                     _upgradeDataMap[upgrade.UpgradeId] = upgrade;
-                    _upgradeLevels[upgrade.UpgradeId] = 0;
+                    upgradeIds.Add(upgrade.UpgradeId);
                 }
             }
+
+            _upgradeLevels = _repository.LoadAll(upgradeIds);
         }
 
         public float GetValue(EUpgradeTargetType targetType)
@@ -155,6 +162,8 @@ namespace Upgrade
 
             _upgradeLevels[upgradeId]++;
             int newLevel = _upgradeLevels[upgradeId];
+
+            _repository.SaveLevel(upgradeId, newLevel);
 
             GameEvents.RaiseUpgradePurchased(upgradeId, newLevel);
 

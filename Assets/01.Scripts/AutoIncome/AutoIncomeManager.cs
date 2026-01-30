@@ -1,7 +1,8 @@
 using Events;
 using Goods.Manager;
 using Menu;
-using Upgrade;
+using Upgrade.Domain;
+using Upgrade.Manager;
 using UnityEngine;
 
 namespace AutoIncome

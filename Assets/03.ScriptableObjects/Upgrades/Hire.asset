@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b0fa73fb78185748a97395215fbc6d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 954d7052a144d2e4d919c6cd8d334d4f, type: 3}
   m_Name: Hire
   m_EditorClassIdentifier: 
   _upgradeId: hire
-  _displayName: "\uC9C1\uC6D0 \uACE0\uC6A9"
-  _description: 
+  _displayName: "\uC870\uB9AC\uC0AC \uACE0\uC6A9"
+  _description: "\uC870\uB9AC\uC0AC + 1"
   _icon: {fileID: 0}
   _maxLevel: 3
   _costsPerLevel: 64000000f4010000d0070000
   _valuesPerLevel:
   - 1
+  - 2
   - 3
-  - 10
-  _modifierType: 0
+  _eModifierType: 0
   _targetType: 3
