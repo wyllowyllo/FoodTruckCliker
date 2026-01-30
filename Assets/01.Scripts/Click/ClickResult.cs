@@ -21,14 +21,4 @@ namespace FoodTruckClicker.Click
         }
     }
 
-    /// <summary>
-    /// 수익 계산 인터페이스
-    /// </summary>
-    public interface IRevenueCalculator
-    {
-        /// <summary>
-        /// 클릭 수익 계산
-        /// </summary>
-        ClickResult Calculate();
-    }
 }

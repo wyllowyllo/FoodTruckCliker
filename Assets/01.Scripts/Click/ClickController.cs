@@ -10,10 +10,10 @@ namespace FoodTruckClicker.Click
     /// </summary>
     public class ClickController : MonoBehaviour, IPointerClickHandler
     {
-        private IRevenueCalculator _revenueCalculator;
+        private ClickRevenueCalculator _revenueCalculator;
         private GoldManager _goldManager;
 
-        public void Initialize(IRevenueCalculator revenueCalculator, GoldManager goldManager)
+        public void Initialize(ClickRevenueCalculator revenueCalculator, GoldManager goldManager)
         {
             _revenueCalculator = revenueCalculator;
             _goldManager = goldManager;

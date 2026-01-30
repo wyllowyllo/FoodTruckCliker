@@ -10,7 +10,7 @@ namespace FoodTruckClicker.Click
     /// - 일반: (랜덤메뉴 기본가격 × 메뉴가격배율) × 클릭수익배율
     /// - 크리티컬: (랜덤메뉴 기본가격 × 메뉴가격배율) × 클릭수익배율 × 크리티컬데미지(메뉴개수)
     /// </summary>
-    public class ClickRevenueCalculator : IRevenueCalculator
+    public class ClickRevenueCalculator
     {
         private readonly UpgradeManager _upgradeProvider;
         private readonly MenuManager _menuProvider;

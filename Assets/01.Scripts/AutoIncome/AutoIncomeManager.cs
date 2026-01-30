@@ -10,7 +10,7 @@ namespace FoodTruckClicker.AutoIncome
     /// 자동 수익 관리자
     /// 공식: 요리사 수 × 클릭 수익 × 요리 속도 배율
     /// </summary>
-    public class AutoIncomeManager : MonoBehaviour, IAutoIncomeProvider
+    public class AutoIncomeManager : MonoBehaviour
     {
         [SerializeField]
         private float _incomeInterval = 1f;
