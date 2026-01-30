@@ -2,7 +2,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-namespace FoodTruckClicker.Feedback
+namespace Feedback
 {
     /// <summary>
     /// 플로팅 텍스트 - 클릭 시 골드 수익 표시

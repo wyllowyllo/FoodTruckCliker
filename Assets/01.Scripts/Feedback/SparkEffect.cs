@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FoodTruckClicker.Feedback
+namespace Feedback
 {
     /// <summary>
     /// 철판 스파크 이펙트 - 클릭 시 기름 튀는 효과

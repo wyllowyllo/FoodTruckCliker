@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FoodTruckClicker.Core
+namespace Core
 {
     /// <summary>
     /// 게임 전역 설정

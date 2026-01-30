@@ -1,9 +1,10 @@
-using FoodTruckClicker.Currency;
-using FoodTruckClicker.Events;
+
+using Events;
+using Goods.Manager;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace FoodTruckClicker.Click
+namespace Click
 {
     /// <summary>
     /// 클릭 입력 처리 및 골드 획득 컨트롤러

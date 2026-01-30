@@ -1,7 +1,7 @@
-using FoodTruckClicker.Events;
+using Events;
 using UnityEngine;
 
-namespace FoodTruckClicker.Feedback
+namespace Feedback
 {
     /// <summary>
     /// 클릭 피드백 컨트롤러 - 모든 클릭 피드백 통합 관리

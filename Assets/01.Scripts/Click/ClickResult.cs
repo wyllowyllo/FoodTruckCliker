@@ -1,6 +1,6 @@
-using FoodTruckClicker.Menu;
+using Menu;
 
-namespace FoodTruckClicker.Click
+namespace Click
 {
     /// <summary>
     /// 클릭 수익 계산 결과

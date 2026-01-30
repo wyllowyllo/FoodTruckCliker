@@ -1,8 +1,8 @@
-using FoodTruckClicker.Menu;
-using FoodTruckClicker.Upgrade;
+using Menu;
+using Upgrade;
 using UnityEngine;
 
-namespace FoodTruckClicker.Click
+namespace Click
 {
     /// <summary>
     /// 클릭 수익 계산기

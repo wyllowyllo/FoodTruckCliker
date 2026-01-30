@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FoodTruckClicker.Menu
+namespace Menu
 {
     /// <summary>
     /// 메뉴 데이터 ScriptableObject

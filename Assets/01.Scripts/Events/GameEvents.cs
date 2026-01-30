@@ -1,6 +1,6 @@
 using System;
 
-namespace FoodTruckClicker.Events
+namespace Events
 {
     /// <summary>
     /// 게임 전역 이벤트 정의

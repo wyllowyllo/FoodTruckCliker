@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace FoodTruckClicker.Menu
+namespace Menu
 {
     /// <summary>
     /// 메뉴 관리자

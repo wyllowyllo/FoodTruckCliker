@@ -1,4 +1,4 @@
-namespace FoodTruckClicker.Upgrade
+namespace Upgrade
 {
     /// <summary>
     /// 업그레이드가 영향을 미치는 대상 타입

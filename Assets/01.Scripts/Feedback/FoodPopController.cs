@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FoodTruckClicker.Feedback
+namespace Feedback
 {
     /// <summary>
     /// 음식 팝 이펙트 관리 (오브젝트 풀링)

@@ -1,8 +1,8 @@
-using FoodTruckClicker.Events;
+using Events;
 using TMPro;
 using UnityEngine;
 
-namespace FoodTruckClicker.UI
+namespace UI
 {
     /// <summary>
     /// 자동 수익 표시 UI

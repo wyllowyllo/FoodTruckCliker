@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FoodTruckClicker.Upgrade
+namespace Upgrade
 {
     /// <summary>
     /// 업그레이드 데이터 ScriptableObject

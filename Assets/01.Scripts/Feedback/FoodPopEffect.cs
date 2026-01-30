@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace FoodTruckClicker.Feedback
+namespace Feedback
 {
     [RequireComponent(typeof(Rigidbody))]
     public class FoodPopEffect : MonoBehaviour

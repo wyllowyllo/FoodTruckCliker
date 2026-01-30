@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace FoodTruckClicker.Feedback
+namespace Feedback
 {
     /// <summary>
     /// 트럭 Punch Scale 효과

@@ -1,10 +1,10 @@
-using FoodTruckClicker.Currency;
-using FoodTruckClicker.Events;
-using FoodTruckClicker.Menu;
-using FoodTruckClicker.Upgrade;
+using Events;
+using Goods.Manager;
+using Menu;
+using Upgrade;
 using UnityEngine;
 
-namespace FoodTruckClicker.AutoIncome
+namespace AutoIncome
 {
     /// <summary>
     /// 자동 수익 관리자

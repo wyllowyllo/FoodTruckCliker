@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using FoodTruckClicker.Currency;
-using FoodTruckClicker.Events;
-using FoodTruckClicker.Menu;
+using Events;
+using Goods.Manager;
+using Menu;
 using UnityEngine;
 
-namespace FoodTruckClicker.Upgrade
+namespace Upgrade
 {
     /// <summary>
     /// 업그레이드 관리자

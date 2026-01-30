@@ -1,13 +1,14 @@
-using FoodTruckClicker.AutoIncome;
-using FoodTruckClicker.Click;
-using FoodTruckClicker.Currency;
-using FoodTruckClicker.Events;
-using FoodTruckClicker.Menu;
-using FoodTruckClicker.UI;
-using FoodTruckClicker.Upgrade;
+using AutoIncome;
+using Click;
+using Events;
+using Goods.Manager;
+using Goods.Repository;
+using Menu;
+using UI;
+using Upgrade;
 using UnityEngine;
 
-namespace FoodTruckClicker.Core
+namespace Core
 {
     /// <summary>
     /// 게임 매니저 - 시스템 초기화 및 의존성 연결
@@ -39,6 +40,8 @@ namespace FoodTruckClicker.Core
         private UpgradeButtonUI[] _upgradeButtons;
 
         private ClickRevenueCalculator _clickRevenueCalculator;
+
+        private ICurrencyRepository _currencyRepository;
 
         private void Awake()
         {
@@ -77,6 +80,14 @@ namespace FoodTruckClicker.Core
         private void InitializeSystems()
         {
             Debug.Log("[GameManager] 시스템 초기화 시작");
+
+            // 0. CurrencyRepository 생성 및 GoldManager 초기화
+            _currencyRepository = new LocalCurrencyRepository();
+            if (_goldManager != null)
+            {
+                _goldManager.Initialize(_currencyRepository);
+                Debug.Log("[GameManager] GoldManager 초기화 완료 (Repository 주입)");
+            }
 
             // 1. MenuManager 초기화
             if (_menuManager != null)

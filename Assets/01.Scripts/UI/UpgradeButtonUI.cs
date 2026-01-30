@@ -1,10 +1,10 @@
-using FoodTruckClicker.Events;
-using FoodTruckClicker.Upgrade;
+using Events;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Upgrade;
 
-namespace FoodTruckClicker.UI
+namespace UI
 {
     /// <summary>
     /// 업그레이드 버튼 UI
