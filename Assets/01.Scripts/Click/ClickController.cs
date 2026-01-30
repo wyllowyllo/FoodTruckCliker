@@ -11,12 +11,12 @@ namespace FoodTruckClicker.Click
     public class ClickController : MonoBehaviour, IPointerClickHandler
     {
         private IRevenueCalculator _revenueCalculator;
-        private ICurrencyModifier _currencyModifier;
+        private GoldManager _goldManager;
 
-        public void Initialize(IRevenueCalculator revenueCalculator, ICurrencyModifier currencyModifier)
+        public void Initialize(IRevenueCalculator revenueCalculator, GoldManager goldManager)
         {
             _revenueCalculator = revenueCalculator;
-            _currencyModifier = currencyModifier;
+            _goldManager = goldManager;
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -27,12 +27,12 @@ namespace FoodTruckClicker.Click
 
         private void ProcessClick()
         {
-            if (_revenueCalculator == null || _currencyModifier == null)
+            if (_revenueCalculator == null || _goldManager == null)
             {
                 Debug.LogWarning("[ClickController] 초기화 안됨 - RevenueCalculator: " +
                     (_revenueCalculator == null ? "NULL" : "OK") +
-                    ", CurrencyModifier: " +
-                    (_currencyModifier == null ? "NULL" : "OK"));
+                    ", GoldManager: " +
+                    (_goldManager == null ? "NULL" : "OK"));
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace FoodTruckClicker.Click
 
             if (goldToAdd > 0)
             {
-                _currencyModifier.AddGold(goldToAdd);
+                _goldManager.AddGold(goldToAdd);
             }
 
             GameEvents.RaiseRevenueEarned(result.Revenue, result.IsCritical, result.MenuCount, false);

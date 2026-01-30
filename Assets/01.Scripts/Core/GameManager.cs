@@ -94,7 +94,6 @@ namespace FoodTruckClicker.Core
             {
                 _upgradeManager.Initialize(
                     _goldManager,
-                    _goldManager,
                     _menuManager,
                     OnFoodTruckUpgraded
                 );

@@ -10,42 +10,24 @@ namespace FoodTruckClicker.Feedback
     public class FloatingText : MonoBehaviour
     {
         [Header("참조")]
-        [SerializeField]
-        private TextMeshProUGUI _text;
+        [SerializeField] private TextMeshProUGUI _text;
 
-        [SerializeField]
-        private CanvasGroup _canvasGroup;
+        [SerializeField] private CanvasGroup _canvasGroup;
 
         [Header("애니메이션 설정")]
-        [SerializeField]
-        private float _moveDistance = 100f;
-
-        [SerializeField]
-        private float _duration = 0.8f;
-
-        [SerializeField]
-        private Ease _moveEase = Ease.OutCubic;
-
-        [SerializeField]
-        private Ease _fadeEase = Ease.InQuad;
+        [SerializeField] private float _moveDistance = 100f;
+        [SerializeField] private float _duration = 0.8f;
+        [SerializeField] private Ease _moveEase = Ease.OutCubic;
+        [SerializeField] private Ease _fadeEase = Ease.InQuad;
 
         [Header("랜덤 위치 설정")]
-        [SerializeField]
-        private float _randomOffsetX = 80f;
+        [SerializeField] private float _randomOffsetX = 80f;
 
         [Header("크리티컬 설정")]
-        [SerializeField]
-        private Color _normalColor = Color.white;
-
-        [SerializeField]
-        private Color _criticalColor = Color.yellow;
-
-        [SerializeField]
-        private float _normalScale = 1f;
-
-        [SerializeField]
-        private float _criticalScale = 1.5f;
-
+        [SerializeField] private Color _normalColor = Color.white;
+        [SerializeField] private Color _criticalColor = Color.yellow;
+        [SerializeField] private float _normalScale = 1f;
+        [SerializeField] private float _criticalScale = 1.5f;
         private RectTransform _rectTransform;
         private Sequence _animationSequence;
 

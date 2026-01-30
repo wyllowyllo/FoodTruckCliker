@@ -6,7 +6,7 @@ namespace FoodTruckClicker.Currency
     /// <summary>
     /// 골드 재화 관리자
     /// </summary>
-    public class GoldManager : MonoBehaviour, ICurrencyProvider, ICurrencyModifier
+    public class GoldManager : MonoBehaviour
     {
         [SerializeField]
         private int _startingGold = 0;

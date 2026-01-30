@@ -16,7 +16,7 @@ namespace FoodTruckClicker.AutoIncome
         private float _incomeInterval = 1f;
 
         private IUpgradeProvider _upgradeProvider;
-        private ICurrencyModifier _currencyModifier;
+        private GoldManager _goldManager;
         private IMenuProvider _menuProvider;
 
         private float _timer;
@@ -26,11 +26,11 @@ namespace FoodTruckClicker.AutoIncome
 
         public void Initialize(
             IUpgradeProvider upgradeProvider,
-            ICurrencyModifier currencyModifier,
+            GoldManager goldManager,
             IMenuProvider menuProvider)
         {
             _upgradeProvider = upgradeProvider;
-            _currencyModifier = currencyModifier;
+            _goldManager = goldManager;
             _menuProvider = menuProvider;
 
             RecalculateIncome();
@@ -48,7 +48,7 @@ namespace FoodTruckClicker.AutoIncome
 
         private void Update()
         {
-            if (_upgradeProvider == null || _currencyModifier == null)
+            if (_upgradeProvider == null || _goldManager == null)
             {
                 return;
             }
@@ -73,7 +73,7 @@ namespace FoodTruckClicker.AutoIncome
 
             if (goldToAdd > 0)
             {
-                _currencyModifier.AddGold(goldToAdd);
+                _goldManager.AddGold(goldToAdd);
                 GameEvents.RaiseRevenueEarned(goldToAdd, false, 1, true);
             }
         }

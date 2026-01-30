@@ -15,8 +15,7 @@ namespace FoodTruckClicker.Upgrade
         [SerializeField]
         private UpgradeData[] _upgrades;
 
-        private ICurrencyProvider _currencyProvider;
-        private ICurrencyModifier _currencyModifier;
+        private GoldManager _goldManager;
         private IMenuProvider _menuProvider;
         private Action<int, float> _onFoodTruckUpgraded;
 
@@ -24,13 +23,11 @@ namespace FoodTruckClicker.Upgrade
         private Dictionary<string, int> _upgradeLevels;
 
         public void Initialize(
-            ICurrencyProvider currencyProvider,
-            ICurrencyModifier currencyModifier,
+            GoldManager goldManager,
             IMenuProvider menuProvider = null,
             Action<int, float> onFoodTruckUpgraded = null)
         {
-            _currencyProvider = currencyProvider;
-            _currencyModifier = currencyModifier;
+            _goldManager = goldManager;
             _menuProvider = menuProvider;
             _onFoodTruckUpgraded = onFoodTruckUpgraded;
 
@@ -137,7 +134,7 @@ namespace FoodTruckClicker.Upgrade
                 return false;
             }
 
-            return _currencyProvider.HasEnough(cost);
+            return _goldManager.HasEnough(cost);
         }
 
         /// <summary>
@@ -151,7 +148,7 @@ namespace FoodTruckClicker.Upgrade
             }
 
             int cost = GetNextLevelCost(upgradeId);
-            if (!_currencyModifier.SpendGold(cost))
+            if (!_goldManager.SpendGold(cost))
             {
                 return false;
             }
