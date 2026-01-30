@@ -12,11 +12,11 @@ namespace FoodTruckClicker.Click
     /// </summary>
     public class ClickRevenueCalculator : IRevenueCalculator
     {
-        private readonly IUpgradeProvider _upgradeProvider;
+        private readonly UpgradeManager _upgradeProvider;
         private readonly MenuManager _menuProvider;
 
         public ClickRevenueCalculator(
-            IUpgradeProvider upgradeProvider,
+            UpgradeManager upgradeProvider,
             MenuManager menuProvider)
         {
             _upgradeProvider = upgradeProvider;

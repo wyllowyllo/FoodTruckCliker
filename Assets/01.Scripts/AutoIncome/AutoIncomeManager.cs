@@ -15,7 +15,7 @@ namespace FoodTruckClicker.AutoIncome
         [SerializeField]
         private float _incomeInterval = 1f;
 
-        private IUpgradeProvider _upgradeProvider;
+        private UpgradeManager _upgradeProvider;
         private GoldManager _goldManager;
         private MenuManager _menuProvider;
 
@@ -25,7 +25,7 @@ namespace FoodTruckClicker.AutoIncome
         public float IncomePerSecond => _cachedIncomePerSecond;
 
         public void Initialize(
-            IUpgradeProvider upgradeProvider,
+            UpgradeManager upgradeProvider,
             GoldManager goldManager,
             MenuManager menuProvider)
         {

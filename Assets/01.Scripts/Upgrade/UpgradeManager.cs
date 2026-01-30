@@ -10,7 +10,7 @@ namespace FoodTruckClicker.Upgrade
     /// <summary>
     /// 업그레이드 관리자
     /// </summary>
-    public class UpgradeManager : MonoBehaviour, IUpgradeProvider
+    public class UpgradeManager : MonoBehaviour
     {
         [SerializeField]
         private UpgradeData[] _upgrades;
