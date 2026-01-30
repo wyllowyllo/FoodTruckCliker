@@ -8,7 +8,7 @@ namespace FoodTruckClicker.Menu
     /// 메뉴 관리자
     /// 해금된 메뉴 중 랜덤 선택 및 가격 배율 적용
     /// </summary>
-    public class MenuManager : MonoBehaviour, IMenuProvider
+    public class MenuManager : MonoBehaviour
     {
         [Header("메뉴 목록")]
         [SerializeField] private List<MenuData> _allMenus = new List<MenuData>();

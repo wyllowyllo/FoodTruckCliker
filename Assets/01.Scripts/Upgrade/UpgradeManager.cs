@@ -16,7 +16,7 @@ namespace FoodTruckClicker.Upgrade
         private UpgradeData[] _upgrades;
 
         private GoldManager _goldManager;
-        private IMenuProvider _menuProvider;
+        private MenuManager _menuProvider;
         private Action<int, float> _onFoodTruckUpgraded;
 
         private Dictionary<string, UpgradeData> _upgradeDataMap;
@@ -24,7 +24,7 @@ namespace FoodTruckClicker.Upgrade
 
         public void Initialize(
             GoldManager goldManager,
-            IMenuProvider menuProvider = null,
+            MenuManager menuProvider = null,
             Action<int, float> onFoodTruckUpgraded = null)
         {
             _goldManager = goldManager;

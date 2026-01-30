@@ -17,7 +17,7 @@ namespace FoodTruckClicker.AutoIncome
 
         private IUpgradeProvider _upgradeProvider;
         private GoldManager _goldManager;
-        private IMenuProvider _menuProvider;
+        private MenuManager _menuProvider;
 
         private float _timer;
         private float _cachedIncomePerSecond;
@@ -27,7 +27,7 @@ namespace FoodTruckClicker.AutoIncome
         public void Initialize(
             IUpgradeProvider upgradeProvider,
             GoldManager goldManager,
-            IMenuProvider menuProvider)
+            MenuManager menuProvider)
         {
             _upgradeProvider = upgradeProvider;
             _goldManager = goldManager;
