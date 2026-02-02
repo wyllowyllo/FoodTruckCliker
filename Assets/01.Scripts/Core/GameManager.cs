@@ -2,12 +2,11 @@ using AutoIncome;
 using Click;
 using Events;
 using Goods.Manager;
-using Goods.Repository;
 using Menu;
 using UI;
 using Upgrade.Domain;
 using Upgrade.Manager;
-using Upgrade.Repository;
+using OutGame.UserData.Manager;
 using UnityEngine;
 
 namespace Core
@@ -32,8 +31,6 @@ namespace Core
         [SerializeField] private UpgradeButtonUI[] _upgradeButtons;
 
         private ClickRevenueCalculator _clickRevenueCalculator;
-        private ICurrencyRepository _currencyRepository;
-        private IUpgradeRepository _upgradeRepository;
 
         private void Awake()
         {
@@ -71,12 +68,11 @@ namespace Core
 
         private void InitializeSystems()
         {
-            // 0. CurrencyRepository 생성 및 GoldManager 초기화
-            _currencyRepository = new LocalCurrencyRepository();
+            // 0. GoldManager 초기화
+            string userId = AccountManager.Instance.Email;
             if (_goldManager != null)
             {
-                _goldManager.Initialize(_currencyRepository);
-                
+                _goldManager.Initialize(userId);
             }
 
             // 1. MenuManager 초기화
@@ -91,16 +87,14 @@ namespace Core
             }
 
             // 2. UpgradeManager 초기화 (MenuManager 연동)
-            _upgradeRepository = new LocalUpgradeRepository();
             if (_upgradeManager != null && _goldManager != null)
             {
                 _upgradeManager.Initialize(
                     _goldManager,
-                    _upgradeRepository,
+                    userId,
                     _menuManager,
                     OnFoodTruckUpgraded
                 );
-               
             }
             else
             {

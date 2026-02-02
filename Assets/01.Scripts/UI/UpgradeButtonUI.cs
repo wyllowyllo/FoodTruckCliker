@@ -193,24 +193,24 @@ namespace UI
 
             float value = _upgradeData.GetValue(displayLevel);
 
-            switch (_upgradeData.TargetType)
+            switch (_upgradeData.Type)
             {
-                case EUpgradeTargetType.ClickRevenue:
+                case EUpgradeType.ClickRevenue:
                     return $"x{value:F1}";
 
-                case EUpgradeTargetType.CriticalChance:
+                case EUpgradeType.CriticalChance:
                     return $"{value * 100:F0}%";
 
-                case EUpgradeTargetType.CriticalProfit:
+                case EUpgradeType.CriticalProfit:
                     return $"{value:F0}개";
 
-                case EUpgradeTargetType.ChefCount:
+                case EUpgradeType.ChefCount:
                     return $"{value:F0}명";
 
-                case EUpgradeTargetType.CookingSpeed:
+                case EUpgradeType.CookingSpeed:
                     return $"x{value:F1}";
 
-                case EUpgradeTargetType.FoodTruck:
+                case EUpgradeType.FoodTruck:
                     return $"Lv.{value:F0}";
 
                 default:
