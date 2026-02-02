@@ -583,6 +583,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8484516349582312651, guid: 4e39c9578f7e31f4fba1fa005e046731, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8484516349582312651, guid: 4e39c9578f7e31f4fba1fa005e046731, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8484516349582312651, guid: 4e39c9578f7e31f4fba1fa005e046731, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8484516349582312651, guid: 4e39c9578f7e31f4fba1fa005e046731, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8484516349582312651, guid: 4e39c9578f7e31f4fba1fa005e046731, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8484516349582312651, guid: 4e39c9578f7e31f4fba1fa005e046731, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9158320407428243738, guid: 4e39c9578f7e31f4fba1fa005e046731, type: 3}
+      propertyPath: m_text
+      value: "\u200B"
+      objectReference: {fileID: 0}
     - target: {fileID: 9219301316344088358, guid: 4e39c9578f7e31f4fba1fa005e046731, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

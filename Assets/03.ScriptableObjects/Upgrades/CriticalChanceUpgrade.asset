@@ -23,4 +23,4 @@ MonoBehaviour:
   - 20
   - 30
   _eModifierType: 0
-  _targetType: 1
+  _type: 1

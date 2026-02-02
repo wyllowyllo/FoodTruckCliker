@@ -49,6 +49,30 @@ namespace Upgrade.Manager
             }
 
             _upgradeLevels = _repository.LoadAll(upgradeIds);
+
+            ApplyLoadedEffects();
+        }
+
+        /// <summary>
+        /// 저장된 업그레이드 효과 적용 (게임 로드 시)
+        /// </summary>
+        private void ApplyLoadedEffects()
+        {
+            foreach (var upgrade in _upgrades)
+            {
+                if (upgrade == null)
+                {
+                    continue;
+                }
+
+                int level = GetLevel(upgrade.UpgradeId);
+                if (level <= 0)
+                {
+                    continue;
+                }
+
+                HandleUpgradeEffects(upgrade);
+            }
         }
 
         public float GetValue(EUpgradeType type)
@@ -151,6 +175,10 @@ namespace Upgrade.Manager
         {
             if (!CanUpgrade(upgradeId))
             {
+                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - ID: {upgradeId}, " +
+                    $"DataMap 포함: {_upgradeDataMap.ContainsKey(upgradeId)}, " +
+                    $"비용: {GetNextLevelCost(upgradeId)}, " +
+                    $"현재 레벨: {GetLevel(upgradeId)}");
                 return false;
             }
 
@@ -165,9 +193,15 @@ namespace Upgrade.Manager
 
             _repository.SaveLevel(upgradeId, newLevel);
 
+            if (_upgradeDataMap.TryGetValue(upgradeId, out UpgradeData data))
+            {
+                Debug.Log($"[UpgradeManager] 업그레이드 성공 - {data.DisplayName}({upgradeId}) " +
+                    $"Lv.{newLevel}, Type: {data.Type}, Value: {data.GetValue(newLevel)}");
+            }
+
             GameEvents.RaiseUpgradePurchased(upgradeId, newLevel);
 
-            if (_upgradeDataMap.TryGetValue(upgradeId, out UpgradeData data))
+            if (data != null)
             {
                 HandleUpgradeEffects(data);
             }

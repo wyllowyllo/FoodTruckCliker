@@ -9,37 +9,27 @@ namespace Upgrade.Domain
     public class UpgradeData : ScriptableObject
     {
         [Header("기본 정보")]
-        [SerializeField]
-        private string _upgradeId;
+        [SerializeField] private string _upgradeId;
 
-        [SerializeField]
-        private string _displayName;
+        [SerializeField] private string _displayName;
 
-        [SerializeField]
-        [TextArea]
-        private string _description;
+        [SerializeField] [TextArea] private string _description;
 
-        [SerializeField]
-        private Sprite _icon;
+        [SerializeField] private Sprite _icon;
 
         [Header("레벨 데이터")]
-        [SerializeField]
-        private int _maxLevel = 3;
+        [SerializeField] private int _maxLevel = 3;
 
         [SerializeField]
-        [Tooltip("레벨별 비용 (배열 크기 = MaxLevel)")]
-        private int[] _costsPerLevel;
+        [Tooltip("레벨별 비용 (배열 크기 = MaxLevel)")] private int[] _costsPerLevel;
 
         [SerializeField]
-        [Tooltip("레벨별 효과 값 (배열 크기 = MaxLevel)")]
-        private float[] _valuesPerLevel;
+        [Tooltip("레벨별 효과 값 (배열 크기 = MaxLevel)")] private float[] _valuesPerLevel;
 
         [Header("수정자 설정")]
-        [SerializeField]
-        private EModifierType _eModifierType;
+        [SerializeField] private EModifierType _eModifierType;
 
-        [SerializeField]
-        private EUpgradeType _type;
+        [SerializeField] private EUpgradeType _type;
 
         // Properties
         public string UpgradeId => _upgradeId;
