@@ -1,8 +1,8 @@
+using Core;
 using OutGame.UserData.Domain;
 using OutGame.UserData.Manager;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoginScene : MonoBehaviour
@@ -36,18 +36,14 @@ public class LoginScene : MonoBehaviour
         Refresh();
     }
 
-    public void OnEmailTextChanged(string email)
+    public void OnEmailTextChanged(string _)
     {
         var emailSpec = new AccountEmailSpecification();
-        if (!emailSpec.IsSatisfiedBy(email))
-        {
-            _messageTextUI.text = emailSpec.ErrorMessage;
-            _loginButton.enabled = false;
-            return;
-        }
-        
-        _messageTextUI.text = "완벽한 이메일입니다.";
-        _loginButton.enabled = true;
+        bool isValid = emailSpec.IsSatisfiedBy(_idInputField.text);
+
+        _messageTextUI.text = isValid ? "완벽한 이메일입니다." : emailSpec.ErrorMessage;
+        _loginButton.interactable = isValid;
+        _registerButton.interactable = isValid;
     }
     private void AddButtonEvents()
     {
@@ -65,6 +61,12 @@ public class LoginScene : MonoBehaviour
         _loginButton.gameObject.SetActive(_mode == SceneMode.Login);
         _gotoLoginButton.gameObject.SetActive(_mode == SceneMode.Register);
         _registerButton.gameObject.SetActive(_mode == SceneMode.Register);
+
+        // 현재 이메일 유효성에 따라 버튼 활성화 동기화
+        var emailSpec = new AccountEmailSpecification();
+        bool isValid = emailSpec.IsSatisfiedBy(_idInputField.text);
+        _loginButton.interactable = isValid;
+        _registerButton.interactable = isValid;
     }
 
     private void Login()
@@ -76,7 +78,7 @@ public class LoginScene : MonoBehaviour
         var result = AccountManager.Instance.TryLogin(email, password);
         if (result.Success)
         {
-            GotoLogin();
+            SceneLoader.LoadScene(SceneLoader.GameScene);
         }
         else
         {
@@ -99,6 +101,7 @@ public class LoginScene : MonoBehaviour
         var result = AccountManager.Instance.TryRegister(email, password);
         if (result.Success)
         {
+            _messageTextUI.text = "회원가입에 성공했습니다. 로그인해주세요.";
             GotoLogin();
         }
         else

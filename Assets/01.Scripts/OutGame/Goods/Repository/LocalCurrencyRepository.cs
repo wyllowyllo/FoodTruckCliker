@@ -14,9 +14,7 @@ namespace Goods.Repository
         
         public void Save(CurrencySaveData saveData)
         {
-          
-            PlayerPrefs.SetString(_userId, saveData.Currency.ToString("G17"));
-            
+            PlayerPrefs.SetInt(_userId, saveData.Currency);
         }
 
         public CurrencySaveData Load()
@@ -24,7 +22,7 @@ namespace Goods.Repository
             CurrencySaveData data = new CurrencySaveData();
             if (PlayerPrefs.HasKey(_userId))
             {
-                data.Currency = int.Parse(PlayerPrefs.GetString(_userId, "0"));
+                data.Currency = PlayerPrefs.GetInt(_userId, 0);
             }
             return data;
         }
