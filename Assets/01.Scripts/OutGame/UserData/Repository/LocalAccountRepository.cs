@@ -7,7 +7,7 @@ namespace OutGame.UserData.Repository
 {
     public class LocalAccountRepository : IAccountRepository
     {
-        private const string SALT = "";
+        private const string SALT = "MG27";
         public bool IsEmailAvailable(string email)
         {
             // 이메일 검사
