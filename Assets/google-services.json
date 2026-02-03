@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "864380907778",
+    "project_id": "foodtrucker-d301c",
+    "storage_bucket": "foodtrucker-d301c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864380907778:android:0f607d2bb9305aebbc121b",
+        "android_client_info": {
+          "package_name": "com.harborgames.FoodTrucker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr6lGlz8jZ7v6dXDZn2BlH6oAAcym5GZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
