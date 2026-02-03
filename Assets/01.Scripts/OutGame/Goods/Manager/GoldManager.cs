@@ -9,19 +9,19 @@ namespace Goods.Manager
 {
     public class GoldManager : MonoBehaviour
     {
-        [SerializeField] private int _startingGold = 0;
+        [SerializeField] private long _startingGold = 0;
 
         private Currency _gold;
         private ICurrencyRepository _repository;
 
-        public int CurrentGold => _gold.Value;
+        public long CurrentGold => _gold.Value;
 
         public void Initialize(string userId)
         {
             _repository = new LocalCurrencyRepository(userId);
 
             CurrencySaveData savedGold = _repository.Load();
-            int initialGold = savedGold.Currency > 0 ? savedGold.Currency : _startingGold;
+            long initialGold = savedGold.Currency > 0 ? savedGold.Currency : _startingGold;
             _gold = new Currency(initialGold);
         }
 
@@ -37,7 +37,7 @@ namespace Goods.Manager
 
        
 
-        public void AddGold(int amount)
+        public void AddGold(long amount)
         {
             if (amount <= 0)
             {
@@ -49,7 +49,7 @@ namespace Goods.Manager
             OnGoldChanged();
         }
 
-        public bool SpendGold(int amount)
+        public bool SpendGold(long amount)
         {
             if (amount <= 0 || !HasEnough(amount))
             {
@@ -61,7 +61,7 @@ namespace Goods.Manager
             return true;
         }
         
-        public bool HasEnough(int amount)
+        public bool HasEnough(long amount)
         {
             return _gold.Value >= amount;
         }

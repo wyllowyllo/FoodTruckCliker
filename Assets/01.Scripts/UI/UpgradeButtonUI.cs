@@ -80,7 +80,7 @@ namespace UI
             }
         }
 
-        private void HandleGoldChanged(int newGold)
+        private void HandleGoldChanged(long newGold)
         {
             RefreshUI();
         }
@@ -154,7 +154,7 @@ namespace UI
                 }
                 else
                 {
-                    int cost = _upgradeManager.GetNextLevelCost(upgradeId);
+                    long cost = _upgradeManager.GetNextLevelCost(upgradeId);
                     _costText.text = $"{cost:N0}G";
                 }
             }

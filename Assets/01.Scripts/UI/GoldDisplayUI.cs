@@ -23,12 +23,12 @@ namespace UI
             GameEvents.OnGoldChanged -= HandleGoldChanged;
         }
 
-        private void HandleGoldChanged(int newGold)
+        private void HandleGoldChanged(long newGold)
         {
             UpdateDisplay(newGold);
         }
 
-        private void UpdateDisplay(int gold)
+        private void UpdateDisplay(long gold)
         {
             if (_goldText != null)
             {

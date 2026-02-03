@@ -11,16 +11,21 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 954d7052a144d2e4d919c6cd8d334d4f, type: 3}
   m_Name: Hire
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   _upgradeId: hire
   _displayName: "\uC870\uB9AC\uC0AC \uACE0\uC6A9"
   _description: "\uC870\uB9AC\uC0AC + 1"
   _icon: {fileID: 0}
+  _scalingMode: 1
   _maxLevel: 3
   _costsPerLevel: 64000000f4010000d0070000
   _valuesPerLevel:
   - 1
   - 2
   - 3
+  _baseCost: 100
+  _costMultiplier: 1.25
+  _baseValue: 1
+  _valueIncrement: 1
   _eModifierType: 0
   _type: 3

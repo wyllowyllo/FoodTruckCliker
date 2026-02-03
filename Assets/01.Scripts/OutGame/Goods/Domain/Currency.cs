@@ -2,9 +2,9 @@ namespace Goods.Domain
 {
     public readonly struct Currency 
     {
-        public readonly int Value;
+        public readonly long Value;
 
-        public Currency(int value)
+        public Currency(long value)
         {
             Value = value > 0 ? value : 0;
         }
@@ -29,12 +29,12 @@ namespace Goods.Domain
             return a.Value != b.Value;
         }
         
-        public static implicit operator Currency(int value)
+        public static implicit operator Currency(long value)
         {
             return new Currency(value);
         }
-        
-        public static explicit operator int(Currency currency)
+
+        public static explicit operator long(Currency currency)
         {
             return currency.Value;
         }

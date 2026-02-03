@@ -16,6 +16,15 @@ namespace Upgrade.Domain
     }
 
     /// <summary>
+    /// 업그레이드 스케일링 모드
+    /// </summary>
+    public enum EScalingMode
+    {
+        Array,      // 배열 기반 (고정 레벨)
+        Formula     // 공식 기반 (무한 레벨)
+    }
+
+    /// <summary>
     /// 업그레이드 수정자 타입
     /// </summary>
     public enum EModifierType

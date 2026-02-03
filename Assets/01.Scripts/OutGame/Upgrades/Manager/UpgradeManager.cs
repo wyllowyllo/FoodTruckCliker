@@ -77,9 +77,6 @@ namespace Upgrade.Manager
 
         public float GetValue(EUpgradeType type)
         {
-            float additiveSum = 0f;
-            float multiplicativeProduct = 1f;
-
             foreach (var upgrade in _upgrades)
             {
                 if (upgrade == null || upgrade.Type != type)
@@ -93,30 +90,7 @@ namespace Upgrade.Manager
                     continue;
                 }
 
-                float value = upgrade.GetValue(level);
-
-                if (upgrade.EModifierType == EModifierType.Additive)
-                {
-                    additiveSum += value;
-                }
-                else
-                {
-                    multiplicativeProduct *= value;
-                }
-            }
-
-            // 가산 + 승산 결합
-            if (additiveSum > 0 && multiplicativeProduct > 1f)
-            {
-                return additiveSum * multiplicativeProduct;
-            }
-            else if (additiveSum > 0)
-            {
-                return additiveSum;
-            }
-            else if (multiplicativeProduct != 1f)
-            {
-                return multiplicativeProduct;
+                return upgrade.GetValue(level);
             }
 
             return GetDefaultValueForType(type);
@@ -139,7 +113,7 @@ namespace Upgrade.Manager
             return 0;
         }
 
-        public int GetNextLevelCost(string upgradeId)
+        public long GetNextLevelCost(string upgradeId)
         {
             if (!_upgradeDataMap.TryGetValue(upgradeId, out UpgradeData data))
             {
@@ -159,7 +133,7 @@ namespace Upgrade.Manager
 
         public bool CanUpgrade(string upgradeId)
         {
-            int cost = GetNextLevelCost(upgradeId);
+            long cost = GetNextLevelCost(upgradeId);
             if (cost <= 0)
             {
                 return false;
@@ -182,7 +156,7 @@ namespace Upgrade.Manager
                 return false;
             }
 
-            int cost = GetNextLevelCost(upgradeId);
+            long cost = GetNextLevelCost(upgradeId);
             if (!_goldManager.SpendGold(cost))
             {
                 return false;

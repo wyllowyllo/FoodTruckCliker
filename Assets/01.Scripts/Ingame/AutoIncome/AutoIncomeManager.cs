@@ -70,7 +70,7 @@ namespace AutoIncome
 
         private void ProcessAutoIncome()
         {
-            int goldToAdd = Mathf.FloorToInt(_cachedIncomePerSecond * _incomeInterval);
+            long goldToAdd = (long)(_cachedIncomePerSecond * _incomeInterval);
 
             if (goldToAdd > 0)
             {

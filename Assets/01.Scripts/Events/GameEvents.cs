@@ -10,9 +10,9 @@ namespace Events
         /// <summary>
         /// 골드가 변경되었을 때 발생
         /// </summary>
-        public static event Action<int> OnGoldChanged;
+        public static event Action<long> OnGoldChanged;
 
-        public static void RaiseGoldChanged(int newGold)
+        public static void RaiseGoldChanged(long newGold)
         {
             OnGoldChanged?.Invoke(newGold);
         }
