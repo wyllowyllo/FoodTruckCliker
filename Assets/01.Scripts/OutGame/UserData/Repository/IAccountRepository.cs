@@ -1,11 +1,12 @@
-﻿using OutGame.UserData.Domain;
+﻿using Cysharp.Threading.Tasks;
+using OutGame.UserData.Domain;
 
 namespace OutGame.UserData.Repository
 {
     public interface IAccountRepository
     {
-        AuthResult Register(string email, string password);
-        AuthResult Login(string email, string password);
+        UniTask<AccountResult> Register(string email, string password);
+        UniTask<AccountResult> Login(string email, string password);
         void Logout();
     }
 }

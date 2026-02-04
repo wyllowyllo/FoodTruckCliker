@@ -1,4 +1,6 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
+using Firebase.Auth;
 using OutGame.UserData.Domain;
 using OutGame.UserData.Repository;
 using UnityEngine;
@@ -32,7 +34,7 @@ namespace OutGame.UserData.Manager
             _repository = new LocalAccountRepository();
         }
 
-        public AuthResult TryLogin(string email, string password)
+        public async UniTask<AccountResult> TryLogin(string email, string password)
         {
             try
             {
@@ -41,7 +43,7 @@ namespace OutGame.UserData.Manager
             catch(Exception ex)
             {
                 // 1. 유효성 검증 통과 못하면 실패
-                return new AuthResult
+                return new AccountResult
                 {
                     Success = false,
                     ErrorMessage = ex.Message,
@@ -49,11 +51,11 @@ namespace OutGame.UserData.Manager
             }
         
             // 2. 레포지토리를 이용한 로그임
-            AuthResult result = _repository.Login(email, password);
+            AccountResult result =  await  _repository.Login(email, password);
             if (result.Success)
             {
                 _currentAccount = result.Account;
-                return new AuthResult
+                return new AccountResult
                 {
                     Success = true,
                     Account = result.Account,
@@ -61,7 +63,7 @@ namespace OutGame.UserData.Manager
             }
             else
             {
-                return new AuthResult
+                return new AccountResult
                 {
                     Success = false,
                     ErrorMessage = result.ErrorMessage,
@@ -69,7 +71,7 @@ namespace OutGame.UserData.Manager
             }
         }
 
-        public AuthResult TryRegister(string email, string password)
+        public async UniTask<AccountResult> TryRegister(string email, string password)
         {
             try
             {
@@ -78,7 +80,7 @@ namespace OutGame.UserData.Manager
             catch(Exception ex)
             {
                 // 2. 유효성 검증 통과 못하면 실패
-                return new AuthResult
+                return new AccountResult
                 {
                     Success = false,
                     ErrorMessage = ex.Message,
@@ -86,17 +88,17 @@ namespace OutGame.UserData.Manager
             }
         
           
-            AuthResult result = _repository.Register(email, password);
+            AccountResult result = await _repository.Register(email, password);
             if (result.Success)
             {
-                return new AuthResult
+                return new AccountResult
                 {
                     Success = true,
                 };
             }
             else
             {
-                return new AuthResult()
+                return new AccountResult()
                 {
                     Success = false,
                     ErrorMessage = result.ErrorMessage,

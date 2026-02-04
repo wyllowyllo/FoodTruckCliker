@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Goods.Repository
@@ -13,12 +14,12 @@ namespace Goods.Repository
             _saveKey = KEY_PREFIX + userId;
         }
         
-        public void Save(CurrencySaveData saveData)
+        public async UniTaskVoid Save(CurrencySaveData saveData)
         {
             PlayerPrefs.SetString(_saveKey, saveData.Currency.ToString());
         }
 
-        public CurrencySaveData Load()
+        public async UniTask<CurrencySaveData> Load()
         {
             CurrencySaveData data = new CurrencySaveData();
             if (PlayerPrefs.HasKey(_saveKey))

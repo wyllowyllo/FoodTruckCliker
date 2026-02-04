@@ -3,6 +3,7 @@ using OutGame.UserData.Domain;
 using OutGame.UserData.Manager;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoginScene : MonoBehaviour
@@ -36,7 +37,7 @@ public class LoginScene : MonoBehaviour
         Refresh();
     }
 
-    public void OnEmailTextChanged(string _)
+    public void OnEmailTextChanged(string email)
     {
         var emailSpec = new AccountEmailSpecification();
         bool isValid = emailSpec.IsSatisfiedBy(_idInputField.text);
@@ -69,16 +70,16 @@ public class LoginScene : MonoBehaviour
         _registerButton.interactable = isValid;
     }
 
-    private void Login()
+    private async void Login()
     {
         // 로그인
         string email = _idInputField.text;
         string password = _passwordInputField.text;
         
-        var result = AccountManager.Instance.TryLogin(email, password);
+        var result = await AccountManager.Instance.TryLogin(email, password);
         if (result.Success)
         {
-            SceneLoader.LoadScene(SceneLoader.GameScene);
+            SceneManager.LoadScene("GameScene");
         }
         else
         {
@@ -86,7 +87,7 @@ public class LoginScene : MonoBehaviour
         }
     }
 
-    private void Register()
+    private async void Register()
     {
         string email = _idInputField.text;
         string password = _passwordInputField.text;
@@ -98,7 +99,7 @@ public class LoginScene : MonoBehaviour
             return;
         }
 
-        var result = AccountManager.Instance.TryRegister(email, password);
+        var result = await AccountManager.Instance.TryRegister(email, password);
         if (result.Success)
         {
             _messageTextUI.text = "회원가입에 성공했습니다. 로그인해주세요.";

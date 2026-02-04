@@ -16,11 +16,11 @@ namespace Goods.Manager
 
         public long CurrentGold => _gold.Value;
 
-        public void Initialize(string userId)
+        public async void Initialize(string userId)
         {
             _repository = new LocalCurrencyRepository(userId);
 
-            CurrencySaveData savedGold = _repository.Load();
+            CurrencySaveData savedGold = await _repository.Load();
             long initialGold = savedGold.Currency > 0 ? savedGold.Currency : _startingGold;
             _gold = new Currency(initialGold);
         }
