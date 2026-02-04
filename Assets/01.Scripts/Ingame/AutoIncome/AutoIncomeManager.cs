@@ -1,16 +1,12 @@
 using Events;
 using Goods.Manager;
 using Menu;
-using Upgrade.Domain;
-using Upgrade.Manager;
+using OutGame.Upgrades.Domain;
+using OutGame.Upgrades.Manager;
 using UnityEngine;
 
 namespace AutoIncome
 {
-    /// <summary>
-    /// 자동 수익 관리자
-    /// 공식: 요리사 수 × 클릭 수익 × 요리 속도 배율
-    /// </summary>
     public class AutoIncomeManager : MonoBehaviour
     {
         [SerializeField]
@@ -92,8 +88,8 @@ namespace AutoIncome
                 return;
             }
 
-            // 요리사 수
-            int chefCount = _upgradeProvider.GetIntValue(EUpgradeType.ChefCount);
+            var chefUpgrade = _upgradeProvider.GetUpgrade(EUpgradeType.ChefCount);
+            int chefCount = Mathf.FloorToInt(chefUpgrade?.Effect ?? 0f);
 
             if (chefCount <= 0)
             {
@@ -102,19 +98,16 @@ namespace AutoIncome
                 return;
             }
 
-            // 평균 메뉴 가격
             float menuPrice = _menuProvider?.AveragePrice ?? 10f;
 
-            // 클릭 수익 배율
-            float clickRevenue = _upgradeProvider.GetValue(EUpgradeType.ClickRevenue);
+            var clickUpgrade = _upgradeProvider.GetUpgrade(EUpgradeType.ClickRevenue);
+            float clickRevenue = clickUpgrade?.Effect ?? 1f;
 
-            // 요리 속도 배율
-            float cookingSpeed = _upgradeProvider.GetValue(EUpgradeType.CookingSpeed);
+            var speedUpgrade = _upgradeProvider.GetUpgrade(EUpgradeType.CookingSpeed);
+            float cookingSpeed = speedUpgrade?.Effect ?? 1f;
 
-            // 기본 클릭 수익 = 메뉴 가격 × 클릭 수익 배율
             float baseClickIncome = menuPrice * clickRevenue;
 
-            // 공식: 요리사 수 × 클릭 수익 × 요리 속도
             _cachedIncomePerSecond = chefCount * baseClickIncome * cookingSpeed;
 
             GameEvents.RaiseAutoIncomeChanged(_cachedIncomePerSecond);

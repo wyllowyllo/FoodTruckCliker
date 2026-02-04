@@ -3,9 +3,8 @@ using Click;
 using Events;
 using Goods.Manager;
 using Menu;
+using OutGame.Upgrades.Manager;
 using UI;
-using Upgrade.Domain;
-using Upgrade.Manager;
 using OutGame.UserData.Manager;
 using UnityEngine;
 
@@ -38,8 +37,14 @@ namespace Core
             InitializeSystems();
         }
 
+        private void OnEnable()
+        {
+            GameEvents.OnFoodTruckUpgraded += HandleFoodTruckUpgraded;
+        }
+
         private void OnDestroy()
         {
+            GameEvents.OnFoodTruckUpgraded -= HandleFoodTruckUpgraded;
             GameEvents.ClearAllSubscriptions();
         }
 
@@ -89,12 +94,7 @@ namespace Core
             // 2. UpgradeManager 초기화 (MenuManager 연동)
             if (_upgradeManager != null && _goldManager != null)
             {
-                _upgradeManager.Initialize(
-                    _goldManager,
-                    userId,
-                    _menuManager,
-                    OnFoodTruckUpgraded
-                );
+                _upgradeManager.Initialize(_goldManager, _menuManager);
             }
             else
             {
@@ -131,7 +131,7 @@ namespace Core
             
         }
 
-        private void OnFoodTruckUpgraded(int unlockLevel, float priceMultiplier)
+        private void HandleFoodTruckUpgraded(int unlockLevel, float priceMultiplier)
         {
             if (_menuManager != null)
             {

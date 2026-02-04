@@ -1,5 +1,5 @@
 using System;
-using Upgrade.Domain;
+using OutGame.Upgrades.Domain;
 
 namespace Events
 {
@@ -49,6 +49,16 @@ namespace Events
         }
 
         /// <summary>
+        /// 푸드트럭이 업그레이드되었을 때 (해금 레벨, 가격 배율)
+        /// </summary>
+        public static event Action<int, float> OnFoodTruckUpgraded;
+
+        public static void RaiseFoodTruckUpgraded(int unlockLevel, float priceMultiplier)
+        {
+            OnFoodTruckUpgraded?.Invoke(unlockLevel, priceMultiplier);
+        }
+
+        /// <summary>
         /// 모든 이벤트 구독 해제 (씬 전환 시 사용)
         /// </summary>
         public static void ClearAllSubscriptions()
@@ -57,6 +67,7 @@ namespace Events
             OnRevenueEarned = null;
             OnUpgradePurchased = null;
             OnAutoIncomeChanged = null;
+            OnFoodTruckUpgraded = null;
         }
     }
 }

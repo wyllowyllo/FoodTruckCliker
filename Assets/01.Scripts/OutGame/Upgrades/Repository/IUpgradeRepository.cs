@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Upgrade.Domain;
+using OutGame.Upgrades.Domain;
 
-namespace Upgrade.Repository
+namespace OutGame.Upgrades.Repository
 {
     public interface IUpgradeRepository
     {

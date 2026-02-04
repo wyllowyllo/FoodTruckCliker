@@ -1,20 +1,17 @@
 using Events;
+using OutGame.Upgrades.Domain;
+using OutGame.Upgrades.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Upgrade.Domain;
-using Upgrade.Manager;
 
 namespace UI
 {
-    /// <summary>
-    /// 업그레이드 버튼 UI
-    /// </summary>
     public class UpgradeButtonUI : MonoBehaviour
     {
         [Header("참조")]
         [SerializeField]
-        private UpgradeData _upgradeData;
+        private EUpgradeType _upgradeType;
 
         [Header("UI 요소")]
         [SerializeField]
@@ -46,10 +43,12 @@ namespace UI
         private Color _unaffordableColor = Color.gray;
 
         private UpgradeManager _upgradeManager;
+        private Upgrade _upgrade;
 
         public void Initialize(UpgradeManager upgradeManager)
         {
             _upgradeManager = upgradeManager;
+            _upgrade = _upgradeManager.GetUpgrade(_upgradeType);
 
             if (_button != null)
             {
@@ -87,7 +86,7 @@ namespace UI
 
         private void HandleUpgradePurchased(EUpgradeType type, int newLevel)
         {
-            if (_upgradeData != null && type == _upgradeData.Type)
+            if (type == _upgradeType)
             {
                 RefreshUI();
             }
@@ -95,57 +94,52 @@ namespace UI
 
         private void OnButtonClicked()
         {
-            if (_upgradeManager == null || _upgradeData == null)
+            if (_upgradeManager == null || _upgrade == null)
             {
                 return;
             }
 
-            _upgradeManager.TryPurchase(_upgradeData.Type);
+            _upgradeManager.TryPurchase(_upgradeType);
         }
 
         private void SetupStaticUI()
         {
-            if (_upgradeData == null)
+            if (_upgrade == null)
             {
                 return;
             }
 
-            if (_iconImage != null && _upgradeData.Icon != null)
+            if (_iconImage != null && _upgrade.Icon != null)
             {
-                _iconImage.sprite = _upgradeData.Icon;
+                _iconImage.sprite = _upgrade.Icon;
             }
 
             if (_nameText != null)
             {
-                _nameText.text = _upgradeData.DisplayName;
+                _nameText.text = _upgrade.DisplayName;
             }
         }
 
         private void RefreshUI()
         {
-            if (_upgradeManager == null || _upgradeData == null)
+            if (_upgradeManager == null || _upgrade == null)
             {
                 return;
             }
 
-            EUpgradeType type = _upgradeData.Type;
-            int currentLevel = _upgradeManager.GetLevel(type);
-            int maxLevel = _upgradeData.MaxLevel;
-            bool isMaxLevel = currentLevel >= maxLevel;
+            int currentLevel = _upgrade.Level;
+            bool isMaxLevel = _upgrade.IsMaxLevel;
 
-            // 레벨 표시
             if (_levelText != null)
             {
                 _levelText.text = $"Lv.{currentLevel}";
             }
 
-            // 최대 레벨 표시
             if (_maxLevelIndicator != null)
             {
                 _maxLevelIndicator.SetActive(isMaxLevel);
             }
 
-            // 비용 표시
             if (_costText != null)
             {
                 if (isMaxLevel)
@@ -154,24 +148,21 @@ namespace UI
                 }
                 else
                 {
-                    long cost = _upgradeManager.GetNextLevelCost(type);
+                    long cost = _upgrade.NextLevelCost;
                     _costText.text = $"{cost:N0}G";
                 }
             }
 
-            // 효과 표시
             if (_effectText != null)
             {
                 _effectText.text = GetEffectDescription(currentLevel, isMaxLevel);
             }
 
-            // 버튼 상태
             if (_button != null)
             {
-                bool canUpgrade = _upgradeManager.CanUpgrade(type);
+                bool canUpgrade = _upgradeManager.CanUpgrade(_upgradeType);
                 _button.interactable = canUpgrade;
 
-                // 색상 변경
                 var colors = _button.colors;
                 colors.normalColor = canUpgrade ? _affordableColor : _unaffordableColor;
                 _button.colors = colors;
@@ -180,7 +171,7 @@ namespace UI
 
         private string GetEffectDescription(int currentLevel, bool isMaxLevel)
         {
-            if (_upgradeData == null)
+            if (_upgrade == null)
             {
                 return "";
             }
@@ -191,9 +182,9 @@ namespace UI
                 displayLevel = 1;
             }
 
-            float value = _upgradeData.GetValue(displayLevel);
+            float value = _upgrade.Spec.GetEffect(displayLevel);
 
-            switch (_upgradeData.Type)
+            switch (_upgradeType)
             {
                 case EUpgradeType.ClickRevenue:
                     return $"x{value:F1}";

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Upgrade.Domain;
+using OutGame.Upgrades.Domain;
 using UnityEngine;
 
-namespace Upgrade.Repository
+namespace OutGame.Upgrades.Repository
 {
     public class JsonUpgradeRepository : IUpgradeRepository
     {

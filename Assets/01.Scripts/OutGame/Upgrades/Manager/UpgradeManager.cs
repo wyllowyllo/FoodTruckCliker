@@ -1,206 +1,128 @@
-using System;
 using System.Collections.Generic;
 using Events;
 using Goods.Manager;
 using Menu;
-using Upgrade.Domain;
-using Upgrade.Repository;
+using OutGame.Upgrades.Domain;
+using OutGame.Upgrades.Repository;
 using UnityEngine;
 
-namespace Upgrade.Manager
+namespace OutGame.Upgrades.Manager
 {
-    /// <summary>
-    /// 업그레이드 관리자
-    /// </summary>
     public class UpgradeManager : MonoBehaviour
     {
-        [SerializeField]
-        private UpgradeData[] _upgrades;
+        [SerializeField] private UpgradeTableSO _table;
 
         private GoldManager _goldManager;
         private MenuManager _menuProvider;
-        private Action<int, float> _onFoodTruckUpgraded;
         private IUpgradeRepository _repository;
 
-        private Dictionary<EUpgradeType, UpgradeData> _upgradeDataMap;
-        private Dictionary<EUpgradeType, int> _upgradeLevels;
+        private Dictionary<EUpgradeType, Upgrade> _upgrades;
 
-        public void Initialize(
-            GoldManager goldManager,
-            string userId,
-            MenuManager menuProvider = null,
-            Action<int, float> onFoodTruckUpgraded = null)
+        public void Initialize(GoldManager goldManager, MenuManager menuProvider = null)
         {
             _goldManager = goldManager;
-            _repository = new LocalUpgradeRepository();
             _menuProvider = menuProvider;
-            _onFoodTruckUpgraded = onFoodTruckUpgraded;
-
-            _upgradeDataMap = new Dictionary<EUpgradeType, UpgradeData>();
+            
+            _repository = new LocalUpgradeRepository();
+            _upgrades = new Dictionary<EUpgradeType, Upgrade>();
 
             var upgradeTypes = new List<EUpgradeType>();
-            foreach (var upgrade in _upgrades)
+            foreach (var spec in _table.AllSpecs)
             {
-                if (upgrade != null)
+                if (spec != null)
                 {
-                    _upgradeDataMap[upgrade.Type] = upgrade;
-                    upgradeTypes.Add(upgrade.Type);
+                    upgradeTypes.Add(spec.Type);
                 }
             }
 
-            _upgradeLevels = _repository.LoadAll(upgradeTypes);
+            var savedLevels = _repository.LoadAll(upgradeTypes);
+
+            foreach (var spec in _table.AllSpecs)
+            {
+                if (spec == null)
+                {
+                    continue;
+                }
+
+                savedLevels.TryGetValue(spec.Type, out int level);
+                _upgrades[spec.Type] = new Upgrade(spec, level);
+            }
 
             ApplyLoadedEffects();
         }
 
-        /// <summary>
-        /// 저장된 업그레이드 효과 적용 (게임 로드 시)
-        /// </summary>
-        private void ApplyLoadedEffects()
+        public Upgrade GetUpgrade(EUpgradeType type)
         {
-            foreach (var upgrade in _upgrades)
+            if (_upgrades != null && _upgrades.TryGetValue(type, out Upgrade upgrade))
             {
-                if (upgrade == null)
-                {
-                    continue;
-                }
-
-                int level = GetLevel(upgrade.Type);
-                if (level <= 0)
-                {
-                    continue;
-                }
-
-                HandleUpgradeEffects(upgrade);
+                return upgrade;
             }
+
+            return null;
         }
 
-        public float GetValue(EUpgradeType type)
-        {
-            if (!_upgradeDataMap.TryGetValue(type, out UpgradeData upgrade))
-            {
-                return GetDefaultValueForType(type);
-            }
-
-            int level = GetLevel(type);
-            if (level <= 0)
-            {
-                return GetDefaultValueForType(type);
-            }
-
-            return upgrade.GetValue(level);
-        }
-
-        /// <summary>
-        /// 정수 값 반환 (요리사 수, 크리티컬 개수, 메뉴 레벨 등)
-        /// </summary>
-        public int GetIntValue(EUpgradeType type)
-        {
-            return Mathf.FloorToInt(GetValue(type));
-        }
-
-        public int GetLevel(EUpgradeType type)
-        {
-            if (_upgradeLevels != null && _upgradeLevels.TryGetValue(type, out int level))
-            {
-                return level;
-            }
-            return 0;
-        }
-
-        public long GetNextLevelCost(EUpgradeType type)
-        {
-            if (!_upgradeDataMap.TryGetValue(type, out UpgradeData data))
-            {
-                return 0;
-            }
-
-            int currentLevel = GetLevel(type);
-            int nextLevel = currentLevel + 1;
-
-            if (nextLevel > data.MaxLevel)
-            {
-                return 0;
-            }
-
-            return data.GetCost(nextLevel);
-        }
-
-        public bool CanUpgrade(EUpgradeType type)
-        {
-            long cost = GetNextLevelCost(type);
-            if (cost <= 0)
-            {
-                return false;
-            }
-
-            return _goldManager.HasEnough(cost);
-        }
-
-        /// <summary>
-        /// 업그레이드 구매 시도
-        /// </summary>
         public bool TryPurchase(EUpgradeType type)
         {
-            if (!CanUpgrade(type))
+            var upgrade = GetUpgrade(type);
+            if (upgrade == null || upgrade.IsMaxLevel)
             {
-                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - Type: {type}, " +
-                    $"DataMap 포함: {_upgradeDataMap.ContainsKey(type)}, " +
-                    $"비용: {GetNextLevelCost(type)}, " +
-                    $"현재 레벨: {GetLevel(type)}");
                 return false;
             }
 
-            long cost = GetNextLevelCost(type);
+            long cost = upgrade.NextLevelCost;
+            if (cost <= 0 || !_goldManager.HasEnough(cost))
+            {
+                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - Type: {type}, " +
+                    $"비용: {cost}, 현재 레벨: {upgrade.Level}");
+                return false;
+            }
+
             if (!_goldManager.SpendGold(cost))
             {
                 return false;
             }
 
-            _upgradeLevels[type]++;
-            int newLevel = _upgradeLevels[type];
+            upgrade.AddLevel();
+            int newLevel = upgrade.Level;
 
             _repository.SaveLevel(type, newLevel);
 
-            if (_upgradeDataMap.TryGetValue(type, out UpgradeData data))
-            {
-                Debug.Log($"[UpgradeManager] 업그레이드 성공 - {data.DisplayName}({type}) " +
-                    $"Lv.{newLevel}, Type: {data.Type}, Value: {data.GetValue(newLevel)}");
-            }
+            Debug.Log($"[UpgradeManager] 업그레이드 성공 - {upgrade.DisplayName}({type}) " +
+                $"Lv.{newLevel}, Value: {upgrade.Effect}");
 
             GameEvents.RaiseUpgradePurchased(type, newLevel);
 
-            if (data != null)
-            {
-                HandleUpgradeEffects(data);
-            }
+            HandleUpgradeEffects(upgrade);
 
             return true;
         }
 
-        /// <summary>
-        /// 업그레이드 데이터 조회
-        /// </summary>
-        public UpgradeData GetUpgradeData(EUpgradeType type)
+        public bool CanUpgrade(EUpgradeType type)
         {
-            if (_upgradeDataMap.TryGetValue(type, out UpgradeData data))
+            var upgrade = GetUpgrade(type);
+            if (upgrade == null || upgrade.IsMaxLevel)
             {
-                return data;
+                return false;
             }
-            return null;
+
+            long cost = upgrade.NextLevelCost;
+            return cost > 0 && _goldManager.HasEnough(cost);
         }
 
-        /// <summary>
-        /// 모든 업그레이드 데이터 반환
-        /// </summary>
-        public UpgradeData[] GetAllUpgrades()
+        private void ApplyLoadedEffects()
         {
-            return _upgrades;
+            foreach (var kvp in _upgrades)
+            {
+                if (kvp.Value.Level > 0)
+                {
+                    HandleUpgradeEffects(kvp.Value);
+                }
+            }
         }
 
-        private void HandleUpgradeEffects(UpgradeData data)
+        private void HandleUpgradeEffects(Upgrade upgrade)
         {
-            switch (data.Type)
+            switch (upgrade.Type)
             {
                 case EUpgradeType.ChefCount:
                 case EUpgradeType.CookingSpeed:
@@ -208,9 +130,7 @@ namespace Upgrade.Manager
                     break;
 
                 case EUpgradeType.FoodTruck:
-                    int unlockLevel = GetLevel(data.Type);
-                    float priceMultiplier = GetValue(EUpgradeType.FoodTruck);
-                    _onFoodTruckUpgraded?.Invoke(unlockLevel, priceMultiplier);
+                    GameEvents.RaiseFoodTruckUpgraded(upgrade.Level, upgrade.Effect);
                     NotifyAutoIncomeChanged();
                     break;
             }
@@ -222,40 +142,22 @@ namespace Upgrade.Manager
             GameEvents.RaiseAutoIncomeChanged(autoIncome);
         }
 
-        private float GetDefaultValueForType(EUpgradeType type)
-        {
-            switch (type)
-            {
-                case EUpgradeType.CriticalChance:
-                case EUpgradeType.ChefCount:
-                    return 0f;
-                case EUpgradeType.FoodTruck:
-                    return 1f;
-                case EUpgradeType.ClickRevenue:
-                case EUpgradeType.CookingSpeed:
-                    return 1f;
-                case EUpgradeType.CriticalProfit:
-                    return 1f;
-                default:
-                    return 1f;
-            }
-        }
-
-        /// <summary>
-        /// 자동 수익 계산: 요리사 수 × 클릭 수익 × 요리 속도
-        /// </summary>
         public float CalculateAutoIncome()
         {
-            int chefCount = GetIntValue(EUpgradeType.ChefCount);
-            float cookingSpeed = GetValue(EUpgradeType.CookingSpeed);
+            var chefUpgrade = GetUpgrade(EUpgradeType.ChefCount);
+            int chefCount = Mathf.FloorToInt(chefUpgrade?.Effect ?? 0f);
 
             if (chefCount <= 0)
             {
                 return 0f;
             }
 
+            var clickUpgrade = GetUpgrade(EUpgradeType.ClickRevenue);
+            var speedUpgrade = GetUpgrade(EUpgradeType.CookingSpeed);
+
+            float cookingSpeed = speedUpgrade?.Effect ?? 1f;
             float menuPrice = _menuProvider?.AveragePrice ?? 10f;
-            float clickRevenue = GetValue(EUpgradeType.ClickRevenue);
+            float clickRevenue = clickUpgrade?.Effect ?? 1f;
             float baseClickIncome = menuPrice * clickRevenue;
 
             return chefCount * baseClickIncome * cookingSpeed;

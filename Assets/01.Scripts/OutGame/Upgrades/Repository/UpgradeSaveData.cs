@@ -1,7 +1,7 @@
 ﻿using System;
-using Upgrade.Domain;
+using OutGame.Upgrades.Domain;
 
-namespace Upgrade.Repository
+namespace OutGame.Upgrades.Repository
 {
     [Serializable]
     public class UpgradeSaveData
