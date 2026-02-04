@@ -79,7 +79,7 @@ namespace AutoIncome
             }
         }
 
-        private void HandleUpgradePurchased(string upgradeId, int newLevel)
+        private void HandleUpgradePurchased(EUpgradeType type, int newLevel)
         {
             RecalculateIncome();
         }

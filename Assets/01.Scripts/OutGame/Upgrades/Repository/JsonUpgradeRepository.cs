@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Upgrade.Domain;
 using UnityEngine;
 
 namespace Upgrade.Repository
@@ -35,17 +36,17 @@ namespace Upgrade.Repository
             return JsonUtility.FromJson<UpgradeSaveData>(json);
         }
 
-        public int LoadLevel(string upgradeId)
+        public int LoadLevel(EUpgradeType type)
         {
             throw new System.NotImplementedException();
         }
 
-        public void SaveLevel(string upgradeId, int level)
+        public void SaveLevel(EUpgradeType type, int level)
         {
             throw new System.NotImplementedException();
         }
 
-        public Dictionary<string, int> LoadAll(IEnumerable<string> upgradeIds)
+        public Dictionary<EUpgradeType, int> LoadAll(IEnumerable<EUpgradeType> types)
         {
             throw new System.NotImplementedException();
         }

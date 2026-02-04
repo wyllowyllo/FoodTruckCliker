@@ -85,9 +85,9 @@ namespace UI
             RefreshUI();
         }
 
-        private void HandleUpgradePurchased(string upgradeId, int newLevel)
+        private void HandleUpgradePurchased(EUpgradeType type, int newLevel)
         {
-            if (_upgradeData != null && upgradeId == _upgradeData.UpgradeId)
+            if (_upgradeData != null && type == _upgradeData.Type)
             {
                 RefreshUI();
             }
@@ -100,7 +100,7 @@ namespace UI
                 return;
             }
 
-            _upgradeManager.TryPurchase(_upgradeData.UpgradeId);
+            _upgradeManager.TryPurchase(_upgradeData.Type);
         }
 
         private void SetupStaticUI()
@@ -128,8 +128,8 @@ namespace UI
                 return;
             }
 
-            string upgradeId = _upgradeData.UpgradeId;
-            int currentLevel = _upgradeManager.GetLevel(upgradeId);
+            EUpgradeType type = _upgradeData.Type;
+            int currentLevel = _upgradeManager.GetLevel(type);
             int maxLevel = _upgradeData.MaxLevel;
             bool isMaxLevel = currentLevel >= maxLevel;
 
@@ -154,7 +154,7 @@ namespace UI
                 }
                 else
                 {
-                    long cost = _upgradeManager.GetNextLevelCost(upgradeId);
+                    long cost = _upgradeManager.GetNextLevelCost(type);
                     _costText.text = $"{cost:N0}G";
                 }
             }
@@ -168,7 +168,7 @@ namespace UI
             // 버튼 상태
             if (_button != null)
             {
-                bool canUpgrade = _upgradeManager.CanUpgrade(upgradeId);
+                bool canUpgrade = _upgradeManager.CanUpgrade(type);
                 _button.interactable = canUpgrade;
 
                 // 색상 변경

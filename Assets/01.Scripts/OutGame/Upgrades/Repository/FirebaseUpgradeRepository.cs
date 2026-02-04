@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Upgrade.Domain;
 
 namespace Upgrade.Repository
 {
@@ -12,17 +13,17 @@ namespace Upgrade.Repository
             _userId = userId;
         }
 
-        public int LoadLevel(string upgradeId)
+        public int LoadLevel(EUpgradeType type)
         {
             throw new NotImplementedException();
         }
 
-        public void SaveLevel(string upgradeId, int level)
+        public void SaveLevel(EUpgradeType type, int level)
         {
             throw new NotImplementedException();
         }
 
-        public Dictionary<string, int> LoadAll(IEnumerable<string> upgradeIds)
+        public Dictionary<EUpgradeType, int> LoadAll(IEnumerable<EUpgradeType> types)
         {
             throw new NotImplementedException();
         }

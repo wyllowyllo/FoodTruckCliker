@@ -22,8 +22,8 @@ namespace Upgrade.Manager
         private Action<int, float> _onFoodTruckUpgraded;
         private IUpgradeRepository _repository;
 
-        private Dictionary<string, UpgradeData> _upgradeDataMap;
-        private Dictionary<string, int> _upgradeLevels;
+        private Dictionary<EUpgradeType, UpgradeData> _upgradeDataMap;
+        private Dictionary<EUpgradeType, int> _upgradeLevels;
 
         public void Initialize(
             GoldManager goldManager,
@@ -36,19 +36,19 @@ namespace Upgrade.Manager
             _menuProvider = menuProvider;
             _onFoodTruckUpgraded = onFoodTruckUpgraded;
 
-            _upgradeDataMap = new Dictionary<string, UpgradeData>();
+            _upgradeDataMap = new Dictionary<EUpgradeType, UpgradeData>();
 
-            var upgradeIds = new List<string>();
+            var upgradeTypes = new List<EUpgradeType>();
             foreach (var upgrade in _upgrades)
             {
-                if (upgrade != null && !string.IsNullOrEmpty(upgrade.UpgradeId))
+                if (upgrade != null)
                 {
-                    _upgradeDataMap[upgrade.UpgradeId] = upgrade;
-                    upgradeIds.Add(upgrade.UpgradeId);
+                    _upgradeDataMap[upgrade.Type] = upgrade;
+                    upgradeTypes.Add(upgrade.Type);
                 }
             }
 
-            _upgradeLevels = _repository.LoadAll(upgradeIds);
+            _upgradeLevels = _repository.LoadAll(upgradeTypes);
 
             ApplyLoadedEffects();
         }
@@ -65,7 +65,7 @@ namespace Upgrade.Manager
                     continue;
                 }
 
-                int level = GetLevel(upgrade.UpgradeId);
+                int level = GetLevel(upgrade.Type);
                 if (level <= 0)
                 {
                     continue;
@@ -77,23 +77,18 @@ namespace Upgrade.Manager
 
         public float GetValue(EUpgradeType type)
         {
-            foreach (var upgrade in _upgrades)
+            if (!_upgradeDataMap.TryGetValue(type, out UpgradeData upgrade))
             {
-                if (upgrade == null || upgrade.Type != type)
-                {
-                    continue;
-                }
-
-                int level = GetLevel(upgrade.UpgradeId);
-                if (level <= 0)
-                {
-                    continue;
-                }
-
-                return upgrade.GetValue(level);
+                return GetDefaultValueForType(type);
             }
 
-            return GetDefaultValueForType(type);
+            int level = GetLevel(type);
+            if (level <= 0)
+            {
+                return GetDefaultValueForType(type);
+            }
+
+            return upgrade.GetValue(level);
         }
 
         /// <summary>
@@ -104,23 +99,23 @@ namespace Upgrade.Manager
             return Mathf.FloorToInt(GetValue(type));
         }
 
-        public int GetLevel(string upgradeId)
+        public int GetLevel(EUpgradeType type)
         {
-            if (_upgradeLevels != null && _upgradeLevels.TryGetValue(upgradeId, out int level))
+            if (_upgradeLevels != null && _upgradeLevels.TryGetValue(type, out int level))
             {
                 return level;
             }
             return 0;
         }
 
-        public long GetNextLevelCost(string upgradeId)
+        public long GetNextLevelCost(EUpgradeType type)
         {
-            if (!_upgradeDataMap.TryGetValue(upgradeId, out UpgradeData data))
+            if (!_upgradeDataMap.TryGetValue(type, out UpgradeData data))
             {
                 return 0;
             }
 
-            int currentLevel = GetLevel(upgradeId);
+            int currentLevel = GetLevel(type);
             int nextLevel = currentLevel + 1;
 
             if (nextLevel > data.MaxLevel)
@@ -131,9 +126,9 @@ namespace Upgrade.Manager
             return data.GetCost(nextLevel);
         }
 
-        public bool CanUpgrade(string upgradeId)
+        public bool CanUpgrade(EUpgradeType type)
         {
-            long cost = GetNextLevelCost(upgradeId);
+            long cost = GetNextLevelCost(type);
             if (cost <= 0)
             {
                 return false;
@@ -145,35 +140,35 @@ namespace Upgrade.Manager
         /// <summary>
         /// 업그레이드 구매 시도
         /// </summary>
-        public bool TryPurchase(string upgradeId)
+        public bool TryPurchase(EUpgradeType type)
         {
-            if (!CanUpgrade(upgradeId))
+            if (!CanUpgrade(type))
             {
-                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - ID: {upgradeId}, " +
-                    $"DataMap 포함: {_upgradeDataMap.ContainsKey(upgradeId)}, " +
-                    $"비용: {GetNextLevelCost(upgradeId)}, " +
-                    $"현재 레벨: {GetLevel(upgradeId)}");
+                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - Type: {type}, " +
+                    $"DataMap 포함: {_upgradeDataMap.ContainsKey(type)}, " +
+                    $"비용: {GetNextLevelCost(type)}, " +
+                    $"현재 레벨: {GetLevel(type)}");
                 return false;
             }
 
-            long cost = GetNextLevelCost(upgradeId);
+            long cost = GetNextLevelCost(type);
             if (!_goldManager.SpendGold(cost))
             {
                 return false;
             }
 
-            _upgradeLevels[upgradeId]++;
-            int newLevel = _upgradeLevels[upgradeId];
+            _upgradeLevels[type]++;
+            int newLevel = _upgradeLevels[type];
 
-            _repository.SaveLevel(upgradeId, newLevel);
+            _repository.SaveLevel(type, newLevel);
 
-            if (_upgradeDataMap.TryGetValue(upgradeId, out UpgradeData data))
+            if (_upgradeDataMap.TryGetValue(type, out UpgradeData data))
             {
-                Debug.Log($"[UpgradeManager] 업그레이드 성공 - {data.DisplayName}({upgradeId}) " +
+                Debug.Log($"[UpgradeManager] 업그레이드 성공 - {data.DisplayName}({type}) " +
                     $"Lv.{newLevel}, Type: {data.Type}, Value: {data.GetValue(newLevel)}");
             }
 
-            GameEvents.RaiseUpgradePurchased(upgradeId, newLevel);
+            GameEvents.RaiseUpgradePurchased(type, newLevel);
 
             if (data != null)
             {
@@ -186,9 +181,9 @@ namespace Upgrade.Manager
         /// <summary>
         /// 업그레이드 데이터 조회
         /// </summary>
-        public UpgradeData GetUpgradeData(string upgradeId)
+        public UpgradeData GetUpgradeData(EUpgradeType type)
         {
-            if (_upgradeDataMap.TryGetValue(upgradeId, out UpgradeData data))
+            if (_upgradeDataMap.TryGetValue(type, out UpgradeData data))
             {
                 return data;
             }
@@ -213,7 +208,7 @@ namespace Upgrade.Manager
                     break;
 
                 case EUpgradeType.FoodTruck:
-                    int unlockLevel = GetLevel(data.UpgradeId);
+                    int unlockLevel = GetLevel(data.Type);
                     float priceMultiplier = GetValue(EUpgradeType.FoodTruck);
                     _onFoodTruckUpgraded?.Invoke(unlockLevel, priceMultiplier);
                     NotifyAutoIncomeChanged();

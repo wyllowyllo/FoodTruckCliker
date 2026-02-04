@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Upgrade.Domain;
 using UnityEngine;
 
 namespace Upgrade.Repository
@@ -7,24 +8,24 @@ namespace Upgrade.Repository
     {
         private const string KeyPrefix = "upgrade";
 
-        public int LoadLevel(string upgradeId)
+        public int LoadLevel(EUpgradeType type)
         {
-            return PlayerPrefs.GetInt(KeyPrefix + upgradeId, 0);
+            return PlayerPrefs.GetInt(KeyPrefix + type.ToString(), 0);
         }
 
-        public void SaveLevel(string upgradeId, int level)
+        public void SaveLevel(EUpgradeType type, int level)
         {
-            PlayerPrefs.SetInt(KeyPrefix + upgradeId, level);
+            PlayerPrefs.SetInt(KeyPrefix + type.ToString(), level);
             PlayerPrefs.Save();
         }
 
-        public Dictionary<string, int> LoadAll(IEnumerable<string> upgradeIds)
+        public Dictionary<EUpgradeType, int> LoadAll(IEnumerable<EUpgradeType> types)
         {
-            var levels = new Dictionary<string, int>();
+            var levels = new Dictionary<EUpgradeType, int>();
 
-            foreach (string id in upgradeIds)
+            foreach (EUpgradeType type in types)
             {
-                levels[id] = LoadLevel(id);
+                levels[type] = LoadLevel(type);
             }
 
             return levels;

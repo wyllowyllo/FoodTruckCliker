@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Upgrade.Domain;
 
 namespace Upgrade.Repository
 {
     public interface IUpgradeRepository
     {
-        int LoadLevel(string upgradeId);
-        void SaveLevel(string upgradeId, int level);
-        Dictionary<string, int> LoadAll(IEnumerable<string> upgradeIds);
+        int LoadLevel(EUpgradeType type);
+        void SaveLevel(EUpgradeType type, int level);
+        Dictionary<EUpgradeType, int> LoadAll(IEnumerable<EUpgradeType> types);
     }
 }

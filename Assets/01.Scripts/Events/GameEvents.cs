@@ -1,4 +1,5 @@
 using System;
+using Upgrade.Domain;
 
 namespace Events
 {
@@ -28,13 +29,13 @@ namespace Events
         }
 
         /// <summary>
-        /// 업그레이드가 구매되었을 때 (업그레이드 ID, 새 레벨)
+        /// 업그레이드가 구매되었을 때 (업그레이드 타입, 새 레벨)
         /// </summary>
-        public static event Action<string, int> OnUpgradePurchased;
+        public static event Action<EUpgradeType, int> OnUpgradePurchased;
 
-        public static void RaiseUpgradePurchased(string upgradeId, int newLevel)
+        public static void RaiseUpgradePurchased(EUpgradeType type, int newLevel)
         {
-            OnUpgradePurchased?.Invoke(upgradeId, newLevel);
+            OnUpgradePurchased?.Invoke(type, newLevel);
         }
 
         /// <summary>
