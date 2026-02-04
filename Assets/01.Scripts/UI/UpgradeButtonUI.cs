@@ -9,39 +9,23 @@ namespace UI
 {
     public class UpgradeButtonUI : MonoBehaviour
     {
-        [Header("참조")]
-        [SerializeField]
-        private EUpgradeType _upgradeType;
+        [Header("업그레이드 타입")]
+        [SerializeField] private EUpgradeType _upgradeType;
 
         [Header("UI 요소")]
-        [SerializeField]
-        private Button _button;
+        [SerializeField] private Button _button;
+        [SerializeField] private Image _iconImage;
+        [SerializeField] private TextMeshProUGUI _nameText;
+        [SerializeField] private TextMeshProUGUI _levelText;
+        [SerializeField] private TextMeshProUGUI _costText;
+        [SerializeField] private TextMeshProUGUI _effectText;
+        [SerializeField] private GameObject _maxLevelIndicator;
 
-        [SerializeField]
-        private Image _iconImage;
+        [Header("클릭 피드백 색상")]
+        [SerializeField] private Color _affordableColor = Color.white;
+        [SerializeField] private Color _unaffordableColor = Color.gray;
 
-        [SerializeField]
-        private TextMeshProUGUI _nameText;
-
-        [SerializeField]
-        private TextMeshProUGUI _levelText;
-
-        [SerializeField]
-        private TextMeshProUGUI _costText;
-
-        [SerializeField]
-        private TextMeshProUGUI _effectText;
-
-        [SerializeField]
-        private GameObject _maxLevelIndicator;
-
-        [Header("색상")]
-        [SerializeField]
-        private Color _affordableColor = Color.white;
-
-        [SerializeField]
-        private Color _unaffordableColor = Color.gray;
-
+        // 참조
         private UpgradeManager _upgradeManager;
         private Upgrade _upgrade;
 

@@ -22,7 +22,7 @@ namespace OutGame.Upgrades.Domain
 
         [Header("공식 기반 데이터 (Formula 모드)")]
         [SerializeField, Tooltip("기본 비용")] private long _baseCost = 10;
-        [SerializeField] private float _baseValue = 1f;
+        [SerializeField] private float _baseEffectValue = 1f;
         [SerializeField] private float _costMultiplier = 1.15f;
         [SerializeField, Tooltip("레벨당 효과 증가량")] private float _valueIncrement = 0.1f;
 
@@ -75,7 +75,7 @@ namespace OutGame.Upgrades.Domain
 
             if (_scalingMode == EScalingMode.Formula)
             {
-                return _baseValue + _valueIncrement * (level - 1);
+                return _baseEffectValue + _valueIncrement * (level - 1);
             }
 
             if (level > _maxLevel)
@@ -92,7 +92,7 @@ namespace OutGame.Upgrades.Domain
             return _valuesPerLevel[index];
         }
 
-        public float GetDefaultEffect()
+        private float GetDefaultEffect()
         {
             switch (_type)
             {
