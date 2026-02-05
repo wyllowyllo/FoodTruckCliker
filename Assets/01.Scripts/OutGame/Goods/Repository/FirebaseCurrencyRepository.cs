@@ -4,7 +4,7 @@ using Firebase.Auth;
 using Firebase.Firestore;
 using UnityEngine;
 
-namespace Goods.Repository
+namespace OutGame.Goods.Repository
 {
     public class FirebaseCurrencyRepository : ICurrencyRepository
     {
@@ -13,7 +13,7 @@ namespace Goods.Repository
         private FirebaseAuth _auth    = FirebaseAuth.DefaultInstance;
         private FirebaseFirestore _db = FirebaseFirestore.DefaultInstance;
     
-        public async UniTaskVoid Save(CurrencySaveData saveData)
+        public async UniTask Save(CurrencySaveData saveData)
         {
             try
             {

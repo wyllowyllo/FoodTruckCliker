@@ -1,8 +1,9 @@
 using AutoIncome;
 using Click;
+using Cysharp.Threading.Tasks;
 using Events;
-using Goods.Manager;
 using Menu;
+using OutGame.Goods.Manager;
 using OutGame.Upgrades.Manager;
 using UI;
 using OutGame.UserData.Manager;
@@ -34,7 +35,7 @@ namespace Core
         private void Awake()
         {
             ValidateReferences();
-            InitializeSystems();
+            InitializeSystems().Forget();
         }
 
         private void OnDestroy()
@@ -65,19 +66,19 @@ namespace Core
             }
         }
 
-        private void InitializeSystems()
+        private async UniTaskVoid InitializeSystems()
         {
-            // 0. GoldManager 초기화
+            // 0. CurrencyManager 초기화
             string userId = AccountManager.Instance.Email;
             if (_currencyManager != null)
             {
-                _currencyManager.Initialize(userId);
+                await _currencyManager.Initialize();
             }
 
             // 1. UpgradeManager 초기화
             if (_upgradeManager != null && _currencyManager != null)
             {
-                _upgradeManager.Initialize(_currencyManager);
+                await _upgradeManager.Initialize(_currencyManager);
             }
             else
             {

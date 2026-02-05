@@ -1,11 +1,11 @@
 using Cysharp.Threading.Tasks;
 
-namespace Goods.Repository
+namespace OutGame.Goods.Repository
 {
     
     public interface ICurrencyRepository
     {
         UniTask<CurrencySaveData> Load();
-        UniTaskVoid Save(CurrencySaveData amount);
+        UniTask Save(CurrencySaveData amount);
     }
 }

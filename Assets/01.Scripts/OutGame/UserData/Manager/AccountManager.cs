@@ -17,7 +17,7 @@ namespace OutGame.UserData.Manager
         private Account _currentAccount = null;
         
         public bool IsLogin => _currentAccount != null;
-        public string Email => _currentAccount.Email ?? string.Empty;
+        public string Email => _currentAccount?.Email ?? string.Empty;
 
         private IAccountRepository _repository;
         private void Awake()
@@ -31,7 +31,7 @@ namespace OutGame.UserData.Manager
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            _repository = new LocalAccountRepository();
+            _repository = new FirebaseAccountRepository();
         }
 
         public async UniTask<AccountResult> TryLogin(string email, string password)
@@ -50,15 +50,15 @@ namespace OutGame.UserData.Manager
                 };
             }
         
-            // 2. 레포지토리를 이용한 로그임
-            AccountResult result =  await  _repository.Login(email, password);
+            // 2. 레포지토리를 이용한 로그인
+            AccountResult result = await _repository.Login(email, password);
             if (result.Success)
             {
-                _currentAccount = result.Account;
+                _currentAccount = new Account(email, password);
                 return new AccountResult
                 {
                     Success = true,
-                    Account = result.Account,
+                    Account = _currentAccount,
                 };
             }
             else

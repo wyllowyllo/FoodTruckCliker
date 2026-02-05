@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Goods.Repository
+namespace OutGame.Goods.Repository
 {
     public class LocalCurrencyRepository : ICurrencyRepository
     {
@@ -14,7 +14,7 @@ namespace Goods.Repository
             _saveKey = KEY_PREFIX + userId;
         }
         
-        public async UniTaskVoid Save(CurrencySaveData saveData)
+        public async UniTask Save(CurrencySaveData saveData)
         {
             PlayerPrefs.SetString(_saveKey, saveData.Currency.ToString());
         }
@@ -25,7 +25,7 @@ namespace Goods.Repository
             if (PlayerPrefs.HasKey(_saveKey))
             {
                 string saved = PlayerPrefs.GetString(_saveKey, "0");
-                long.TryParse(saved, out data.Currency);
+                data.Currency = long.Parse(saved);
             }
             return data;
         }

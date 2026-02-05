@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Events;
-using Goods.Manager;
+using OutGame.Goods.Manager;
 using OutGame.Upgrades.Domain;
 using OutGame.Upgrades.Repository;
 using UnityEngine;
@@ -18,12 +19,12 @@ namespace OutGame.Upgrades.Manager
 
         private Dictionary<EUpgradeType, Upgrade> _upgrades;
 
-        public void Initialize(CurrencyManager currencyManager)
+        public async UniTask Initialize(CurrencyManager currencyManager)
         {
             _currencyManager = currencyManager;
 
-            _repository = new LocalUpgradeRepository();
-            _saveData = _repository.Load();
+            _repository = new FirebaseUpgradeRepository();
+            _saveData = await _repository.Load();
             _upgrades = new Dictionary<EUpgradeType, Upgrade>();
 
             foreach (var spec in _table.AllSpecs)
@@ -68,7 +69,7 @@ namespace OutGame.Upgrades.Manager
 
             _saveData.Levels[(int)type] = newLevel;
             _saveData.LastSaveTime = DateTime.Now.ToString("o");
-            _repository.Save(_saveData);
+            _repository.Save(_saveData).Forget();
 
             Debug.Log($"[UpgradeManager] 업그레이드 성공 - {upgrade.DisplayName}({type}) " + $"Lv.{newLevel}, Value: {upgrade.Effect}");
 

@@ -1,13 +1,18 @@
 ﻿using System;
+using Firebase.Firestore;
 using OutGame.Upgrades.Domain;
 
 namespace OutGame.Upgrades.Repository
 {
     [Serializable]
-    public struct UpgradeSaveData
+    [FirestoreData]
+    public class UpgradeSaveData
     {
-        public int[] Levels;
-        public string LastSaveTime;
+        [FirestoreProperty]
+        public int[] Levels { get; set; }
+
+        [FirestoreProperty]
+        public string LastSaveTime { get; set; }
 
         public static UpgradeSaveData Default => new UpgradeSaveData
         {

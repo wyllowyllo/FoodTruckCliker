@@ -1,6 +1,6 @@
 
 using Events;
-using Goods.Manager;
+using OutGame.Goods.Manager;
 using UnityEngine;
 using UnityEngine.EventSystems;
 

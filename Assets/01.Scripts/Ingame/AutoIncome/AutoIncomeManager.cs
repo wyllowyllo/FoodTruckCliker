@@ -1,6 +1,6 @@
 using Events;
-using Goods.Manager;
 using Menu;
+using OutGame.Goods.Manager;
 using OutGame.Upgrades.Domain;
 using OutGame.Upgrades.Manager;
 using UnityEngine;

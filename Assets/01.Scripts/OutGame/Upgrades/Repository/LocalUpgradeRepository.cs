@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace OutGame.Upgrades.Repository
@@ -6,19 +7,20 @@ namespace OutGame.Upgrades.Repository
     {
         private const string SaveKey = "upgrade_save";
 
-        public UpgradeSaveData Load()
+        public UniTask<UpgradeSaveData> Load()
         {
             string json = PlayerPrefs.GetString(SaveKey, "");
             if (string.IsNullOrEmpty(json))
-                return UpgradeSaveData.Default;
-            return JsonUtility.FromJson<UpgradeSaveData>(json);
+                return UniTask.FromResult(UpgradeSaveData.Default);
+            return UniTask.FromResult(JsonUtility.FromJson<UpgradeSaveData>(json));
         }
 
-        public void Save(UpgradeSaveData data)
+        public UniTaskVoid Save(UpgradeSaveData data)
         {
             string json = JsonUtility.ToJson(data);
             PlayerPrefs.SetString(SaveKey, json);
             PlayerPrefs.Save();
+            return default;
         }
     }
 }

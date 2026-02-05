@@ -1,24 +1,54 @@
 using System;
+using Cysharp.Threading.Tasks;
+using Firebase.Auth;
+using Firebase.Firestore;
+using UnityEngine;
 
 namespace OutGame.Upgrades.Repository
 {
     public class FirebaseUpgradeRepository : IUpgradeRepository
     {
-        private readonly string _userId;
+        private const string UPGRADE_COLLECTION_NAME = "Upgrade";
 
-        public FirebaseUpgradeRepository(string userId)
+        private FirebaseAuth _auth = FirebaseAuth.DefaultInstance;
+        private FirebaseFirestore _db = FirebaseFirestore.DefaultInstance;
+
+        public async UniTaskVoid Save(UpgradeSaveData data)
         {
-            _userId = userId;
+            try
+            {
+                string email = _auth.CurrentUser.Email;
+
+                await _db.Collection(UPGRADE_COLLECTION_NAME).Document(email).SetAsync(data);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Upgrade 저장 실패: " + e.Message);
+            }
         }
 
-        public UpgradeSaveData Load()
+        public async UniTask<UpgradeSaveData> Load()
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                string email = _auth.CurrentUser.Email;
 
-        public void Save(UpgradeSaveData data)
-        {
-            throw new NotImplementedException();
+                DocumentSnapshot snapshot = await _db.Collection(UPGRADE_COLLECTION_NAME).Document(email).GetSnapshotAsync();
+
+                UpgradeSaveData data = snapshot.ConvertTo<UpgradeSaveData>();
+                if (data.Levels != null)
+                {
+                    return data;
+                }
+
+                return UpgradeSaveData.Default;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Upgrade 로드 실패: " + e.Message);
+            }
+
+            return UpgradeSaveData.Default;
         }
     }
 }

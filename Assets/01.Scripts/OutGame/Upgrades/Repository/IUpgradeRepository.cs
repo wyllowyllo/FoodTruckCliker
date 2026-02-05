@@ -1,8 +1,10 @@
+using Cysharp.Threading.Tasks;
+
 namespace OutGame.Upgrades.Repository
 {
     public interface IUpgradeRepository
     {
-        UpgradeSaveData Load();
-        void Save(UpgradeSaveData data);
+        UniTask<UpgradeSaveData> Load();
+        UniTaskVoid Save(UpgradeSaveData data);
     }
 }

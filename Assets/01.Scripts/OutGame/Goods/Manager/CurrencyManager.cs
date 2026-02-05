@@ -1,11 +1,10 @@
-
-
+using Cysharp.Threading.Tasks;
 using Events;
 using Goods.Domain;
-using Goods.Repository;
+using OutGame.Goods.Repository;
 using UnityEngine;
 
-namespace Goods.Manager
+namespace OutGame.Goods.Manager
 {
     public class CurrencyManager : MonoBehaviour
     {
@@ -16,21 +15,13 @@ namespace Goods.Manager
 
         public long CurrentGold => _gold.Value;
 
-        public async void Initialize(string userId)
+        public async UniTask Initialize()
         {
-            _repository = new LocalCurrencyRepository(userId);
+            _repository = new FirebaseCurrencyRepository();
 
             CurrencySaveData savedGold = await _repository.Load();
             long initialGold = savedGold.Currency > 0 ? savedGold.Currency : _startingGold;
             _gold = new Currency(initialGold);
-        }
-
-        private void Start()
-        {
-            if (_gold.Value == 0 && _startingGold > 0)
-            {
-                _gold = new Currency(_startingGold);
-            }
 
             CurrencyEvents.RaiseGoldChanged(_gold.Value);
         }
