@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using OutGame.Upgrades.Domain;
 
 namespace OutGame.Upgrades.Repository
 {
@@ -13,17 +11,12 @@ namespace OutGame.Upgrades.Repository
             _userId = userId;
         }
 
-        public int LoadLevel(EUpgradeType type)
+        public UpgradeSaveData Load()
         {
             throw new NotImplementedException();
         }
 
-        public void SaveLevel(EUpgradeType type, int level)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Dictionary<EUpgradeType, int> LoadAll(IEnumerable<EUpgradeType> types)
+        public void Save(UpgradeSaveData data)
         {
             throw new NotImplementedException();
         }

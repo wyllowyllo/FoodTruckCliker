@@ -30,7 +30,7 @@ namespace OutGame.Upgrades.Domain
         public string DisplayName => _displayName;
         public string Description => _description;
         public Sprite Icon => _icon;
-        public EScalingMode ScalingMode => _scalingMode;
+       
         public int MaxLevel
         {
             get

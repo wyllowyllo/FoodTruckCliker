@@ -1,54 +1,33 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using OutGame.Upgrades.Domain;
+﻿using System.IO;
 using UnityEngine;
 
 namespace OutGame.Upgrades.Repository
 {
     public class JsonUpgradeRepository : IUpgradeRepository
     {
-        private readonly string filePath;
+        private readonly string _filePath;
 
-        private readonly string _userId;
-    
         public JsonUpgradeRepository(string userId)
         {
-            _userId = userId;
-        
-            filePath = Path.Combine(Application.persistentDataPath, $"{userId}_upgrade_save.json");
+            _filePath = Path.Combine(Application.persistentDataPath, $"{userId}_upgrade_save.json");
+        }
+
+        public UpgradeSaveData Load()
+        {
+            if (!File.Exists(_filePath))
+            {
+                Debug.LogWarning("File not found: " + _filePath);
+                return UpgradeSaveData.Default;
+            }
+
+            string json = File.ReadAllText(_filePath);
+            return JsonUtility.FromJson<UpgradeSaveData>(json);
         }
 
         public void Save(UpgradeSaveData data)
         {
             string json = JsonUtility.ToJson(data, true);
-            File.WriteAllText(filePath, json);
-        }
-
-        public UpgradeSaveData Load()
-        {
-            if (!File.Exists(filePath))
-            {
-                Debug.LogWarning("File not found: " + filePath);
-                return UpgradeSaveData.Default;
-            }
-
-            string json = File.ReadAllText(filePath);
-            return JsonUtility.FromJson<UpgradeSaveData>(json);
-        }
-
-        public int LoadLevel(EUpgradeType type)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void SaveLevel(EUpgradeType type, int level)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Dictionary<EUpgradeType, int> LoadAll(IEnumerable<EUpgradeType> types)
-        {
-            throw new System.NotImplementedException();
+            File.WriteAllText(_filePath, json);
         }
     }
 }

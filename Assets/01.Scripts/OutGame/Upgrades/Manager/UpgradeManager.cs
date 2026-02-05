@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Events;
 using Goods.Manager;
@@ -13,37 +14,26 @@ namespace OutGame.Upgrades.Manager
 
         private GoldManager _goldManager;
         private IUpgradeRepository _repository;
+        private UpgradeSaveData _saveData;
 
         private Dictionary<EUpgradeType, Upgrade> _upgrades;
 
         public void Initialize(GoldManager goldManager)
         {
             _goldManager = goldManager;
-            
+
             _repository = new LocalUpgradeRepository();
+            _saveData = _repository.Load();
             _upgrades = new Dictionary<EUpgradeType, Upgrade>();
 
-            var upgradeTypes = new List<EUpgradeType>();
-            foreach (var spec in _table.AllSpecs)
-            {
-                if (spec != null)
-                {
-                    upgradeTypes.Add(spec.Type);
-                }
-            }
-
-            // 불러오기
-            var savedLevels = _repository.LoadAll(upgradeTypes);
-
-            // Upgrade 객체 생성
             foreach (var spec in _table.AllSpecs)
             {
                 if (spec == null) continue;
-               
-                savedLevels.TryGetValue(spec.Type, out int level);
+
+                int typeIndex = (int)spec.Type;
+                int level = (typeIndex < _saveData.Levels.Length) ? _saveData.Levels[typeIndex] : 0;
                 _upgrades[spec.Type] = new Upgrade(spec, level);
             }
-
         }
 
         public Upgrade GetUpgradeData(EUpgradeType type)
@@ -64,7 +54,8 @@ namespace OutGame.Upgrades.Manager
             long cost = upgrade.NextLevelCost;
             if (cost <= 0 || !_goldManager.HasEnough(cost))
             {
-                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - Type: {type}, " + $"비용: {cost}, 현재 레벨: {upgrade.Level}");
+                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - Type: {type}, " +
+                    $"비용: {cost}, 현재 레벨: {upgrade.Level}");
                 return false;
             }
 
@@ -76,9 +67,12 @@ namespace OutGame.Upgrades.Manager
             upgrade.AddLevel();
             int newLevel = upgrade.Level;
 
-            _repository.SaveLevel(type, newLevel);
+            _saveData.Levels[(int)type] = newLevel;
+            _saveData.LastSaveTime = DateTime.Now.ToString("o");
+            _repository.Save(_saveData);
 
-            Debug.Log($"[UpgradeManager] 업그레이드 성공 - {upgrade.DisplayName}({type}) " + $"Lv.{newLevel}, Value: {upgrade.Effect}");
+            Debug.Log($"[UpgradeManager] 업그레이드 성공 - {upgrade.DisplayName}({type}) " +
+                $"Lv.{newLevel}, Value: {upgrade.Effect}");
 
             GameEvents.RaiseUpgradePurchased(type, newLevel);
 
