@@ -46,7 +46,7 @@ namespace OutGame.Upgrades.Manager
             return null;
         }
 
-        public bool TryPurchase(EUpgradeType type)
+        public bool TryUpgrade(EUpgradeType type)
         {
             var upgrade = GetUpgradeData(type);
             if (upgrade == null || upgrade.IsMaxLevel) return false;
@@ -64,7 +64,7 @@ namespace OutGame.Upgrades.Manager
                 return false;
             }
 
-            upgrade.AddLevel();
+            upgrade.LevelUp();
             int newLevel = upgrade.Level;
 
             _saveData.Levels[(int)type] = newLevel;

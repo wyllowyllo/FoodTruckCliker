@@ -83,7 +83,7 @@ namespace UI
                 return;
             }
 
-            _upgradeManager.TryPurchase(_upgradeType);
+            _upgradeManager.TryUpgrade(_upgradeType);
         }
 
         private void SetupStaticUI()
@@ -139,7 +139,7 @@ namespace UI
 
             if (_effectText != null)
             {
-                _effectText.text = GetEffectDescription(currentLevel, isMaxLevel);
+                _effectText.text = _upgrade.EffectDescription;
             }
 
             if (_button != null)
@@ -153,38 +153,5 @@ namespace UI
             }
         }
 
-        private string GetEffectDescription(int currentLevel, bool isMaxLevel)
-        {
-            if (_upgrade == null)
-            {
-                return "";
-            }
-            
-            float value = _upgrade.Effect;
-
-            switch (_upgradeType)
-            {
-                case EUpgradeType.ClickRevenue:
-                    return $"x{value:F1}";
-
-                case EUpgradeType.CriticalChance:
-                    return $"{value * 100:F0}%";
-
-                case EUpgradeType.CriticalProfit:
-                    return $"{value:F0}개";
-
-                case EUpgradeType.ChefCount:
-                    return $"{value:F0}명";
-
-                case EUpgradeType.CookingSpeed:
-                    return $"x{value:F1}";
-
-                case EUpgradeType.FoodTruck:
-                    return $"Lv.{value:F0}";
-
-                default:
-                    return "";
-            }
-        }
     }
 }

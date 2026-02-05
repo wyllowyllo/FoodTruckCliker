@@ -25,7 +25,36 @@ namespace OutGame.Upgrades.Domain
         public long NextLevelCost => GetCost(_level + 1);
         public bool IsMaxLevel => _level >= MaxLevel;
 
-        internal void AddLevel()
+        public string EffectDescription
+        {
+            get
+            {
+                float value = Effect;
+                switch (_spec.Type)
+                {
+                    case EUpgradeType.ClickRevenue:
+                    case EUpgradeType.CookingSpeed:
+                        return $"x{value:F1}";
+
+                    case EUpgradeType.CriticalChance:
+                        return $"{value * 100:F0}%";
+
+                    case EUpgradeType.CriticalProfit:
+                        return $"{value:F0}개";
+
+                    case EUpgradeType.ChefCount:
+                        return $"{value:F0}명";
+
+                    case EUpgradeType.FoodTruck:
+                        return $"Lv.{value:F0}";
+
+                    default:
+                        return "";
+                }
+            }
+        }
+
+        internal void LevelUp()
         {
             _level++;
         }
