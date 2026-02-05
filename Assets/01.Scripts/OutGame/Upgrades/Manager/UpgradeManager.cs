@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Events;
 using Goods.Manager;
-using Menu;
 using OutGame.Upgrades.Domain;
 using OutGame.Upgrades.Repository;
 using UnityEngine;
@@ -13,15 +12,13 @@ namespace OutGame.Upgrades.Manager
         [SerializeField] private UpgradeTableSO _table;
 
         private GoldManager _goldManager;
-        private MenuManager _menuProvider;
         private IUpgradeRepository _repository;
 
         private Dictionary<EUpgradeType, Upgrade> _upgrades;
 
-        public void Initialize(GoldManager goldManager, MenuManager menuProvider = null)
+        public void Initialize(GoldManager goldManager)
         {
             _goldManager = goldManager;
-            _menuProvider = menuProvider;
             
             _repository = new LocalUpgradeRepository();
             _upgrades = new Dictionary<EUpgradeType, Upgrade>();
@@ -83,9 +80,7 @@ namespace OutGame.Upgrades.Manager
 
             Debug.Log($"[UpgradeManager] 업그레이드 성공 - {upgrade.DisplayName}({type}) " + $"Lv.{newLevel}, Value: {upgrade.Effect}");
 
-            // 이벤트, Vfx
             GameEvents.RaiseUpgradePurchased(type, newLevel);
-            HandleUpgradeEffects(upgrade);
 
             return true;
         }
@@ -94,52 +89,9 @@ namespace OutGame.Upgrades.Manager
         {
             var upgrade = GetUpgradeData(type);
             if (upgrade == null || upgrade.IsMaxLevel) return false;
-            
+
             long cost = upgrade.NextLevelCost;
             return cost > 0 && _goldManager.HasEnough(cost);
-        }
-        
-        private void HandleUpgradeEffects(Upgrade upgrade)
-        {
-            switch (upgrade.Type)
-            {
-                case EUpgradeType.ChefCount:
-                case EUpgradeType.CookingSpeed:
-                    NotifyAutoIncomeChanged();
-                    break;
-
-                case EUpgradeType.FoodTruck:
-                    GameEvents.RaiseFoodTruckUpgraded(upgrade.Level, upgrade.Effect);
-                    NotifyAutoIncomeChanged();
-                    break;
-            }
-        }
-
-        private void NotifyAutoIncomeChanged()
-        {
-            float autoIncome = CalculateAutoIncome();
-            GameEvents.RaiseAutoIncomeChanged(autoIncome);
-        }
-
-        public float CalculateAutoIncome()
-        {
-            var chefUpgrade = GetUpgradeData(EUpgradeType.ChefCount);
-            int chefCount = Mathf.FloorToInt(chefUpgrade?.Effect ?? 0f);
-
-            if (chefCount <= 0)
-            {
-                return 0f;
-            }
-
-            var clickUpgrade = GetUpgradeData(EUpgradeType.ClickRevenue);
-            var speedUpgrade = GetUpgradeData(EUpgradeType.CookingSpeed);
-
-            float cookingSpeed = speedUpgrade?.Effect ?? 1f;
-            float menuPrice = _menuProvider?.AveragePrice ?? 10f;
-            float clickRevenue = clickUpgrade?.Effect ?? 1f;
-            float baseClickIncome = menuPrice * clickRevenue;
-
-            return chefCount * baseClickIncome * cookingSpeed;
         }
     }
 }

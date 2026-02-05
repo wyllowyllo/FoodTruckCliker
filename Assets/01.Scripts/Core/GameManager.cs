@@ -37,14 +37,8 @@ namespace Core
             InitializeSystems();
         }
 
-        private void OnEnable()
-        {
-            GameEvents.OnFoodTruckUpgraded += HandleFoodTruckUpgraded;
-        }
-
         private void OnDestroy()
         {
-            GameEvents.OnFoodTruckUpgraded -= HandleFoodTruckUpgraded;
             GameEvents.ClearAllSubscriptions();
         }
 
@@ -83,7 +77,7 @@ namespace Core
             // 1. UpgradeManager 초기화
             if (_upgradeManager != null && _goldManager != null)
             {
-                _upgradeManager.Initialize(_goldManager, _menuManager);
+                _upgradeManager.Initialize(_goldManager);
             }
             else
             {
@@ -128,16 +122,6 @@ namespace Core
             // 6. UI 초기화
             InitializeUI();
             
-        }
-
-        private void HandleFoodTruckUpgraded(int unlockLevel, float priceMultiplier)
-        {
-            if (_menuManager != null)
-            {
-                _menuManager.SetUnlockLevel(unlockLevel);
-                _menuManager.SetPriceMultiplier(priceMultiplier);
-                Debug.Log($"[GameManager] 트럭 업그레이드 - 해금 레벨: {unlockLevel}, 가격 배율: {priceMultiplier}");
-            }
         }
 
         private void InitializeUI()
