@@ -15,12 +15,12 @@ namespace UI
 
         private void OnEnable()
         {
-            GameEvents.OnGoldChanged += HandleGoldChanged;
+            CurrencyEvents.OnGoldChanged += HandleGoldChanged;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnGoldChanged -= HandleGoldChanged;
+            CurrencyEvents.OnGoldChanged -= HandleGoldChanged;
         }
 
         private void HandleGoldChanged(long newGold)

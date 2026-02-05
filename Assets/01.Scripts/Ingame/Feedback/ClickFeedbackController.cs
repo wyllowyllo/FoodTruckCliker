@@ -40,12 +40,12 @@ namespace Feedback
 
         private void OnEnable()
         {
-            GameEvents.OnRevenueEarned += HandleRevenueEarned;
+            IncomeEvents.OnRevenueEarned += HandleRevenueEarned;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnRevenueEarned -= HandleRevenueEarned;
+            IncomeEvents.OnRevenueEarned -= HandleRevenueEarned;
         }
 
         private void InitializePool()

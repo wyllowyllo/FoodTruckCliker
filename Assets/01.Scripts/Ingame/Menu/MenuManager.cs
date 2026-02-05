@@ -53,12 +53,12 @@ namespace Menu
 
         private void OnEnable()
         {
-            GameEvents.OnUpgradePurchased += HandleUpgradePurchased;
+            UpgradeEvents.OnUpgradePurchased += HandleUpgradePurchased;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnUpgradePurchased -= HandleUpgradePurchased;
+            UpgradeEvents.OnUpgradePurchased -= HandleUpgradePurchased;
         }
 
         private void HandleUpgradePurchased(EUpgradeType type, int newLevel)

@@ -54,8 +54,7 @@ namespace OutGame.Upgrades.Manager
             long cost = upgrade.NextLevelCost;
             if (cost <= 0 || !_currencyManager.HasEnough(cost))
             {
-                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - Type: {type}, " +
-                    $"비용: {cost}, 현재 레벨: {upgrade.Level}");
+                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - Type: {type}, " + $"비용: {cost}, 현재 레벨: {upgrade.Level}");
                 return false;
             }
 
@@ -71,10 +70,9 @@ namespace OutGame.Upgrades.Manager
             _saveData.LastSaveTime = DateTime.Now.ToString("o");
             _repository.Save(_saveData);
 
-            Debug.Log($"[UpgradeManager] 업그레이드 성공 - {upgrade.DisplayName}({type}) " +
-                $"Lv.{newLevel}, Value: {upgrade.Effect}");
+            Debug.Log($"[UpgradeManager] 업그레이드 성공 - {upgrade.DisplayName}({type}) " + $"Lv.{newLevel}, Value: {upgrade.Effect}");
 
-            GameEvents.RaiseUpgradePurchased(type, newLevel);
+            UpgradeEvents.RaiseUpgradePurchased(type, newLevel);
 
             return true;
         }

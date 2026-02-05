@@ -35,12 +35,12 @@ namespace AutoIncome
 
         private void OnEnable()
         {
-            GameEvents.OnUpgradePurchased += HandleUpgradePurchased;
+            UpgradeEvents.OnUpgradePurchased += HandleUpgradePurchased;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnUpgradePurchased -= HandleUpgradePurchased;
+            UpgradeEvents.OnUpgradePurchased -= HandleUpgradePurchased;
         }
 
         private void Update()
@@ -71,7 +71,7 @@ namespace AutoIncome
             if (goldToAdd > 0)
             {
                 _currencyManager.AddGold(goldToAdd);
-                GameEvents.RaiseRevenueEarned(goldToAdd, false, 1, true);
+                IncomeEvents.RaiseRevenueEarned(goldToAdd, false, 1, true);
             }
         }
 
@@ -94,7 +94,7 @@ namespace AutoIncome
             if (chefCount <= 0)
             {
                 _cachedIncomePerSecond = 0f;
-                GameEvents.RaiseAutoIncomeChanged(_cachedIncomePerSecond);
+                IncomeEvents.RaiseAutoIncomeChanged(_cachedIncomePerSecond);
                 return;
             }
 
@@ -110,7 +110,7 @@ namespace AutoIncome
 
             _cachedIncomePerSecond = chefCount * baseClickIncome * cookingSpeed;
 
-            GameEvents.RaiseAutoIncomeChanged(_cachedIncomePerSecond);
+            IncomeEvents.RaiseAutoIncomeChanged(_cachedIncomePerSecond);
         }
     }
 }

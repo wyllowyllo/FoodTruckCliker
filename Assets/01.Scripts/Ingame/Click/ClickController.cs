@@ -47,7 +47,7 @@ namespace Click
                 _currencyManager.AddGold(goldToAdd);
             }
 
-            GameEvents.RaiseRevenueEarned(result.Revenue, result.IsCritical, result.MenuCount, false);
+            IncomeEvents.RaiseRevenueEarned(result.Revenue, result.IsCritical, result.MenuCount, false);
         }
     }
 }

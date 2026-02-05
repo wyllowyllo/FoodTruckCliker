@@ -45,14 +45,14 @@ namespace UI
 
         private void OnEnable()
         {
-            GameEvents.OnGoldChanged += HandleGoldChanged;
-            GameEvents.OnUpgradePurchased += HandleUpgradePurchased;
+            CurrencyEvents.OnGoldChanged += HandleGoldChanged;
+            UpgradeEvents.OnUpgradePurchased += HandleUpgradePurchased;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnGoldChanged -= HandleGoldChanged;
-            GameEvents.OnUpgradePurchased -= HandleUpgradePurchased;
+            CurrencyEvents.OnGoldChanged -= HandleGoldChanged;
+            UpgradeEvents.OnUpgradePurchased -= HandleUpgradePurchased;
         }
 
         private void OnDestroy()

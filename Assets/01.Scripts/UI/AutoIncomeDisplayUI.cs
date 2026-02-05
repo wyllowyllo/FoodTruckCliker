@@ -20,12 +20,12 @@ namespace UI
 
         private void OnEnable()
         {
-            GameEvents.OnAutoIncomeChanged += HandleAutoIncomeChanged;
+            IncomeEvents.OnAutoIncomeChanged += HandleAutoIncomeChanged;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnAutoIncomeChanged -= HandleAutoIncomeChanged;
+            IncomeEvents.OnAutoIncomeChanged -= HandleAutoIncomeChanged;
         }
 
         private void HandleAutoIncomeChanged(float incomePerSecond)
