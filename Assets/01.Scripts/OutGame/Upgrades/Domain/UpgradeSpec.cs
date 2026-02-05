@@ -17,7 +17,7 @@ namespace OutGame.Upgrades.Domain
 
         [Header("배열 기반 레벨 데이터 (Array 모드)")]
         [SerializeField] private int _maxLevel = 3;
-        [SerializeField, Tooltip("레벨별 비용")] private int[] _costsPerLevel;
+        [SerializeField, Tooltip("레벨별 비용")] private long[] _costsPerLevel;
         [SerializeField, Tooltip("레벨별 효과 값")] private float[] _valuesPerLevel;
 
         [Header("공식 기반 데이터 (Formula 모드)")]
