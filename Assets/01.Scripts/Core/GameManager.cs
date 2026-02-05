@@ -20,7 +20,7 @@ namespace Core
         private GameConfig _gameConfig;
 
         [Header("시스템 참조")]
-        [SerializeField] private GoldManager _goldManager;
+        [SerializeField] private CurrencyManager _currencyManager;
         [SerializeField] private UpgradeManager _upgradeManager;
         [SerializeField] private AutoIncomeManager _autoIncomeManager;
         [SerializeField] private ClickController _clickController;
@@ -49,7 +49,7 @@ namespace Core
                 Debug.LogError("GameConfig is not assigned!");
             }
 
-            if (_goldManager == null)
+            if (_currencyManager == null)
             {
                 Debug.LogError("GoldManager is not assigned!");
             }
@@ -69,15 +69,15 @@ namespace Core
         {
             // 0. GoldManager 초기화
             string userId = AccountManager.Instance.Email;
-            if (_goldManager != null)
+            if (_currencyManager != null)
             {
-                _goldManager.Initialize(userId);
+                _currencyManager.Initialize(userId);
             }
 
             // 1. UpgradeManager 초기화
-            if (_upgradeManager != null && _goldManager != null)
+            if (_upgradeManager != null && _currencyManager != null)
             {
-                _upgradeManager.Initialize(_goldManager);
+                _upgradeManager.Initialize(_currencyManager);
             }
             else
             {
@@ -104,7 +104,7 @@ namespace Core
             // 4. ClickController 초기화
             if (_clickController != null)
             {
-                _clickController.Initialize(_clickRevenueCalculator, _goldManager);
+                _clickController.Initialize(_clickRevenueCalculator, _currencyManager);
                
             }
             else
@@ -115,7 +115,7 @@ namespace Core
             // 5. AutoIncomeManager 초기화 (MenuManager 연동)
             if (_autoIncomeManager != null)
             {
-                _autoIncomeManager.Initialize(_upgradeManager, _goldManager, _menuManager);
+                _autoIncomeManager.Initialize(_upgradeManager, _currencyManager, _menuManager);
                 
             }
 

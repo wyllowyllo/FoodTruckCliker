@@ -159,14 +159,8 @@ namespace UI
             {
                 return "";
             }
-
-            int displayLevel = isMaxLevel ? currentLevel : currentLevel + 1;
-            if (displayLevel <= 0)
-            {
-                displayLevel = 1;
-            }
-
-            float value = _upgrade.Spec.GetEffect(displayLevel);
+            
+            float value = _upgrade.Effect;
 
             switch (_upgradeType)
             {

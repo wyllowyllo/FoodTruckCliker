@@ -12,15 +12,15 @@ namespace OutGame.Upgrades.Manager
     {
         [SerializeField] private UpgradeTableSO _table;
 
-        private GoldManager _goldManager;
+        private CurrencyManager _currencyManager;
         private IUpgradeRepository _repository;
         private UpgradeSaveData _saveData;
 
         private Dictionary<EUpgradeType, Upgrade> _upgrades;
 
-        public void Initialize(GoldManager goldManager)
+        public void Initialize(CurrencyManager currencyManager)
         {
-            _goldManager = goldManager;
+            _currencyManager = currencyManager;
 
             _repository = new LocalUpgradeRepository();
             _saveData = _repository.Load();
@@ -52,14 +52,14 @@ namespace OutGame.Upgrades.Manager
             if (upgrade == null || upgrade.IsMaxLevel) return false;
 
             long cost = upgrade.NextLevelCost;
-            if (cost <= 0 || !_goldManager.HasEnough(cost))
+            if (cost <= 0 || !_currencyManager.HasEnough(cost))
             {
                 Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - Type: {type}, " +
                     $"비용: {cost}, 현재 레벨: {upgrade.Level}");
                 return false;
             }
 
-            if (!_goldManager.SpendGold(cost))
+            if (!_currencyManager.SpendGold(cost))
             {
                 return false;
             }
@@ -85,7 +85,7 @@ namespace OutGame.Upgrades.Manager
             if (upgrade == null || upgrade.IsMaxLevel) return false;
 
             long cost = upgrade.NextLevelCost;
-            return cost > 0 && _goldManager.HasEnough(cost);
+            return cost > 0 && _currencyManager.HasEnough(cost);
         }
     }
 }

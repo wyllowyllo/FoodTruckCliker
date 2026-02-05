@@ -79,7 +79,7 @@ MonoBehaviour:
     _icon: {fileID: 0}
     _scalingMode: 0
     _maxLevel: 3
-    _costsPerLevel: 10270000204e000030750000
+    _costsPerLevel: 1027000000000000307500000000000050c3000000000000
     _valuesPerLevel:
     - 1.5
     - 2

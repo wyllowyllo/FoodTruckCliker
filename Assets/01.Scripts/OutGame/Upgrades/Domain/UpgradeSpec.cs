@@ -30,80 +30,15 @@ namespace OutGame.Upgrades.Domain
         public string DisplayName => _displayName;
         public string Description => _description;
         public Sprite Icon => _icon;
-       
-        public int MaxLevel
-        {
-            get
-            {
-                if (_scalingMode == EScalingMode.Formula) return int.MaxValue;
-                return _maxLevel;
-            }
-        }
 
-        public long GetCost(int level)
-        {
-            if (level < 1)
-            {
-                return 0;
-            }
+        public EScalingMode ScalingMode => _scalingMode;
+        public int ArrayMaxLevel => _maxLevel;
+        public long[] CostsPerLevel => _costsPerLevel;
+        public float[] ValuesPerLevel => _valuesPerLevel;
 
-            if (_scalingMode == EScalingMode.Formula)
-            {
-                return (long)(_baseCost * Math.Pow(_costMultiplier, level - 1));
-            }
-
-            if (level > _maxLevel)
-            {
-                return 0;
-            }
-
-            int index = level - 1;
-            if (_costsPerLevel == null || index >= _costsPerLevel.Length)
-            {
-                return 0;
-            }
-
-            return _costsPerLevel[index];
-        }
-
-        public float GetEffect(int level)
-        {
-            if (level < 1)
-            {
-                return GetDefaultEffect();
-            }
-
-            if (_scalingMode == EScalingMode.Formula)
-            {
-                return _baseEffectValue + _valueIncrement * (level - 1);
-            }
-
-            if (level > _maxLevel)
-            {
-                return GetDefaultEffect();
-            }
-
-            int index = level - 1;
-            if (_valuesPerLevel == null || index >= _valuesPerLevel.Length)
-            {
-                return GetDefaultEffect();
-            }
-
-            return _valuesPerLevel[index];
-        }
-
-        private float GetDefaultEffect()
-        {
-            switch (_type)
-            {
-                case EUpgradeType.ClickRevenue:
-                case EUpgradeType.CookingSpeed:
-                case EUpgradeType.FoodTruck:
-                    return 1f;
-
-                default:
-                    return 0f;
-            }
-        }
+        public long BaseCost => _baseCost;
+        public float BaseEffectValue => _baseEffectValue;
+        public float CostMultiplier => _costMultiplier;
+        public float ValueIncrement => _valueIncrement;
     }
 }

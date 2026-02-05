@@ -13,7 +13,7 @@ namespace AutoIncome
         private float _incomeInterval = 1f;
 
         private UpgradeManager _upgradeProvider;
-        private GoldManager _goldManager;
+        private CurrencyManager _currencyManager;
         private MenuManager _menuProvider;
 
         private float _timer;
@@ -23,11 +23,11 @@ namespace AutoIncome
 
         public void Initialize(
             UpgradeManager upgradeProvider,
-            GoldManager goldManager,
+            CurrencyManager currencyManager,
             MenuManager menuProvider)
         {
             _upgradeProvider = upgradeProvider;
-            _goldManager = goldManager;
+            _currencyManager = currencyManager;
             _menuProvider = menuProvider;
 
             RecalculateIncome();
@@ -45,7 +45,7 @@ namespace AutoIncome
 
         private void Update()
         {
-            if (_upgradeProvider == null || _goldManager == null)
+            if (_upgradeProvider == null || _currencyManager == null)
             {
                 return;
             }
@@ -70,7 +70,7 @@ namespace AutoIncome
 
             if (goldToAdd > 0)
             {
-                _goldManager.AddGold(goldToAdd);
+                _currencyManager.AddGold(goldToAdd);
                 GameEvents.RaiseRevenueEarned(goldToAdd, false, 1, true);
             }
         }

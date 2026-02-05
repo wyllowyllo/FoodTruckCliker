@@ -2827,7 +2827,7 @@ GameObject:
   - component: {fileID: 255769342}
   - component: {fileID: 255769343}
   m_Layer: 0
-  m_Name: GoldManager
+  m_Name: CurrencyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11739,7 +11739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameConfig: {fileID: 11400000, guid: 7e58fd4b7f2038644996ecb91372d1c9, type: 2}
-  _goldManager: {fileID: 255769343}
+  _currencyManager: {fileID: 255769343}
   _upgradeManager: {fileID: 925201114}
   _autoIncomeManager: {fileID: 518906795}
   _clickController: {fileID: 726625961}

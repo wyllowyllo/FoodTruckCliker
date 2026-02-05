@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Goods.Manager
 {
-    public class GoldManager : MonoBehaviour
+    public class CurrencyManager : MonoBehaviour
     {
         [SerializeField] private long _startingGold = 0;
 
