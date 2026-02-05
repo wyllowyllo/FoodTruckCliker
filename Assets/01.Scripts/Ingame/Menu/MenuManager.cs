@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using OutGame.Upgrades.Domain;
+using OutGame.Upgrades.Manager;
 using UnityEngine;
 
 namespace Menu
@@ -32,9 +34,17 @@ namespace Menu
             }
         }
 
-        public void Initialize()
+        public void Initialize(UpgradeManager upgradeManager)
         {
             SortMenusByUnlockLevel();
+
+            var foodTruck = upgradeManager.GetUpgradeData(EUpgradeType.FoodTruck);
+            if (foodTruck != null && foodTruck.Level > 0)
+            {
+                _currentUnlockLevel = foodTruck.Level;
+                _priceMultiplier = Mathf.Max(1f, foodTruck.Effect);
+            }
+
             UpdateUnlockedMenus();
         }
 

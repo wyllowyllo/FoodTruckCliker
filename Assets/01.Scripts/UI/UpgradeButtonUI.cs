@@ -32,7 +32,7 @@ namespace UI
         public void Initialize(UpgradeManager upgradeManager)
         {
             _upgradeManager = upgradeManager;
-            _upgrade = _upgradeManager.GetUpgrade(_upgradeType);
+            _upgrade = _upgradeManager.GetUpgradeData(_upgradeType);
 
             if (_button != null)
             {

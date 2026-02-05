@@ -80,18 +80,7 @@ namespace Core
                 _goldManager.Initialize(userId);
             }
 
-            // 1. MenuManager 초기화
-            if (_menuManager != null)
-            {
-                _menuManager.Initialize();
-                
-            }
-            else
-            {
-                Debug.LogError("[GameManager] MenuManager가 NULL!");
-            }
-
-            // 2. UpgradeManager 초기화 (MenuManager 연동)
+            // 1. UpgradeManager 초기화
             if (_upgradeManager != null && _goldManager != null)
             {
                 _upgradeManager.Initialize(_goldManager, _menuManager);
@@ -99,6 +88,16 @@ namespace Core
             else
             {
                 Debug.LogError("[GameManager] UpgradeManager 또는 GoldManager가 NULL!");
+            }
+
+            // 2. MenuManager 초기화 (UpgradeManager에서 FoodTruck 레벨 읽어옴)
+            if (_menuManager != null && _upgradeManager != null)
+            {
+                _menuManager.Initialize(_upgradeManager);
+            }
+            else
+            {
+                Debug.LogError("[GameManager] MenuManager가 NULL!");
             }
 
             // 3. ClickRevenueCalculator 생성 (MenuManager 연동)

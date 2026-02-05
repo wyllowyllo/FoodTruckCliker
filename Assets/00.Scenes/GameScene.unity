@@ -17571,7 +17571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeType: 0
+  _upgradeType: 5
   _button: {fileID: 1463651791}
   _iconImage: {fileID: 1266048334}
   _nameText: {fileID: 1034730248}

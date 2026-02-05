@@ -35,23 +35,21 @@ namespace OutGame.Upgrades.Manager
                 }
             }
 
+            // 불러오기
             var savedLevels = _repository.LoadAll(upgradeTypes);
 
+            // Upgrade 객체 생성
             foreach (var spec in _table.AllSpecs)
             {
-                if (spec == null)
-                {
-                    continue;
-                }
-
+                if (spec == null) continue;
+               
                 savedLevels.TryGetValue(spec.Type, out int level);
                 _upgrades[spec.Type] = new Upgrade(spec, level);
             }
 
-            ApplyLoadedEffects();
         }
 
-        public Upgrade GetUpgrade(EUpgradeType type)
+        public Upgrade GetUpgradeData(EUpgradeType type)
         {
             if (_upgrades != null && _upgrades.TryGetValue(type, out Upgrade upgrade))
             {
@@ -63,17 +61,13 @@ namespace OutGame.Upgrades.Manager
 
         public bool TryPurchase(EUpgradeType type)
         {
-            var upgrade = GetUpgrade(type);
-            if (upgrade == null || upgrade.IsMaxLevel)
-            {
-                return false;
-            }
+            var upgrade = GetUpgradeData(type);
+            if (upgrade == null || upgrade.IsMaxLevel) return false;
 
             long cost = upgrade.NextLevelCost;
             if (cost <= 0 || !_goldManager.HasEnough(cost))
             {
-                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - Type: {type}, " +
-                    $"비용: {cost}, 현재 레벨: {upgrade.Level}");
+                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - Type: {type}, " + $"비용: {cost}, 현재 레벨: {upgrade.Level}");
                 return false;
             }
 
@@ -87,11 +81,10 @@ namespace OutGame.Upgrades.Manager
 
             _repository.SaveLevel(type, newLevel);
 
-            Debug.Log($"[UpgradeManager] 업그레이드 성공 - {upgrade.DisplayName}({type}) " +
-                $"Lv.{newLevel}, Value: {upgrade.Effect}");
+            Debug.Log($"[UpgradeManager] 업그레이드 성공 - {upgrade.DisplayName}({type}) " + $"Lv.{newLevel}, Value: {upgrade.Effect}");
 
+            // 이벤트, Vfx
             GameEvents.RaiseUpgradePurchased(type, newLevel);
-
             HandleUpgradeEffects(upgrade);
 
             return true;
@@ -99,27 +92,13 @@ namespace OutGame.Upgrades.Manager
 
         public bool CanUpgrade(EUpgradeType type)
         {
-            var upgrade = GetUpgrade(type);
-            if (upgrade == null || upgrade.IsMaxLevel)
-            {
-                return false;
-            }
-
+            var upgrade = GetUpgradeData(type);
+            if (upgrade == null || upgrade.IsMaxLevel) return false;
+            
             long cost = upgrade.NextLevelCost;
             return cost > 0 && _goldManager.HasEnough(cost);
         }
-
-        private void ApplyLoadedEffects()
-        {
-            foreach (var kvp in _upgrades)
-            {
-                if (kvp.Value.Level > 0)
-                {
-                    HandleUpgradeEffects(kvp.Value);
-                }
-            }
-        }
-
+        
         private void HandleUpgradeEffects(Upgrade upgrade)
         {
             switch (upgrade.Type)
@@ -144,7 +123,7 @@ namespace OutGame.Upgrades.Manager
 
         public float CalculateAutoIncome()
         {
-            var chefUpgrade = GetUpgrade(EUpgradeType.ChefCount);
+            var chefUpgrade = GetUpgradeData(EUpgradeType.ChefCount);
             int chefCount = Mathf.FloorToInt(chefUpgrade?.Effect ?? 0f);
 
             if (chefCount <= 0)
@@ -152,8 +131,8 @@ namespace OutGame.Upgrades.Manager
                 return 0f;
             }
 
-            var clickUpgrade = GetUpgrade(EUpgradeType.ClickRevenue);
-            var speedUpgrade = GetUpgrade(EUpgradeType.CookingSpeed);
+            var clickUpgrade = GetUpgradeData(EUpgradeType.ClickRevenue);
+            var speedUpgrade = GetUpgradeData(EUpgradeType.CookingSpeed);
 
             float cookingSpeed = speedUpgrade?.Effect ?? 1f;
             float menuPrice = _menuProvider?.AveragePrice ?? 10f;

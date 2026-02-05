@@ -88,7 +88,7 @@ namespace AutoIncome
                 return;
             }
 
-            var chefUpgrade = _upgradeProvider.GetUpgrade(EUpgradeType.ChefCount);
+            var chefUpgrade = _upgradeProvider.GetUpgradeData(EUpgradeType.ChefCount);
             int chefCount = Mathf.FloorToInt(chefUpgrade?.Effect ?? 0f);
 
             if (chefCount <= 0)
@@ -100,10 +100,10 @@ namespace AutoIncome
 
             float menuPrice = _menuProvider?.AveragePrice ?? 10f;
 
-            var clickUpgrade = _upgradeProvider.GetUpgrade(EUpgradeType.ClickRevenue);
+            var clickUpgrade = _upgradeProvider.GetUpgradeData(EUpgradeType.ClickRevenue);
             float clickRevenue = clickUpgrade?.Effect ?? 1f;
 
-            var speedUpgrade = _upgradeProvider.GetUpgrade(EUpgradeType.CookingSpeed);
+            var speedUpgrade = _upgradeProvider.GetUpgradeData(EUpgradeType.CookingSpeed);
             float cookingSpeed = speedUpgrade?.Effect ?? 1f;
 
             float baseClickIncome = menuPrice * clickRevenue;
