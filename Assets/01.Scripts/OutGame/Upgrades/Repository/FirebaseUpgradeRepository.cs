@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 
-namespace Upgrade.Repository
+namespace OutGame.Upgrades.Repository
 {
     public class FirebaseUpgradeRepository : IUpgradeRepository
     {
@@ -12,17 +11,12 @@ namespace Upgrade.Repository
             _userId = userId;
         }
 
-        public int LoadLevel(string upgradeId)
+        public UpgradeSaveData Load()
         {
             throw new NotImplementedException();
         }
 
-        public void SaveLevel(string upgradeId, int level)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Dictionary<string, int> LoadAll(IEnumerable<string> upgradeIds)
+        public void Save(UpgradeSaveData data)
         {
             throw new NotImplementedException();
         }

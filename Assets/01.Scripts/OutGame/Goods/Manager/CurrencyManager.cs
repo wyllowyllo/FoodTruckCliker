@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Goods.Manager
 {
-    public class GoldManager : MonoBehaviour
+    public class CurrencyManager : MonoBehaviour
     {
         [SerializeField] private long _startingGold = 0;
 
@@ -32,7 +32,7 @@ namespace Goods.Manager
                 _gold = new Currency(_startingGold);
             }
 
-            GameEvents.RaiseGoldChanged(_gold.Value);
+            CurrencyEvents.RaiseGoldChanged(_gold.Value);
         }
 
        
@@ -68,7 +68,7 @@ namespace Goods.Manager
         
         private void OnGoldChanged()
         {
-            GameEvents.RaiseGoldChanged(_gold.Value);
+            CurrencyEvents.RaiseGoldChanged(_gold.Value);
             
             CurrencySaveData savedGold = new CurrencySaveData();
             savedGold.Currency = _gold.Value;

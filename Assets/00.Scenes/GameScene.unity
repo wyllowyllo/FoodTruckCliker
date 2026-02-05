@@ -2827,7 +2827,7 @@ GameObject:
   - component: {fileID: 255769342}
   - component: {fileID: 255769343}
   m_Layer: 0
-  m_Name: GoldManager
+  m_Name: CurrencyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6622,10 +6622,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 11400000, guid: b4b597f89b1fe7445bd8e9842bf647b9, type: 2}
+  _upgradeType: 1
   _button: {fileID: 579953483}
-  _iconImage: {fileID: 0}
-  _nameText: {fileID: 0}
+  _iconImage: {fileID: 1234226490}
+  _nameText: {fileID: 1700850794}
   _levelText: {fileID: 0}
   _costText: {fileID: 1754600485}
   _effectText: {fileID: 0}
@@ -11141,13 +11141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5577fab8ec34e5429813d6f2f431f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgrades:
-  - {fileID: 11400000, guid: 3028ce2b14d647648884798f6f9a4f6b, type: 2}
-  - {fileID: 11400000, guid: b4b597f89b1fe7445bd8e9842bf647b9, type: 2}
-  - {fileID: 11400000, guid: 42a63f80b2d39824a8a3106fe22b6144, type: 2}
-  - {fileID: 11400000, guid: b38b1e02c10d7e9468d1f18812df0036, type: 2}
-  - {fileID: 11400000, guid: 740bf9d9ad3318d47b685f4f53d21bef, type: 2}
-  - {fileID: 11400000, guid: 77c1f9575e8837946a999ff36d489a79, type: 2}
+  _table: {fileID: 11400000, guid: eae786f4bdf40864ea535ad8659f3be0, type: 2}
 --- !u!1 &949403076
 GameObject:
   m_ObjectHideFlags: 0
@@ -11745,7 +11739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameConfig: {fileID: 11400000, guid: 7e58fd4b7f2038644996ecb91372d1c9, type: 2}
-  _goldManager: {fileID: 255769343}
+  _currencyManager: {fileID: 255769343}
   _upgradeManager: {fileID: 925201114}
   _autoIncomeManager: {fileID: 518906795}
   _clickController: {fileID: 726625961}
@@ -11854,10 +11848,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 11400000, guid: 740bf9d9ad3318d47b685f4f53d21bef, type: 2}
+  _upgradeType: 4
   _button: {fileID: 1013340125}
-  _iconImage: {fileID: 0}
-  _nameText: {fileID: 0}
+  _iconImage: {fileID: 118415636}
+  _nameText: {fileID: 2129350592}
   _levelText: {fileID: 0}
   _costText: {fileID: 642229501}
   _effectText: {fileID: 0}
@@ -17577,10 +17571,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 11400000, guid: 77c1f9575e8837946a999ff36d489a79, type: 2}
+  _upgradeType: 5
   _button: {fileID: 1463651791}
-  _iconImage: {fileID: 0}
-  _nameText: {fileID: 0}
+  _iconImage: {fileID: 1266048334}
+  _nameText: {fileID: 1034730248}
   _levelText: {fileID: 0}
   _costText: {fileID: 311193835}
   _effectText: {fileID: 0}
@@ -19229,10 +19223,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 11400000, guid: 42a63f80b2d39824a8a3106fe22b6144, type: 2}
+  _upgradeType: 2
   _button: {fileID: 1585888656}
-  _iconImage: {fileID: 0}
-  _nameText: {fileID: 0}
+  _iconImage: {fileID: 135567631}
+  _nameText: {fileID: 949403078}
   _levelText: {fileID: 0}
   _costText: {fileID: 1075763068}
   _effectText: {fileID: 0}
@@ -21019,10 +21013,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 11400000, guid: 3028ce2b14d647648884798f6f9a4f6b, type: 2}
+  _upgradeType: 0
   _button: {fileID: 1720758559}
-  _iconImage: {fileID: 0}
-  _nameText: {fileID: 0}
+  _iconImage: {fileID: 1337067659}
+  _nameText: {fileID: 8715438}
   _levelText: {fileID: 0}
   _costText: {fileID: 1659199286}
   _effectText: {fileID: 0}
@@ -26002,10 +25996,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98aebe8173b95ff478706e40951b8462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _upgradeData: {fileID: 11400000, guid: b38b1e02c10d7e9468d1f18812df0036, type: 2}
+  _upgradeType: 3
   _button: {fileID: 2106547997}
-  _iconImage: {fileID: 0}
-  _nameText: {fileID: 0}
+  _iconImage: {fileID: 1935218214}
+  _nameText: {fileID: 53440804}
   _levelText: {fileID: 0}
   _costText: {fileID: 664620242}
   _effectText: {fileID: 0}

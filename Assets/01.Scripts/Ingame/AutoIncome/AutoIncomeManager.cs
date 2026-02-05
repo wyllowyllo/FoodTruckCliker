@@ -1,23 +1,19 @@
 using Events;
 using Goods.Manager;
 using Menu;
-using Upgrade.Domain;
-using Upgrade.Manager;
+using OutGame.Upgrades.Domain;
+using OutGame.Upgrades.Manager;
 using UnityEngine;
 
 namespace AutoIncome
 {
-    /// <summary>
-    /// 자동 수익 관리자
-    /// 공식: 요리사 수 × 클릭 수익 × 요리 속도 배율
-    /// </summary>
     public class AutoIncomeManager : MonoBehaviour
     {
         [SerializeField]
         private float _incomeInterval = 1f;
 
         private UpgradeManager _upgradeProvider;
-        private GoldManager _goldManager;
+        private CurrencyManager _currencyManager;
         private MenuManager _menuProvider;
 
         private float _timer;
@@ -27,11 +23,11 @@ namespace AutoIncome
 
         public void Initialize(
             UpgradeManager upgradeProvider,
-            GoldManager goldManager,
+            CurrencyManager currencyManager,
             MenuManager menuProvider)
         {
             _upgradeProvider = upgradeProvider;
-            _goldManager = goldManager;
+            _currencyManager = currencyManager;
             _menuProvider = menuProvider;
 
             RecalculateIncome();
@@ -39,17 +35,17 @@ namespace AutoIncome
 
         private void OnEnable()
         {
-            GameEvents.OnUpgradePurchased += HandleUpgradePurchased;
+            UpgradeEvents.OnUpgradePurchased += HandleUpgradePurchased;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnUpgradePurchased -= HandleUpgradePurchased;
+            UpgradeEvents.OnUpgradePurchased -= HandleUpgradePurchased;
         }
 
         private void Update()
         {
-            if (_upgradeProvider == null || _goldManager == null)
+            if (_upgradeProvider == null || _currencyManager == null)
             {
                 return;
             }
@@ -74,12 +70,12 @@ namespace AutoIncome
 
             if (goldToAdd > 0)
             {
-                _goldManager.AddGold(goldToAdd);
-                GameEvents.RaiseRevenueEarned(goldToAdd, false, 1, true);
+                _currencyManager.AddGold(goldToAdd);
+                IncomeEvents.RaiseRevenueEarned(goldToAdd, false, 1, true);
             }
         }
 
-        private void HandleUpgradePurchased(string upgradeId, int newLevel)
+        private void HandleUpgradePurchased(EUpgradeType type, int newLevel)
         {
             RecalculateIncome();
         }
@@ -92,32 +88,29 @@ namespace AutoIncome
                 return;
             }
 
-            // 요리사 수
-            int chefCount = _upgradeProvider.GetIntValue(EUpgradeType.ChefCount);
+            var chefUpgrade = _upgradeProvider.GetUpgradeData(EUpgradeType.ChefCount);
+            int chefCount = Mathf.FloorToInt(chefUpgrade?.Effect ?? 0f);
 
             if (chefCount <= 0)
             {
                 _cachedIncomePerSecond = 0f;
-                GameEvents.RaiseAutoIncomeChanged(_cachedIncomePerSecond);
+                IncomeEvents.RaiseAutoIncomeChanged(_cachedIncomePerSecond);
                 return;
             }
 
-            // 평균 메뉴 가격
             float menuPrice = _menuProvider?.AveragePrice ?? 10f;
 
-            // 클릭 수익 배율
-            float clickRevenue = _upgradeProvider.GetValue(EUpgradeType.ClickRevenue);
+            var clickUpgrade = _upgradeProvider.GetUpgradeData(EUpgradeType.ClickRevenue);
+            float clickRevenue = clickUpgrade?.Effect ?? 1f;
 
-            // 요리 속도 배율
-            float cookingSpeed = _upgradeProvider.GetValue(EUpgradeType.CookingSpeed);
+            var speedUpgrade = _upgradeProvider.GetUpgradeData(EUpgradeType.CookingSpeed);
+            float cookingSpeed = speedUpgrade?.Effect ?? 1f;
 
-            // 기본 클릭 수익 = 메뉴 가격 × 클릭 수익 배율
             float baseClickIncome = menuPrice * clickRevenue;
 
-            // 공식: 요리사 수 × 클릭 수익 × 요리 속도
             _cachedIncomePerSecond = chefCount * baseClickIncome * cookingSpeed;
 
-            GameEvents.RaiseAutoIncomeChanged(_cachedIncomePerSecond);
+            IncomeEvents.RaiseAutoIncomeChanged(_cachedIncomePerSecond);
         }
     }
 }

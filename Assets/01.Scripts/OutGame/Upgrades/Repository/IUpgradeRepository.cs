@@ -1,11 +1,8 @@
-using System.Collections.Generic;
-
-namespace Upgrade.Repository
+namespace OutGame.Upgrades.Repository
 {
     public interface IUpgradeRepository
     {
-        int LoadLevel(string upgradeId);
-        void SaveLevel(string upgradeId, int level);
-        Dictionary<string, int> LoadAll(IEnumerable<string> upgradeIds);
+        UpgradeSaveData Load();
+        void Save(UpgradeSaveData data);
     }
 }

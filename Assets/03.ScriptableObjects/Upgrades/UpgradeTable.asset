@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f0e6e771e6ebb4d9660e0f7bf0d388, type: 3}
+  m_Name: UpgradeTable
+  m_EditorClassIdentifier: 
+  _specs:
+  - _type: 0
+    _displayName: Profit for Click
+    _description: 
+    _icon: {fileID: 0}
+    _scalingMode: 1
+    _maxLevel: 0
+    _costsPerLevel: 
+    _valuesPerLevel: []
+    _baseCost: 50
+    _baseEffectValue: 1
+    _costMultiplier: 1.12
+    _valueIncrement: 0.5
+  - _type: 1
+    _displayName: 
+    _description: 
+    _icon: {fileID: 0}
+    _scalingMode: 1
+    _maxLevel: 0
+    _costsPerLevel: 
+    _valuesPerLevel: []
+    _baseCost: 50
+    _baseEffectValue: 0.05
+    _costMultiplier: 1.2
+    _valueIncrement: 0.02
+  - _type: 2
+    _displayName: 
+    _description: 
+    _icon: {fileID: 0}
+    _scalingMode: 1
+    _maxLevel: 0
+    _costsPerLevel: 
+    _valuesPerLevel: []
+    _baseCost: 100
+    _baseEffectValue: 2
+    _costMultiplier: 1.18
+    _valueIncrement: 1
+  - _type: 3
+    _displayName: 
+    _description: 
+    _icon: {fileID: 0}
+    _scalingMode: 1
+    _maxLevel: 0
+    _costsPerLevel: 
+    _valuesPerLevel: []
+    _baseCost: 200
+    _baseEffectValue: 1
+    _costMultiplier: 1.25
+    _valueIncrement: 1
+  - _type: 4
+    _displayName: 
+    _description: 
+    _icon: {fileID: 0}
+    _scalingMode: 1
+    _maxLevel: 0
+    _costsPerLevel: 
+    _valuesPerLevel: []
+    _baseCost: 75
+    _baseEffectValue: 1
+    _costMultiplier: 1.15
+    _valueIncrement: 0.15
+  - _type: 5
+    _displayName: 
+    _description: 
+    _icon: {fileID: 0}
+    _scalingMode: 0
+    _maxLevel: 3
+    _costsPerLevel: 1027000000000000307500000000000050c3000000000000
+    _valuesPerLevel:
+    - 1.5
+    - 2
+    - 3
+    _baseCost: 75
+    _baseEffectValue: 1
+    _costMultiplier: 1.15
+    _valueIncrement: 0.15

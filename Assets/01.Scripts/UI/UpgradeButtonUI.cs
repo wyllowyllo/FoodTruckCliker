@@ -1,55 +1,38 @@
 using Events;
+using OutGame.Upgrades.Domain;
+using OutGame.Upgrades.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Upgrade.Domain;
-using Upgrade.Manager;
 
 namespace UI
 {
-    /// <summary>
-    /// 업그레이드 버튼 UI
-    /// </summary>
     public class UpgradeButtonUI : MonoBehaviour
     {
-        [Header("참조")]
-        [SerializeField]
-        private UpgradeData _upgradeData;
+        [Header("업그레이드 타입")]
+        [SerializeField] private EUpgradeType _upgradeType;
 
         [Header("UI 요소")]
-        [SerializeField]
-        private Button _button;
+        [SerializeField] private Button _button;
+        [SerializeField] private Image _iconImage;
+        [SerializeField] private TextMeshProUGUI _nameText;
+        [SerializeField] private TextMeshProUGUI _levelText;
+        [SerializeField] private TextMeshProUGUI _costText;
+        [SerializeField] private TextMeshProUGUI _effectText;
+        [SerializeField] private GameObject _maxLevelIndicator;
 
-        [SerializeField]
-        private Image _iconImage;
+        [Header("클릭 피드백 색상")]
+        [SerializeField] private Color _affordableColor = Color.white;
+        [SerializeField] private Color _unaffordableColor = Color.gray;
 
-        [SerializeField]
-        private TextMeshProUGUI _nameText;
-
-        [SerializeField]
-        private TextMeshProUGUI _levelText;
-
-        [SerializeField]
-        private TextMeshProUGUI _costText;
-
-        [SerializeField]
-        private TextMeshProUGUI _effectText;
-
-        [SerializeField]
-        private GameObject _maxLevelIndicator;
-
-        [Header("색상")]
-        [SerializeField]
-        private Color _affordableColor = Color.white;
-
-        [SerializeField]
-        private Color _unaffordableColor = Color.gray;
-
+        // 참조
         private UpgradeManager _upgradeManager;
+        private Upgrade _upgrade;
 
         public void Initialize(UpgradeManager upgradeManager)
         {
             _upgradeManager = upgradeManager;
+            _upgrade = _upgradeManager.GetUpgradeData(_upgradeType);
 
             if (_button != null)
             {
@@ -62,14 +45,14 @@ namespace UI
 
         private void OnEnable()
         {
-            GameEvents.OnGoldChanged += HandleGoldChanged;
-            GameEvents.OnUpgradePurchased += HandleUpgradePurchased;
+            CurrencyEvents.OnGoldChanged += HandleGoldChanged;
+            UpgradeEvents.OnUpgradePurchased += HandleUpgradePurchased;
         }
 
         private void OnDisable()
         {
-            GameEvents.OnGoldChanged -= HandleGoldChanged;
-            GameEvents.OnUpgradePurchased -= HandleUpgradePurchased;
+            CurrencyEvents.OnGoldChanged -= HandleGoldChanged;
+            UpgradeEvents.OnUpgradePurchased -= HandleUpgradePurchased;
         }
 
         private void OnDestroy()
@@ -85,9 +68,9 @@ namespace UI
             RefreshUI();
         }
 
-        private void HandleUpgradePurchased(string upgradeId, int newLevel)
+        private void HandleUpgradePurchased(EUpgradeType type, int newLevel)
         {
-            if (_upgradeData != null && upgradeId == _upgradeData.UpgradeId)
+            if (type == _upgradeType)
             {
                 RefreshUI();
             }
@@ -95,57 +78,52 @@ namespace UI
 
         private void OnButtonClicked()
         {
-            if (_upgradeManager == null || _upgradeData == null)
+            if (_upgradeManager == null || _upgrade == null)
             {
                 return;
             }
 
-            _upgradeManager.TryPurchase(_upgradeData.UpgradeId);
+            _upgradeManager.TryUpgrade(_upgradeType);
         }
 
         private void SetupStaticUI()
         {
-            if (_upgradeData == null)
+            if (_upgrade == null)
             {
                 return;
             }
 
-            if (_iconImage != null && _upgradeData.Icon != null)
+            if (_iconImage != null && _upgrade.Icon != null)
             {
-                _iconImage.sprite = _upgradeData.Icon;
+                _iconImage.sprite = _upgrade.Icon;
             }
 
             if (_nameText != null)
             {
-                _nameText.text = _upgradeData.DisplayName;
+                _nameText.text = _upgrade.DisplayName;
             }
         }
 
         private void RefreshUI()
         {
-            if (_upgradeManager == null || _upgradeData == null)
+            if (_upgradeManager == null || _upgrade == null)
             {
                 return;
             }
 
-            string upgradeId = _upgradeData.UpgradeId;
-            int currentLevel = _upgradeManager.GetLevel(upgradeId);
-            int maxLevel = _upgradeData.MaxLevel;
-            bool isMaxLevel = currentLevel >= maxLevel;
+            int currentLevel = _upgrade.Level;
+            bool isMaxLevel = _upgrade.IsMaxLevel;
 
-            // 레벨 표시
             if (_levelText != null)
             {
                 _levelText.text = $"Lv.{currentLevel}";
             }
 
-            // 최대 레벨 표시
             if (_maxLevelIndicator != null)
             {
                 _maxLevelIndicator.SetActive(isMaxLevel);
             }
 
-            // 비용 표시
             if (_costText != null)
             {
                 if (isMaxLevel)
@@ -154,68 +132,26 @@ namespace UI
                 }
                 else
                 {
-                    long cost = _upgradeManager.GetNextLevelCost(upgradeId);
+                    long cost = _upgrade.NextLevelCost;
                     _costText.text = $"{cost:N0}G";
                 }
             }
 
-            // 효과 표시
             if (_effectText != null)
             {
-                _effectText.text = GetEffectDescription(currentLevel, isMaxLevel);
+                _effectText.text = _upgrade.EffectDescription;
             }
 
-            // 버튼 상태
             if (_button != null)
             {
-                bool canUpgrade = _upgradeManager.CanUpgrade(upgradeId);
+                bool canUpgrade = _upgradeManager.CanUpgrade(_upgradeType);
                 _button.interactable = canUpgrade;
 
-                // 색상 변경
                 var colors = _button.colors;
                 colors.normalColor = canUpgrade ? _affordableColor : _unaffordableColor;
                 _button.colors = colors;
             }
         }
 
-        private string GetEffectDescription(int currentLevel, bool isMaxLevel)
-        {
-            if (_upgradeData == null)
-            {
-                return "";
-            }
-
-            int displayLevel = isMaxLevel ? currentLevel : currentLevel + 1;
-            if (displayLevel <= 0)
-            {
-                displayLevel = 1;
-            }
-
-            float value = _upgradeData.GetValue(displayLevel);
-
-            switch (_upgradeData.Type)
-            {
-                case EUpgradeType.ClickRevenue:
-                    return $"x{value:F1}";
-
-                case EUpgradeType.CriticalChance:
-                    return $"{value * 100:F0}%";
-
-                case EUpgradeType.CriticalProfit:
-                    return $"{value:F0}개";
-
-                case EUpgradeType.ChefCount:
-                    return $"{value:F0}명";
-
-                case EUpgradeType.CookingSpeed:
-                    return $"x{value:F1}";
-
-                case EUpgradeType.FoodTruck:
-                    return $"Lv.{value:F0}";
-
-                default:
-                    return "";
-            }
-        }
     }
 }

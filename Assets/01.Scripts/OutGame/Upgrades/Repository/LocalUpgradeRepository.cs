@@ -1,33 +1,24 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Upgrade.Repository
+namespace OutGame.Upgrades.Repository
 {
     public class LocalUpgradeRepository : IUpgradeRepository
     {
-        private const string KeyPrefix = "upgrade";
+        private const string SaveKey = "upgrade_save";
 
-        public int LoadLevel(string upgradeId)
+        public UpgradeSaveData Load()
         {
-            return PlayerPrefs.GetInt(KeyPrefix + upgradeId, 0);
+            string json = PlayerPrefs.GetString(SaveKey, "");
+            if (string.IsNullOrEmpty(json))
+                return UpgradeSaveData.Default;
+            return JsonUtility.FromJson<UpgradeSaveData>(json);
         }
 
-        public void SaveLevel(string upgradeId, int level)
+        public void Save(UpgradeSaveData data)
         {
-            PlayerPrefs.SetInt(KeyPrefix + upgradeId, level);
+            string json = JsonUtility.ToJson(data);
+            PlayerPrefs.SetString(SaveKey, json);
             PlayerPrefs.Save();
-        }
-
-        public Dictionary<string, int> LoadAll(IEnumerable<string> upgradeIds)
-        {
-            var levels = new Dictionary<string, int>();
-
-            foreach (string id in upgradeIds)
-            {
-                levels[id] = LoadLevel(id);
-            }
-
-            return levels;
         }
     }
 }

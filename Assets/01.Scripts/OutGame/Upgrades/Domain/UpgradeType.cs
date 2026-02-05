@@ -1,4 +1,4 @@
-namespace Upgrade.Domain
+namespace OutGame.Upgrades.Domain
 {
     /// <summary>
     /// 업그레이드가 영향을 미치는 대상 타입
@@ -22,14 +22,5 @@ namespace Upgrade.Domain
     {
         Array,      // 배열 기반 (고정 레벨)
         Formula     // 공식 기반 (무한 레벨)
-    }
-
-    /// <summary>
-    /// 업그레이드 수정자 타입
-    /// </summary>
-    public enum EModifierType
-    {
-        Additive,       // 가산 (+N)
-        Multiplicative  // 승산 (xN)
     }
 }

@@ -12,12 +12,12 @@ namespace Click
     public class ClickController : MonoBehaviour, IPointerClickHandler
     {
         private ClickRevenueCalculator _revenueCalculator;
-        private GoldManager _goldManager;
+        private CurrencyManager _currencyManager;
 
-        public void Initialize(ClickRevenueCalculator revenueCalculator, GoldManager goldManager)
+        public void Initialize(ClickRevenueCalculator revenueCalculator, CurrencyManager currencyManager)
         {
             _revenueCalculator = revenueCalculator;
-            _goldManager = goldManager;
+            _currencyManager = currencyManager;
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -28,12 +28,12 @@ namespace Click
 
         private void ProcessClick()
         {
-            if (_revenueCalculator == null || _goldManager == null)
+            if (_revenueCalculator == null || _currencyManager == null)
             {
                 Debug.LogWarning("[ClickController] 초기화 안됨 - RevenueCalculator: " +
                     (_revenueCalculator == null ? "NULL" : "OK") +
                     ", GoldManager: " +
-                    (_goldManager == null ? "NULL" : "OK"));
+                    (_currencyManager == null ? "NULL" : "OK"));
                 return;
             }
 
@@ -44,10 +44,10 @@ namespace Click
 
             if (goldToAdd > 0)
             {
-                _goldManager.AddGold(goldToAdd);
+                _currencyManager.AddGold(goldToAdd);
             }
 
-            GameEvents.RaiseRevenueEarned(result.Revenue, result.IsCritical, result.MenuCount, false);
+            IncomeEvents.RaiseRevenueEarned(result.Revenue, result.IsCritical, result.MenuCount, false);
         }
     }
 }

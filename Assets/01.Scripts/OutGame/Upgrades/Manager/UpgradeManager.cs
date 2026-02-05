@@ -2,268 +2,88 @@ using System;
 using System.Collections.Generic;
 using Events;
 using Goods.Manager;
-using Menu;
-using Upgrade.Domain;
-using Upgrade.Repository;
+using OutGame.Upgrades.Domain;
+using OutGame.Upgrades.Repository;
 using UnityEngine;
 
-namespace Upgrade.Manager
+namespace OutGame.Upgrades.Manager
 {
-    /// <summary>
-    /// 업그레이드 관리자
-    /// </summary>
     public class UpgradeManager : MonoBehaviour
     {
-        [SerializeField]
-        private UpgradeData[] _upgrades;
+        [SerializeField] private UpgradeTableSO _table;
 
-        private GoldManager _goldManager;
-        private MenuManager _menuProvider;
-        private Action<int, float> _onFoodTruckUpgraded;
+        private CurrencyManager _currencyManager;
         private IUpgradeRepository _repository;
+        private UpgradeSaveData _saveData;
 
-        private Dictionary<string, UpgradeData> _upgradeDataMap;
-        private Dictionary<string, int> _upgradeLevels;
+        private Dictionary<EUpgradeType, Upgrade> _upgrades;
 
-        public void Initialize(
-            GoldManager goldManager,
-            string userId,
-            MenuManager menuProvider = null,
-            Action<int, float> onFoodTruckUpgraded = null)
+        public void Initialize(CurrencyManager currencyManager)
         {
-            _goldManager = goldManager;
+            _currencyManager = currencyManager;
+
             _repository = new LocalUpgradeRepository();
-            _menuProvider = menuProvider;
-            _onFoodTruckUpgraded = onFoodTruckUpgraded;
+            _saveData = _repository.Load();
+            _upgrades = new Dictionary<EUpgradeType, Upgrade>();
 
-            _upgradeDataMap = new Dictionary<string, UpgradeData>();
-
-            var upgradeIds = new List<string>();
-            foreach (var upgrade in _upgrades)
+            foreach (var spec in _table.AllSpecs)
             {
-                if (upgrade != null && !string.IsNullOrEmpty(upgrade.UpgradeId))
-                {
-                    _upgradeDataMap[upgrade.UpgradeId] = upgrade;
-                    upgradeIds.Add(upgrade.UpgradeId);
-                }
-            }
+                if (spec == null) continue;
 
-            _upgradeLevels = _repository.LoadAll(upgradeIds);
-
-            ApplyLoadedEffects();
-        }
-
-        /// <summary>
-        /// 저장된 업그레이드 효과 적용 (게임 로드 시)
-        /// </summary>
-        private void ApplyLoadedEffects()
-        {
-            foreach (var upgrade in _upgrades)
-            {
-                if (upgrade == null)
-                {
-                    continue;
-                }
-
-                int level = GetLevel(upgrade.UpgradeId);
-                if (level <= 0)
-                {
-                    continue;
-                }
-
-                HandleUpgradeEffects(upgrade);
+                int typeIndex = (int)spec.Type;
+                int level = (typeIndex < _saveData.Levels.Length) ? _saveData.Levels[typeIndex] : 0;
+                _upgrades[spec.Type] = new Upgrade(spec, level);
             }
         }
 
-        public float GetValue(EUpgradeType type)
+        public Upgrade GetUpgradeData(EUpgradeType type)
         {
-            foreach (var upgrade in _upgrades)
+            if (_upgrades != null && _upgrades.TryGetValue(type, out Upgrade upgrade))
             {
-                if (upgrade == null || upgrade.Type != type)
-                {
-                    continue;
-                }
-
-                int level = GetLevel(upgrade.UpgradeId);
-                if (level <= 0)
-                {
-                    continue;
-                }
-
-                return upgrade.GetValue(level);
+                return upgrade;
             }
 
-            return GetDefaultValueForType(type);
+            return null;
         }
 
-        /// <summary>
-        /// 정수 값 반환 (요리사 수, 크리티컬 개수, 메뉴 레벨 등)
-        /// </summary>
-        public int GetIntValue(EUpgradeType type)
+        public bool TryUpgrade(EUpgradeType type)
         {
-            return Mathf.FloorToInt(GetValue(type));
-        }
+            var upgrade = GetUpgradeData(type);
+            if (upgrade == null || upgrade.IsMaxLevel) return false;
 
-        public int GetLevel(string upgradeId)
-        {
-            if (_upgradeLevels != null && _upgradeLevels.TryGetValue(upgradeId, out int level))
+            long cost = upgrade.NextLevelCost;
+            if (cost <= 0 || !_currencyManager.HasEnough(cost))
             {
-                return level;
-            }
-            return 0;
-        }
-
-        public long GetNextLevelCost(string upgradeId)
-        {
-            if (!_upgradeDataMap.TryGetValue(upgradeId, out UpgradeData data))
-            {
-                return 0;
+                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - Type: {type}, " + $"비용: {cost}, 현재 레벨: {upgrade.Level}");
+                return false;
             }
 
-            int currentLevel = GetLevel(upgradeId);
-            int nextLevel = currentLevel + 1;
-
-            if (nextLevel > data.MaxLevel)
-            {
-                return 0;
-            }
-
-            return data.GetCost(nextLevel);
-        }
-
-        public bool CanUpgrade(string upgradeId)
-        {
-            long cost = GetNextLevelCost(upgradeId);
-            if (cost <= 0)
+            if (!_currencyManager.SpendGold(cost))
             {
                 return false;
             }
 
-            return _goldManager.HasEnough(cost);
-        }
+            upgrade.LevelUp();
+            int newLevel = upgrade.Level;
 
-        /// <summary>
-        /// 업그레이드 구매 시도
-        /// </summary>
-        public bool TryPurchase(string upgradeId)
-        {
-            if (!CanUpgrade(upgradeId))
-            {
-                Debug.LogWarning($"[UpgradeManager] 업그레이드 불가 - ID: {upgradeId}, " +
-                    $"DataMap 포함: {_upgradeDataMap.ContainsKey(upgradeId)}, " +
-                    $"비용: {GetNextLevelCost(upgradeId)}, " +
-                    $"현재 레벨: {GetLevel(upgradeId)}");
-                return false;
-            }
+            _saveData.Levels[(int)type] = newLevel;
+            _saveData.LastSaveTime = DateTime.Now.ToString("o");
+            _repository.Save(_saveData);
 
-            long cost = GetNextLevelCost(upgradeId);
-            if (!_goldManager.SpendGold(cost))
-            {
-                return false;
-            }
+            Debug.Log($"[UpgradeManager] 업그레이드 성공 - {upgrade.DisplayName}({type}) " + $"Lv.{newLevel}, Value: {upgrade.Effect}");
 
-            _upgradeLevels[upgradeId]++;
-            int newLevel = _upgradeLevels[upgradeId];
-
-            _repository.SaveLevel(upgradeId, newLevel);
-
-            if (_upgradeDataMap.TryGetValue(upgradeId, out UpgradeData data))
-            {
-                Debug.Log($"[UpgradeManager] 업그레이드 성공 - {data.DisplayName}({upgradeId}) " +
-                    $"Lv.{newLevel}, Type: {data.Type}, Value: {data.GetValue(newLevel)}");
-            }
-
-            GameEvents.RaiseUpgradePurchased(upgradeId, newLevel);
-
-            if (data != null)
-            {
-                HandleUpgradeEffects(data);
-            }
+            UpgradeEvents.RaiseUpgradePurchased(type, newLevel);
 
             return true;
         }
 
-        /// <summary>
-        /// 업그레이드 데이터 조회
-        /// </summary>
-        public UpgradeData GetUpgradeData(string upgradeId)
+        public bool CanUpgrade(EUpgradeType type)
         {
-            if (_upgradeDataMap.TryGetValue(upgradeId, out UpgradeData data))
-            {
-                return data;
-            }
-            return null;
-        }
+            var upgrade = GetUpgradeData(type);
+            if (upgrade == null || upgrade.IsMaxLevel) return false;
 
-        /// <summary>
-        /// 모든 업그레이드 데이터 반환
-        /// </summary>
-        public UpgradeData[] GetAllUpgrades()
-        {
-            return _upgrades;
-        }
-
-        private void HandleUpgradeEffects(UpgradeData data)
-        {
-            switch (data.Type)
-            {
-                case EUpgradeType.ChefCount:
-                case EUpgradeType.CookingSpeed:
-                    NotifyAutoIncomeChanged();
-                    break;
-
-                case EUpgradeType.FoodTruck:
-                    int unlockLevel = GetLevel(data.UpgradeId);
-                    float priceMultiplier = GetValue(EUpgradeType.FoodTruck);
-                    _onFoodTruckUpgraded?.Invoke(unlockLevel, priceMultiplier);
-                    NotifyAutoIncomeChanged();
-                    break;
-            }
-        }
-
-        private void NotifyAutoIncomeChanged()
-        {
-            float autoIncome = CalculateAutoIncome();
-            GameEvents.RaiseAutoIncomeChanged(autoIncome);
-        }
-
-        private float GetDefaultValueForType(EUpgradeType type)
-        {
-            switch (type)
-            {
-                case EUpgradeType.CriticalChance:
-                case EUpgradeType.ChefCount:
-                    return 0f;
-                case EUpgradeType.FoodTruck:
-                    return 1f;
-                case EUpgradeType.ClickRevenue:
-                case EUpgradeType.CookingSpeed:
-                    return 1f;
-                case EUpgradeType.CriticalProfit:
-                    return 1f;
-                default:
-                    return 1f;
-            }
-        }
-
-        /// <summary>
-        /// 자동 수익 계산: 요리사 수 × 클릭 수익 × 요리 속도
-        /// </summary>
-        public float CalculateAutoIncome()
-        {
-            int chefCount = GetIntValue(EUpgradeType.ChefCount);
-            float cookingSpeed = GetValue(EUpgradeType.CookingSpeed);
-
-            if (chefCount <= 0)
-            {
-                return 0f;
-            }
-
-            float menuPrice = _menuProvider?.AveragePrice ?? 10f;
-            float clickRevenue = GetValue(EUpgradeType.ClickRevenue);
-            float baseClickIncome = menuPrice * clickRevenue;
-
-            return chefCount * baseClickIncome * cookingSpeed;
+            long cost = upgrade.NextLevelCost;
+            return cost > 0 && _currencyManager.HasEnough(cost);
         }
     }
 }

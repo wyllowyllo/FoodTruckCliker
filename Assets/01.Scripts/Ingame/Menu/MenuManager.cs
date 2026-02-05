@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Events;
+using OutGame.Upgrades.Domain;
+using OutGame.Upgrades.Manager;
 using UnityEngine;
 
 namespace Menu
@@ -13,6 +16,7 @@ namespace Menu
         [Header("메뉴 목록")]
         [SerializeField] private List<MenuData> _allMenus = new List<MenuData>();
 
+        private UpgradeManager _upgradeManager;
         private int _currentUnlockLevel = 0;
         private float _priceMultiplier = 1f;
         private List<MenuData> _unlockedMenus = new List<MenuData>();
@@ -32,16 +36,50 @@ namespace Menu
             }
         }
 
-        public void Initialize()
+        public void Initialize(UpgradeManager upgradeManager)
         {
+            _upgradeManager = upgradeManager;
             SortMenusByUnlockLevel();
+
+            var foodTruck = upgradeManager.GetUpgradeData(EUpgradeType.FoodTruck);
+            if (foodTruck != null && foodTruck.Level > 0)
+            {
+                _currentUnlockLevel = foodTruck.Level;
+                _priceMultiplier = Mathf.Max(1f, foodTruck.Effect);
+            }
+
             UpdateUnlockedMenus();
         }
 
-        /// <summary>
-        /// 메뉴 해금 레벨 설정 (트럭 업그레이드 시 호출)
-        /// </summary>
-        public void SetUnlockLevel(int level)
+        private void OnEnable()
+        {
+            UpgradeEvents.OnUpgradePurchased += HandleUpgradePurchased;
+        }
+
+        private void OnDisable()
+        {
+            UpgradeEvents.OnUpgradePurchased -= HandleUpgradePurchased;
+        }
+
+        private void HandleUpgradePurchased(EUpgradeType type, int newLevel)
+        {
+            if (type != EUpgradeType.FoodTruck || _upgradeManager == null)
+            {
+                return;
+            }
+
+            var foodTruck = _upgradeManager.GetUpgradeData(EUpgradeType.FoodTruck);
+            if (foodTruck == null)
+            {
+                return;
+            }
+
+            SetUnlockLevel(foodTruck.Level);
+            SetPriceMultiplier(foodTruck.Effect);
+            Debug.Log($"[MenuManager] 트럭 업그레이드 - 해금 레벨: {foodTruck.Level}, 가격 배율: {foodTruck.Effect}");
+        }
+
+        private void SetUnlockLevel(int level)
         {
             if (level == _currentUnlockLevel)
             {
@@ -52,10 +90,7 @@ namespace Menu
             UpdateUnlockedMenus();
         }
 
-        /// <summary>
-        /// 메뉴 가격 배율 설정 (트럭 업그레이드 시 호출)
-        /// </summary>
-        public void SetPriceMultiplier(float multiplier)
+        private void SetPriceMultiplier(float multiplier)
         {
             _priceMultiplier = Mathf.Max(1f, multiplier);
         }

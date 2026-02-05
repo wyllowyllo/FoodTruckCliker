@@ -3,9 +3,8 @@ using Click;
 using Events;
 using Goods.Manager;
 using Menu;
+using OutGame.Upgrades.Manager;
 using UI;
-using Upgrade.Domain;
-using Upgrade.Manager;
 using OutGame.UserData.Manager;
 using UnityEngine;
 
@@ -21,7 +20,7 @@ namespace Core
         private GameConfig _gameConfig;
 
         [Header("시스템 참조")]
-        [SerializeField] private GoldManager _goldManager;
+        [SerializeField] private CurrencyManager _currencyManager;
         [SerializeField] private UpgradeManager _upgradeManager;
         [SerializeField] private AutoIncomeManager _autoIncomeManager;
         [SerializeField] private ClickController _clickController;
@@ -50,7 +49,7 @@ namespace Core
                 Debug.LogError("GameConfig is not assigned!");
             }
 
-            if (_goldManager == null)
+            if (_currencyManager == null)
             {
                 Debug.LogError("GoldManager is not assigned!");
             }
@@ -70,35 +69,29 @@ namespace Core
         {
             // 0. GoldManager 초기화
             string userId = AccountManager.Instance.Email;
-            if (_goldManager != null)
+            if (_currencyManager != null)
             {
-                _goldManager.Initialize(userId);
+                _currencyManager.Initialize(userId);
             }
 
-            // 1. MenuManager 초기화
-            if (_menuManager != null)
+            // 1. UpgradeManager 초기화
+            if (_upgradeManager != null && _currencyManager != null)
             {
-                _menuManager.Initialize();
-                
-            }
-            else
-            {
-                Debug.LogError("[GameManager] MenuManager가 NULL!");
-            }
-
-            // 2. UpgradeManager 초기화 (MenuManager 연동)
-            if (_upgradeManager != null && _goldManager != null)
-            {
-                _upgradeManager.Initialize(
-                    _goldManager,
-                    userId,
-                    _menuManager,
-                    OnFoodTruckUpgraded
-                );
+                _upgradeManager.Initialize(_currencyManager);
             }
             else
             {
                 Debug.LogError("[GameManager] UpgradeManager 또는 GoldManager가 NULL!");
+            }
+
+            // 2. MenuManager 초기화 (UpgradeManager에서 FoodTruck 레벨 읽어옴)
+            if (_menuManager != null && _upgradeManager != null)
+            {
+                _menuManager.Initialize(_upgradeManager);
+            }
+            else
+            {
+                Debug.LogError("[GameManager] MenuManager가 NULL!");
             }
 
             // 3. ClickRevenueCalculator 생성 (MenuManager 연동)
@@ -111,7 +104,7 @@ namespace Core
             // 4. ClickController 초기화
             if (_clickController != null)
             {
-                _clickController.Initialize(_clickRevenueCalculator, _goldManager);
+                _clickController.Initialize(_clickRevenueCalculator, _currencyManager);
                
             }
             else
@@ -122,23 +115,13 @@ namespace Core
             // 5. AutoIncomeManager 초기화 (MenuManager 연동)
             if (_autoIncomeManager != null)
             {
-                _autoIncomeManager.Initialize(_upgradeManager, _goldManager, _menuManager);
+                _autoIncomeManager.Initialize(_upgradeManager, _currencyManager, _menuManager);
                 
             }
 
             // 6. UI 초기화
             InitializeUI();
             
-        }
-
-        private void OnFoodTruckUpgraded(int unlockLevel, float priceMultiplier)
-        {
-            if (_menuManager != null)
-            {
-                _menuManager.SetUnlockLevel(unlockLevel);
-                _menuManager.SetPriceMultiplier(priceMultiplier);
-                Debug.Log($"[GameManager] 트럭 업그레이드 - 해금 레벨: {unlockLevel}, 가격 배율: {priceMultiplier}");
-            }
         }
 
         private void InitializeUI()
