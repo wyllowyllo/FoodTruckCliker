@@ -2,7 +2,7 @@ name : Unity WebGL Build
 
 on:
   push :
-    branches : [ main ]
+    branches : [main]
     
 jobs: 
   build :
