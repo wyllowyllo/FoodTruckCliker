@@ -13,7 +13,7 @@ namespace OutGame.Upgrades.Repository
 
         public HybridCurrencyRepository()
         {
-            _localRepository = new LocalCurrencyRepository();
+            _localRepository = new LocalCurrencyRepository("");
 #if !UNITY_WEBGL || UNITY_EDITOR
             _firebaseRepository = new FirebaseCurrencyRepository();
 #endif

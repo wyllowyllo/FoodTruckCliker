@@ -3,6 +3,7 @@ using Events;
 using Goods.Domain;
 using OutGame.Goods.Repository;
 using OutGame.Upgrades.Repository;
+using OutGame.UserData.Manager;
 using UnityEngine;
 
 namespace OutGame.Goods.Manager
