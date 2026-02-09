@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !UNITY_WEBGL || UNITY_EDITOR
+using System;
 using Cysharp.Threading.Tasks;
 using Firebase.Auth;
 using OutGame.UserData.Domain;
@@ -63,3 +64,4 @@ namespace OutGame.UserData.Repository
         }
     }
 }
+#endif

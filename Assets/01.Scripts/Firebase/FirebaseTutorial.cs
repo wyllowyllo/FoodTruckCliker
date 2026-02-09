@@ -1,3 +1,4 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -287,7 +288,8 @@ public class FirebaseTutorial : MonoBehaviour
             LoadDogs();
         }
     }
-    
-   
-   
+
+
+
 }
+#endif
