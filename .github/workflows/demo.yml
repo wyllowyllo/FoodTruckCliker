@@ -9,9 +9,9 @@ jobs:
     
     runs-on: ubuntu-latest
     
-  steps:
-    - name: 코드 가져오기
-      uses: actions/checkout@v4
-      
-    - name : 유니티 빌드
-      run : echo "유니티 빌드를 합니다."
+    steps:
+      - name: 코드 가져오기
+        uses: actions/checkout@v4
+
+      - name : 유니티 빌드
+        run : echo "유니티 빌드를 합니다."
