@@ -68,6 +68,8 @@ namespace Core
 
         private async UniTaskVoid InitializeSystems()
         {
+            // 의존성이 필요 없는것들부터
+
             // 0. CurrencyManager 초기화
             string userId = AccountManager.Instance.Email;
             if (_currencyManager != null)
@@ -117,7 +119,6 @@ namespace Core
             if (_autoIncomeManager != null)
             {
                 _autoIncomeManager.Initialize(_upgradeManager, _currencyManager, _menuManager);
-                
             }
 
             // 6. UI 초기화

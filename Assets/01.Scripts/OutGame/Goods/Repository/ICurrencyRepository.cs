@@ -6,6 +6,6 @@ namespace OutGame.Goods.Repository
     public interface ICurrencyRepository
     {
         UniTask<CurrencySaveData> Load();
-        UniTask Save(CurrencySaveData amount);
+        UniTask Save(CurrencySaveData saveData);
     }
 }

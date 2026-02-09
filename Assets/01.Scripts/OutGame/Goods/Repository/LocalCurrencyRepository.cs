@@ -6,12 +6,12 @@ namespace OutGame.Goods.Repository
     public class LocalCurrencyRepository : ICurrencyRepository
     {
        
-        private const string KEY_PREFIX = "currency_";
+        private const string KEY = "currency";
         private readonly string _saveKey;
 
-        public LocalCurrencyRepository(string userId)
+        public LocalCurrencyRepository()
         {
-            _saveKey = KEY_PREFIX + userId;
+            _saveKey = KEY;
         }
         
         public async UniTask Save(CurrencySaveData saveData)

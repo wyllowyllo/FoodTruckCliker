@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using Events;
 using Goods.Domain;
 using OutGame.Goods.Repository;
+using OutGame.Upgrades.Repository;
 using UnityEngine;
 
 namespace OutGame.Goods.Manager
@@ -12,12 +13,13 @@ namespace OutGame.Goods.Manager
 
         private Currency _gold;
         private ICurrencyRepository _repository;
-
+        
         public long CurrentGold => _gold.Value;
 
         public async UniTask Initialize()
         {
-            _repository = new FirebaseCurrencyRepository();
+            //_repository = new FirebaseCurrencyRepository();
+            _repository = new HybridCurrencyRepository();
 
             CurrencySaveData savedGold = await _repository.Load();
             long initialGold = savedGold.Currency > 0 ? savedGold.Currency : _startingGold;
@@ -63,6 +65,7 @@ namespace OutGame.Goods.Manager
             
             CurrencySaveData savedGold = new CurrencySaveData();
             savedGold.Currency = _gold.Value;
+            
             _repository?.Save(savedGold);
         }
     }

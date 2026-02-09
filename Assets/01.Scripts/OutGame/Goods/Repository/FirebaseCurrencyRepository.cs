@@ -8,7 +8,7 @@ namespace OutGame.Goods.Repository
 {
     public class FirebaseCurrencyRepository : ICurrencyRepository
     {
-        private string CURRENCY_COLLECTION_NAME = "Currency";
+        private const string CURRENCY_COLLECTION_NAME = "Currency";
     
         private FirebaseAuth _auth    = FirebaseAuth.DefaultInstance;
         private FirebaseFirestore _db = FirebaseFirestore.DefaultInstance;
