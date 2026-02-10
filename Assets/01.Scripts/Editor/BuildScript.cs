@@ -9,7 +9,7 @@ public class BuildScript
         string[] scenes = GetEnabledScenes();
 
         // 2. wasm-opt 크래시 방지 (self-hosted runner 환경)
-        PlayerSettings.WebGL.emscriptenArgs = "-s BINARYEN=0";
+        PlayerSettings.WebGL.emscriptenArgs = "--no-wasm-opt";
 
         // 3. 빌드 옵션 설정
         BuildPlayerOptions options = new BuildPlayerOptions
