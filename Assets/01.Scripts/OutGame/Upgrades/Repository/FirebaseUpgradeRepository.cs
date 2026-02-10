@@ -1,3 +1,4 @@
+#if !UNITY_WEBGL || UNITY_EDITOR
 using System;
 using Cysharp.Threading.Tasks;
 using Firebase.Auth;
@@ -52,3 +53,4 @@ namespace OutGame.Upgrades.Repository
         }
     }
 }
+#endif

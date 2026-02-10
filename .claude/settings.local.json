@@ -5,7 +5,9 @@
       "Bash(dir \"C:\\\\Users\\\\skku0\\\\FoodTruckCliker\\\\Assets\\\\Polyeler\\\\Simple Kitchen Car Pack\" /b /s)",
       "Bash(dir:*)",
       "Bash(findstr:*)",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "Bash(git rm:*)",
+      "Bash(git add:*)"
     ]
   }
 }

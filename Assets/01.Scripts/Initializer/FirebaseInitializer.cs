@@ -1,9 +1,12 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
+
+#if !UNITY_WEBGL || UNITY_EDITOR
 using Firebase;
 using Firebase.Auth;
 using Firebase.Firestore;
-using UnityEngine;
+
 
 namespace Initializer
 {
@@ -58,3 +61,4 @@ namespace Initializer
         }
     }
 }
+#endif

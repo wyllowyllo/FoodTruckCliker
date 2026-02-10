@@ -23,7 +23,11 @@ namespace OutGame.Upgrades.Manager
         {
             _currencyManager = currencyManager;
 
+#if !UNITY_WEBGL || UNITY_EDITOR
             _repository = new FirebaseUpgradeRepository();
+#else
+            _repository = new LocalUpgradeRepository();
+#endif
             _saveData = await _repository.Load();
             _upgrades = new Dictionary<EUpgradeType, Upgrade>();
 

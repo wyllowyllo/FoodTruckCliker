@@ -1,5 +1,4 @@
-﻿
-
+﻿#if !UNITY_WEBGL || UNITY_EDITOR
 using System;
 using Firebase.Firestore;
 
@@ -30,8 +29,9 @@ public class Dog
       {
          throw new System.ArgumentNullException("나이는 0살보다 작을 수 업습니다.");
       }
-      
+
       Name = name;
       Age = age;
    }
 }
+#endif

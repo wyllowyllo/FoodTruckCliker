@@ -1,13 +1,12 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
-using Firebase.Auth;
 using OutGame.UserData.Domain;
 using OutGame.UserData.Repository;
 using UnityEngine;
 
 namespace OutGame.UserData.Manager
 {
-    // 매니저의 역할 : 
+    // 매니저의 역할 :
     // 1. 도메인 관리 : 생성/조회/수정/삭제와 같은 비즈니스 로직
     // 2. 외부와의 소통 창구
     public class AccountManager : MonoBehaviour
@@ -15,7 +14,7 @@ namespace OutGame.UserData.Manager
         public static AccountManager Instance { get; private set; }
 
         private Account _currentAccount = null;
-        
+
         public bool IsLogin => _currentAccount != null;
         public string Email => _currentAccount?.Email ?? string.Empty;
 
@@ -31,7 +30,11 @@ namespace OutGame.UserData.Manager
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
+#if !UNITY_WEBGL || UNITY_EDITOR
             _repository = new FirebaseAccountRepository();
+#else
+            _repository = new LocalAccountRepository();
+#endif
         }
 
         public async UniTask<AccountResult> TryLogin(string email, string password)
@@ -49,7 +52,7 @@ namespace OutGame.UserData.Manager
                     ErrorMessage = ex.Message,
                 };
             }
-        
+
             // 2. 레포지토리를 이용한 로그인
             AccountResult result = await _repository.Login(email, password);
             if (result.Success)
@@ -86,8 +89,8 @@ namespace OutGame.UserData.Manager
                     ErrorMessage = ex.Message,
                 };
             }
-        
-          
+
+
             AccountResult result = await _repository.Register(email, password);
             if (result.Success)
             {
@@ -110,7 +113,7 @@ namespace OutGame.UserData.Manager
         {
             _repository.Logout();
         }
-        
-        
+
+
     }
 }

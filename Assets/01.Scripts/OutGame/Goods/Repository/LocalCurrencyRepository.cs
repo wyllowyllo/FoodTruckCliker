@@ -9,9 +9,9 @@ namespace OutGame.Goods.Repository
         private const string KEY = "currency";
         private readonly string _saveKey;
 
-        public LocalCurrencyRepository()
+        public LocalCurrencyRepository(string userId)
         {
-            _saveKey = KEY;
+            _saveKey = KEY +userId;
         }
         
         public async UniTask Save(CurrencySaveData saveData)

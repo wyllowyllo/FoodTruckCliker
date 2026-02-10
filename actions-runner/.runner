@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 21,
+  "agentName": "mingwan",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus9.actions.githubusercontent.com/yoE0nyF8iV95pQPm7KXUkiyfUBBykL8F6goImOMaMjdW1M9DTO/",
+  "gitHubUrl": "https://github.com/wyllowyllo/FoodTruckCliker",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}

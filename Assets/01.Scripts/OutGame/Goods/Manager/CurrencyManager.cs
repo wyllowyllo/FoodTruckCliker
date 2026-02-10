@@ -3,6 +3,7 @@ using Events;
 using Goods.Domain;
 using OutGame.Goods.Repository;
 using OutGame.Upgrades.Repository;
+using OutGame.UserData.Manager;
 using UnityEngine;
 
 namespace OutGame.Goods.Manager
@@ -18,8 +19,12 @@ namespace OutGame.Goods.Manager
 
         public async UniTask Initialize()
         {
-            //_repository = new FirebaseCurrencyRepository();
-            _repository = new HybridCurrencyRepository();
+            #if !UNITY_WEBGL || UNITY_EDITOR
+                        _repository = new FirebaseCurrencyRepository(); // 혹은 하이브리드레포
+            #else
+                // WebGL에서는 Firebase 미지원 → 로컬 레포지토리로 우회
+                _repository = new LocalCurrencyRepository(AccountManager.Instance.Email);
+            #endif
 
             CurrencySaveData savedGold = await _repository.Load();
             long initialGold = savedGold.Currency > 0 ? savedGold.Currency : _startingGold;
