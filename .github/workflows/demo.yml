@@ -1,8 +1,9 @@
-name: Unity WebGL Build
+name: Unity WebGL Build & Deploy - Self
 
 on:
   push:
     branches: [ web-build ]
+  workflow_dispatch:         # 수동 실행 허용
 
 # GitHub Pages 배포에 필요한 권한
 permissions:
@@ -12,64 +13,59 @@ permissions:
   
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: self-hosted  # ⭐ Self-hosted Runner 사용
+    
     steps:
-      # 0. 디스크 공간 확보
-      - name: Free Disk Space
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: true
+      # 0. Git Bash를 PATH에 추가 (Windows 호환)
+      - name: Add Git Bash to PATH
+        shell: cmd
+        run: echo C:\Program Files\Git\bin>> "%GITHUB_PATH%"
       
-      # 1. 코드 가져오기
+      # 1. 슬랙 알림 (빌드 시작)
+      - name: Slack Notification (Start)
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            {"text":"🚀 WebGL 빌드 시작","blocks":[{"type":"section","text":{"type":"mrkdwn","text":"🚀 *${{ github.repository }}* 빌드 시작!\n👤 작성자: ${{ github.actor }}"}}]}
+      
+      # 2. 코드 가져오기
       - name: Checkout
         uses: actions/checkout@v4
-      
-      # 2. 캐시 (빌드 속도 향상)
-      - name: Cache Library
-        uses: actions/cache@v4
         with:
-          path: Library
-          key: Library-WebGL-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-WebGL-
-            Library-
+          clean: false  # Library 폴더 보존
       
-      # 3. Unity 빌드 (WebGL)
+      # 3. Unity WebGL 빌드 ⭐ 핵심 단계
       - name: Build WebGL
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}  
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: WebGL
-          buildProfile: "Assets/Settings/Build Profiles/Web Profile.asset"
+        shell: cmd
+        run: |
+          "C:\Program Files\Unity\Hub\Editor\6000.3.2f1\Editor\Unity.exe" ^
+            -batchmode ^
+            -nographics ^
+            -quit ^
+            -projectPath . ^
+            -executeMethod BuildScript.PerformWebGLBuild ^
+            -logFile -
       
-      # 4. 빌드 결과물 업로드
+      # 4. 빌드 결과물 업로드 (Artifact)
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with:
           name: WebGL-Build
           path: build/WebGL
-            
-# 5. GitHub Pages 배포 준비
+      
+      # 5. GitHub Pages 배포 준비
       - name: Setup Pages
         uses: actions/configure-pages@v5
-
-# 6. Pages용 Artifact 업로드
+      
+      # 6. Pages용 Artifact 업로드
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: build/WebGL/WebGL
-
-# 7. GitHub Pages 배포
+      
+      # 7. GitHub Pages 배포
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         
