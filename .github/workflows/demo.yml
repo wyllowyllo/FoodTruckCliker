@@ -45,6 +45,7 @@ jobs:
             -nographics ^
             -quit ^
             -projectPath . ^
+            -activeBuildProfile "Assets/Settings/Build Profiles/Web Profile.asset" ^
             -executeMethod BuildScript.PerformWebGLBuild ^
             -logFile -
       
