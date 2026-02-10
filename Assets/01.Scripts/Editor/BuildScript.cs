@@ -8,7 +8,10 @@ public class BuildScript
         // 1. 빌드 설정에 포함된 씬 목록 가져오기
         string[] scenes = GetEnabledScenes();
 
-        // 2. 빌드 옵션 설정
+        // 2. wasm-opt 크래시 방지 (self-hosted runner 환경)
+        PlayerSettings.WebGL.emscriptenArgs = "-s BINARYEN=0";
+
+        // 3. 빌드 옵션 설정
         BuildPlayerOptions options = new BuildPlayerOptions
         {
             scenes = scenes,
@@ -17,10 +20,10 @@ public class BuildScript
             options = BuildOptions.None,
         };
 
-        // 3. 빌드 실행
+        // 4. 빌드 실행
         var report = BuildPipeline.BuildPlayer(options);
 
-        // 4. 결과 확인 및 종료 코드 반환
+        // 5. 결과 확인 및 종료 코드 반환
         if (report.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
         {
             Debug.LogError("Build failed!");
