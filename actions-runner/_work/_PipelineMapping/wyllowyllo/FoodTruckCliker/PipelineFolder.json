@@ -1,0 +1,12 @@
+﻿{
+  "repositoryName": "wyllowyllo/FoodTruckCliker",
+  "pipelineDirectory": "FoodTruckCliker",
+  "workspaceDirectory": "FoodTruckCliker\\FoodTruckCliker",
+  "repositories": {
+    "wyllowyllo/FoodTruckCliker": {
+      "repositoryPath": "FoodTruckCliker\\FoodTruckCliker",
+      "lastRunOn": "02/10/2026 15:56:36 +09:00"
+    }
+  },
+  "lastRunOn": "02/10/2026 15:56:36 +09:00"
+}
